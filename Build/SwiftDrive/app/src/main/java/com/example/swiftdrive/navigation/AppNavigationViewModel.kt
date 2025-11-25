@@ -13,8 +13,11 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
+import com.example.swiftdrive.R
 
 class AppNavigationViewModel: ViewModel() {
 
@@ -47,7 +50,7 @@ class AppNavigationViewModel: ViewModel() {
 
     // Update IcontoSHow
     fun updateFabVisibility() {
-        showFab = selectedItem != "home" && selectedItem != "profile"
+        showFab = selectedItem != "home" && selectedItem != "profile" && selectedItem != "slash"
     }
 
     fun handleButtonClick(item: String){
