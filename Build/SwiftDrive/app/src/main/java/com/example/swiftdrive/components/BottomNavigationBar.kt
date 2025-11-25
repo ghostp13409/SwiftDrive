@@ -23,8 +23,7 @@ fun BottomNavigationBar(navController: NavController, viewModel: AppNavigationVi
             NavigationBarItem(
                 selected = currentRoute == item,
                 onClick = {
-                    viewModel.updateSelectedItem(item)
-                    viewModel.updateFabVisibility()
+                    viewModel.handleButtonClick(item)
                     navController.navigate(viewModel.selectedItem)
                 },
                 icon = { Icon(icon, contentDescription = viewModel.labels[index]) },
