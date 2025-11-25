@@ -63,7 +63,7 @@ class AppNavigationViewModel: ViewModel() {
     fun getFabRoute(): String {
         return when (selectedItem) {
             "cars" -> "add_car"
-            "customers" -> "add_customer"
+            "customer" -> "add_customer"
             "rentals" -> "add_rental"
             else -> ""
         }

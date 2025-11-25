@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ExpenseTracker8959999</string>
+    <string name="topbar_title">Expense Tracker</string>
+    <string name="txtField_title">Expense Title</string>
+    <string name="txtField_amount">Amount</string>
+    <string name="trial">Test</string>
+    <string name="txtField_category">Category</string>
+    <string name="save_button">Save Expense</string>
+    <string name="expense_list_title">Expense History</string>
+</resources>
