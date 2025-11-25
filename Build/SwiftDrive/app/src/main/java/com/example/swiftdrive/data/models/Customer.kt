@@ -1,8 +1,24 @@
 package com.example.swiftdrive.data.models
 
+enum class UserRoles{
+    ADMIN,
+    USER,
+}
+
+
+
 data class Customer (
-    val id: String,
-    val name: String,
+
+    val id: Int,
+    val roles: UserRoles,
+    val firstName: String,
+    val lastName: String,
+    val age: Int,
+    val phoneNumber: String,
+
+    val drivingLicence: String?,
+
     val email: String,
-    val phoneNumber: String
+    val password: String,
+
 )
