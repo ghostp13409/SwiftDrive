@@ -96,7 +96,7 @@ fun AppNavigation () {
             }
             composable("customer") {
                 val customerViewModel: CustomerViewModel = viewModel()
-                CustomerScreen(viewModel = customerViewModel)
+                CustomerScreen(modifier = Modifier.padding(innerPadding), viewModel = customerViewModel)
             }
             composable("add_customer") {
                 // Get ViewModel from backstack entry of event_list screen
