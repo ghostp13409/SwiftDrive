@@ -1,4 +1,4 @@
-package com.example.swiftdrive.data
+package com.example.swiftdrive.data.models
 
 data class Car (
     val id: String = "",
