@@ -86,33 +86,33 @@ fun AppNavigation () {
             }
             composable("cars") {
                 val carsViewModel: CarsViewModel = viewModel()
-                CarScreen(viewModel = carsViewModel)
+                CarScreen(modifier = Modifier.padding(innerPadding), viewModel = carsViewModel)
             }
             composable("add_car") {
                 // Get ViewModel from backstack entry of cars screen
                 val carsStackEntry = remember { navController.getBackStackEntry("cars") }
                 val carViewModel: CarsViewModel = viewModel(carsStackEntry)
-                AddCarScreen(viewModel = carViewModel)
+                AddCarScreen(modifier = Modifier.padding(innerPadding), viewModel = carViewModel)
             }
             composable("customer") {
                 val customerViewModel: CustomerViewModel = viewModel()
-                CustomerScreen(viewModel = customerViewModel)
+                CustomerScreen(modifier = Modifier.padding(innerPadding), viewModel = customerViewModel)
             }
             composable("add_customer") {
                 // Get ViewModel from backstack entry of event_list screen
                 val customerStackEntry = remember { navController.getBackStackEntry("customer") }
                 val customerViewModel: CustomerViewModel = viewModel(customerStackEntry)
-                AddCustomerScreen(viewModel = customerViewModel)
+                AddCustomerScreen(modifier = Modifier.padding(innerPadding), viewModel = customerViewModel)
             }
             composable("rentals") {
                 val rentalViewModel: RentalViewModel = viewModel()
-                RentalScreen(viewModel = rentalViewModel)
+                RentalScreen(modifier = Modifier.padding(innerPadding), viewModel = rentalViewModel)
             }
             composable("add_rental") {
                 // Get ViewModel from backstack entry of event_list screen
                 val rentalsStackEntry = remember { navController.getBackStackEntry("rentals") }
                 val rentalViewModel: RentalViewModel = viewModel(rentalsStackEntry)
-                AddRentalScreen(viewModel = rentalViewModel)
+                AddRentalScreen(modifier = Modifier.padding(innerPadding), viewModel = rentalViewModel)
             }
         }
     }
