@@ -13,10 +13,19 @@ import com.example.swiftdrive.features.home.HomeScreen
 import com.example.swiftdrive.features.profile.ProfileScreen
 import com.example.swiftdrive.features.rentals.AddRentalScreen
 import com.example.swiftdrive.features.rentals.RentalScreen
+import com.example.swiftdrive.features.splashscreen.SplashScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, innerPadding: PaddingValues){
-    NavHost(navController = navController, startDestination = "home") {
+    NavHost(navController = navController, startDestination = "splash") {
+        composable("splash") {
+
+            SplashScreen( onTimeout = {
+                navController.navigate("home") {
+                    popUpTo("splash") { inclusive = true }
+                }
+            })
+        }
         composable("home") { HomeScreen() }
         composable("cars") { CarScreen() }
         composable("add_car") { AddCarScreen() }
