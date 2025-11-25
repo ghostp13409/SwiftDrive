@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "632813646134",
+    "project_id": "eventeasy-60e35",
+    "storage_bucket": "eventeasy-60e35.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:632813646134:android:9eaf7840f814d6a5fa0397",
+        "android_client_info": {
+          "package_name": "com.example.eventeasy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUpGl8AZMg5pQp2xmEbN8IHyEhaeDfH-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

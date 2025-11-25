@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartNotesSSQL</string>
+    <string name="app_title">📝 Notas Inteligentes</string>
+    <string name="note_title">Título</string>
+    <string name="note_content">Contenido</string>
+    <string name="add_note">Agregar Nota</string>
+    <string name="dark_mode">Modo Oscuro</string>
+</resources>

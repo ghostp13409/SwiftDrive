@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SmartNotesSSQL</string>
+    <string name="app_title" translatable="false">📝 Smart Notes</string>
+    <string name="note_title" translatable="false">Title</string>
+    <string name="note_content" translatable="false">Content</string>
+    <string name="add_note" translatable="false">Add Note</string>
+    <string name="dark_mode" translatable="false">Dark Mode</string>
+</resources>
