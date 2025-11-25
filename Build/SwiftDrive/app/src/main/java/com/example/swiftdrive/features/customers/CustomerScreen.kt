@@ -19,7 +19,7 @@ import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.models.UserRoles
 
 @Composable
-fun CustomerScreen() {
+fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
     // In a real app, you would get this list from a ViewModel
     val customers = remember {
         listOf(
