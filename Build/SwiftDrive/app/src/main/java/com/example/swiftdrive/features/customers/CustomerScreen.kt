@@ -1,5 +1,7 @@
 package com.example.swiftdrive.features.customers
 
+import android.annotation.SuppressLint
+import android.app.Application
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -60,13 +62,14 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
     }
 }
 
+@SuppressLint("ViewModelConstructorInComposable")
 @Preview(showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun CustomerScreenPreview() {
     // Using a Scaffold to mimic a real screen with a background color
     Scaffold { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
-            CustomerScreen()
+            CustomerScreen(modifier = Modifier, viewModel = CustomerViewModel(application = Application()))
         }
     }
 }
