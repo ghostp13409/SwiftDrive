@@ -2,11 +2,11 @@ package com.example.swiftdrive.navigation
 
 import android.annotation.SuppressLint
 import android.util.Log
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,13 +29,13 @@ import com.example.swiftdrive.features.customers.CustomerScreen
 import com.example.swiftdrive.features.home.HomeScreen
 import com.example.swiftdrive.features.home.HomeViewModel
 import com.example.swiftdrive.features.rentals.AddRentalScreen
-import com.example.swiftdrive.features.rentals.RentalScreen
 import com.example.swiftdrive.features.splashscreen.SplashScreen
 import com.example.swiftdrive.features.cars.CarsViewModel
 import com.example.swiftdrive.features.customers.CustomerViewModel
 import com.example.swiftdrive.features.profile.ProfileScreen
 import com.example.swiftdrive.features.profile.ProfileViewModel
 import com.example.swiftdrive.features.rentals.RentalViewModel
+import com.example.swiftdrive.features.rentals.RentalsScreen
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
@@ -75,13 +75,17 @@ fun AppNavigation (modifier: Modifier = Modifier) {
             }
         }
     ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = "splash",
+        Box(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
+            NavHost(
+                navController = navController,
+                startDestination = "splash",
+                modifier = Modifier.fillMaxSize(),
+            ) {
             composable("splash") {
 
                 SplashScreen(onTimeout = {
@@ -134,7 +138,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 val rentalViewModel: RentalViewModel = viewModel()
                 currentTitle = "Rentals"
                 currentSubtext = "View your rentals"
-                RentalScreen(modifier = Modifier, viewModel = rentalViewModel)
+                RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
             }
             composable("add_rental") {
                 // Get ViewModel from backstack entry of event_list screen
@@ -149,6 +153,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 currentTitle = "Profile"
                 currentSubtext = "View your profile"
                 ProfileScreen(modifier = Modifier, viewModel = profileViewModel)
+            }
             }
         }
     }

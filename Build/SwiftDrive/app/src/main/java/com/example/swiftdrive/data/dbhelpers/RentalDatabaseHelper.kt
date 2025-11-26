@@ -71,6 +71,15 @@ class RentalDatabaseHelper(context: Context) :
         db.close()
     }
 
+    fun updateRentalStatus(id: String, status: String) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("status", status)
+        }
+        db.update("rentals", values, "id=?", arrayOf(id))
+        db.close()
+    }
+
     fun seedRentals() {
         if (getAllRentals().isEmpty()) {
             insertRental("1", "1", "1", "2023-01-01", "2023-01-05", 250.0, "Completed")

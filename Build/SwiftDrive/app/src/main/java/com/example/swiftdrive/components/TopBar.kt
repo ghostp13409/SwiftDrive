@@ -29,6 +29,7 @@ import com.example.swiftdrive.R
 @Composable
 fun TopBar(title: String, subText: String) {
     TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
         title = {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                 Text(

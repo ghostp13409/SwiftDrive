@@ -81,4 +81,13 @@ class CarDatabaseHelper(context : Context) :
         db.close()
     }
 
+    fun updateCarAvailability(id: Int, isAvailable: Boolean) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("isAvailable", if (isAvailable) 1 else 0)
+        }
+        db.update("cars", values, "id=?", arrayOf(id.toString()))
+        db.close()
+    }
+
 }
