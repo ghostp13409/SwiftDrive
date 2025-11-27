@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +27,8 @@ import com.example.swiftdrive.data.models.Car
 @Composable
 fun CarDetailScreen(
     viewModel: CarsViewModel,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    onEditClick: (Car) -> Unit,
 ) {
     val car = viewModel.selectedCar ?: return
 
@@ -86,7 +89,30 @@ fun CarDetailScreen(
                 DetailRow("Category", car.category)
                 DetailRow("Condition", car.condition)
                 DetailRow("Engine", car.engineType)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
 
+                    //EDIT
+                    IconButton(onClick = { onEditClick(car) }) {
+                        Icon(
+                            imageVector = Icons.Default.Edit,
+                            contentDescription = "Edit",
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    //DELETE
+                    IconButton(onClick = { /* TODO */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+                // ───────────────────────────────────────
                 Divider(modifier = Modifier.padding(vertical = 18.dp))
 
                 AvailabilityAndPriceSection(car)
@@ -109,7 +135,6 @@ fun CarDetailScreen(
 }
 
 
-// --- Reusable Row from original remembered design ---
 
 //THIS WILL BE MOVED TO THE COMPOSABLE SCREEN
 @Composable
@@ -138,11 +163,16 @@ private fun DetailRow(label: String, value: String) {
     }
 }
 
+//THIS WILL ALSO BE MOVED TO THE COMPOSABLE SCREEN
 @Composable
-private fun AvailabilityAndPriceSection(car: Car) {
+private fun AvailabilityAndPriceSection(
+    car: Car,
+) {
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 10.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -187,3 +217,4 @@ private fun AvailabilityAndPriceSection(car: Car) {
         }
     }
 }
+

@@ -40,6 +40,16 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
     //Select all cars
     fun selectCar(car: Car){
         selectedCar = car
+
+        year = car.year.toString()
+        make = car.make
+        model = car.model
+        pricePerDay = car.pricePerDay.toString()
+        isAvailable = car.isAvailable
+        engineType = car.engineType
+        condition = car.condition
+        category = car.category
+        imageRes = car.imageRes
     }
 
     fun loadCars(){
@@ -64,7 +74,7 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         loadCars()
     }
 
-    private fun resetInputFields(){
+    fun resetInputFields() {
         year = ""
         make = ""
         model = ""
@@ -73,7 +83,29 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         engineType = ""
         condition = ""
         category = ""
-
+        imageRes = R.drawable.logo
+        selectedCar = null
     }
+
+
+    fun updateCar() {
+        val car = selectedCar ?: return
+
+        val updatedCar = car.copy(
+            year = year.toIntOrNull() ?: car.year,
+            make = make,
+            model = model,
+            pricePerDay = pricePerDay.toDoubleOrNull() ?: car.pricePerDay,
+            isAvailable = isAvailable,
+            engineType = engineType,
+            condition = condition,
+            category = category,
+            imageRes = imageRes
+        )
+
+        dbHelper.updateCar(updatedCar)
+        loadCars()
+    }
+
 
 }

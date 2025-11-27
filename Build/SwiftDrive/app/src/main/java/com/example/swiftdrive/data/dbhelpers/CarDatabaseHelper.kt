@@ -91,6 +91,22 @@ class CarDatabaseHelper(context : Context) :
         db.update("cars", values, "id=?", arrayOf(id.toString()))
         db.close()
     }
+    fun updateCar(car: Car) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("year", car.year)
+            put("make", car.make)
+            put("model", car.model)
+            put("pricePerDay", car.pricePerDay)
+            put("isAvailable", if (car.isAvailable) 1 else 0)
+            put("engineType", car.engineType)
+            put("condition", car.condition)
+            put("category", car.category)
+            put("imageRes", car.imageRes)
+        }
+        db.update("cars", values, "id=?", arrayOf(car.id.toString()))
+        db.close()
+    }
 
     private fun seedInitialCars(db: SQLiteDatabase?) {
         if (db == null) return

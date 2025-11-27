@@ -117,6 +117,12 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 val carViewModel: CarsViewModel = viewModel(carsStackEntry)
                 currentTitle = "Add Car"
                 AddCarScreen(
+                    onEventClick = { navController.navigate("cars"){
+                        popUpTo("cars"){
+                            inclusive = true
+                            saveState = true
+                        }
+                    } },
                     modifier = Modifier,
                     viewModel = carViewModel,
                 )
@@ -168,11 +174,15 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                                 saveState = true
                             }
                         }
+                    },
+                    onEditClick = {
+                        carsViewModel.selectCar(it)
+                        navController.navigate("add_car"){
+                        }
                     }
 
                 )
             }
-
 
             }
         }
