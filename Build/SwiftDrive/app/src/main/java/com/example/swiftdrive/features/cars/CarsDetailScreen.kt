@@ -104,7 +104,10 @@ fun CarDetailScreen(
                         )
                     }
                     //DELETE
-                    IconButton(onClick = { /* TODO */ }) {
+                    IconButton(onClick = {
+                        viewModel.deleteCar(car.id)
+                        onBackClick()
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = "Delete",
