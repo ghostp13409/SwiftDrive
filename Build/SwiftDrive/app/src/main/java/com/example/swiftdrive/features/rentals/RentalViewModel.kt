@@ -154,7 +154,9 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
             errorMessage = "Invalid date format."
             return false
         }
-        val id = System.currentTimeMillis().toString() // Simple ID generation
+
+        // Generate ID
+        val id = System.currentTimeMillis().toString()
         rentalDbHelper.insertRental(
             id,
             selectedCustomer!!.id.toString(),
@@ -167,7 +169,7 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
         // Mark car as unavailable
         carDbHelper.updateCarAvailability(selectedCar!!.id, false)
         loadRentals()
-        loadCars() // Refresh car list to show updated availability
+        loadCars() 
         resetInputFields()
         return true
     }
@@ -188,7 +190,7 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
         loadRentals()
-        loadCars() // Refresh car list to show updated availability
+        loadCars() 
     }
 
     private fun resetInputFields() {
