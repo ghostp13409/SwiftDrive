@@ -1,14 +1,14 @@
 package com.example.swiftdrive.data.dbhelpers
 
-import android.R
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.Car
 
 class CarDatabaseHelper(context : Context) :
-    SQLiteOpenHelper(context, "cars.db", null, 1){
+    SQLiteOpenHelper(context, "cars.db", null, 2){
 
     override fun onCreate(db: SQLiteDatabase?) {
         val createTableQuery = """
@@ -33,7 +33,7 @@ class CarDatabaseHelper(context : Context) :
         onCreate(db)
     }
 
-    fun insertCar(year: String, make: String, model: String, pricePerDay: String, isAvailable: Boolean, engineType: String, condition: String, category: String, imageRes: Int) {
+    fun insertCar(year: Int, make: String, model: String, pricePerDay: Double, isAvailable: Boolean, engineType: String, condition: String, category: String, imageRes: Int) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("year", year)

@@ -1,7 +1,12 @@
 package com.example.swiftdrive.navigation
 
 import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,11 +33,13 @@ import com.example.swiftdrive.features.rentals.RentalScreen
 import com.example.swiftdrive.features.splashscreen.SplashScreen
 import com.example.swiftdrive.features.cars.CarsViewModel
 import com.example.swiftdrive.features.customers.CustomerViewModel
+import com.example.swiftdrive.features.profile.ProfileScreen
+import com.example.swiftdrive.features.profile.ProfileViewModel
 import com.example.swiftdrive.features.rentals.RentalViewModel
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
-fun AppNavigation () {
+fun AppNavigation (modifier: Modifier = Modifier) {
     val viewModel : AppNavigationViewModel = viewModel()
     val navController = rememberNavController()
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
@@ -42,6 +49,7 @@ fun AppNavigation () {
     var currentSubtext by remember { mutableStateOf<String>("Drive Fast. Drive Safe.") }  // Default subtext
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             if(currentRoute != "splash"){
                 TopBar(
@@ -67,6 +75,81 @@ fun AppNavigation () {
             }
         }
     ) { innerPadding ->
-        NavGraph(navController = navController, innerPadding = innerPadding)
+        NavHost(
+            navController = navController,
+            startDestination = "splash",
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+        ) {
+            composable("splash") {
+
+                SplashScreen(onTimeout = {
+                    navController.navigate("home") {
+                        popUpTo("splash") { inclusive = true }
+                    }
+                })
+            }
+            composable("home") {
+                val homeViewModel: HomeViewModel = viewModel()
+                // Change Title and SubText on TopBar
+                currentTitle = "Dashboard"
+                currentSubtext = "Drive Fast. Drive Safe."
+                HomeScreen(modifier = Modifier, viewModel = homeViewModel )
+            }
+            composable("cars") {
+                val carsViewModel: CarsViewModel = viewModel()
+                currentTitle = "Cars"
+                currentSubtext = "Find your next ride"
+                CarScreen(
+                    modifier = Modifier, viewModel = carsViewModel,
+                    onEventClick = { TODO() }
+                )
+            }
+            composable("add_car") {
+                // Get ViewModel from backstack entry of cars screen
+                val carsStackEntry = remember { navController.getBackStackEntry("cars") }
+                val carViewModel: CarsViewModel = viewModel(carsStackEntry)
+                currentTitle = "Add Car"
+                AddCarScreen(
+                    modifier = Modifier,
+                    viewModel = carViewModel,
+                )
+            }
+            composable("customer") {
+                Log.d("AppNavigation", "Navigated to CustomerScreen")
+                val customerViewModel: CustomerViewModel = viewModel()
+                currentTitle = "Customers"
+                currentSubtext = "${customerViewModel.customers.size} total customers"
+                CustomerScreen(modifier = Modifier, viewModel = customerViewModel)
+            }
+            composable("add_customer") {
+                // Get ViewModel from backstack entry of event_list screen
+                val customerStackEntry = remember { navController.getBackStackEntry("customer") }
+                val customerViewModel: CustomerViewModel = viewModel(customerStackEntry)
+                currentTitle = "Add Customer"
+                AddCustomerScreen(modifier = Modifier, viewModel = customerViewModel)
+            }
+            composable("rentals") {
+                val rentalViewModel: RentalViewModel = viewModel()
+                currentTitle = "Rentals"
+                currentSubtext = "View your rentals"
+                RentalScreen(modifier = Modifier, viewModel = rentalViewModel)
+            }
+            composable("add_rental") {
+                // Get ViewModel from backstack entry of event_list screen
+                val rentalsStackEntry = remember { navController.getBackStackEntry("rentals") }
+                val rentalViewModel: RentalViewModel = viewModel(rentalsStackEntry)
+                currentTitle = "Add Rental"
+                AddRentalScreen(modifier = Modifier, viewModel = rentalViewModel)
+            }
+
+            composable ("profile") {
+                val profileViewModel: ProfileViewModel = viewModel()
+                currentTitle = "Profile"
+                currentSubtext = "View your profile"
+                ProfileScreen(modifier = Modifier, viewModel = profileViewModel)
+            }
+        }
     }
 }

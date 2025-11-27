@@ -2,7 +2,6 @@ package com.example.swiftdrive.features.cars
 
 import android.app.Application
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
@@ -33,6 +32,10 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
     var selectedCar by mutableStateOf<Car?>(null)
         private set
 
+    init {
+        seedCars()
+    }
+
     //Select all cars
     fun selectCar(car: Car){
         selectedCar = car
@@ -42,12 +45,23 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         cars.value = dbHelper.getAllCars()
     }
 
+    fun seedCars() {
+        if (dbHelper.getAllCars().isEmpty()) {
+            dbHelper.insertCar(2020, "Toyota", "Camry", 50.0, true, "Gasoline", "Excellent", "Sedan", R.drawable.logo)
+            dbHelper.insertCar(2019, "Honda", "Civic", 45.0, true, "Gasoline", "Good", "Sedan", R.drawable.logo)
+            dbHelper.insertCar(2021, "Ford", "F-150", 70.0, true, "Diesel", "Excellent", "Truck", R.drawable.logo)
+            loadCars()
+        } else {
+            loadCars()
+        }
+    }
+
     //Validate Data
 
 
     fun addCar(){
         dbHelper.insertCar(
-            year, make, model, pricePerDay, isAvailable, engineType, condition, category,
+            year.toInt(), make, model, pricePerDay.toDouble(), isAvailable, engineType, condition, category,
             imageRes
         )
         loadCars()
@@ -72,4 +86,3 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 }
-
