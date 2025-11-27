@@ -23,6 +23,7 @@ import com.example.swiftdrive.components.BottomNavigationBar
 import com.example.swiftdrive.components.FabButton
 import com.example.swiftdrive.components.TopBar
 import com.example.swiftdrive.features.cars.AddCarScreen
+import com.example.swiftdrive.features.cars.CarDetailScreen
 import com.example.swiftdrive.features.cars.CarScreen
 import com.example.swiftdrive.features.customers.AddCustomerScreen
 import com.example.swiftdrive.features.customers.CustomerScreen
@@ -107,7 +108,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 currentSubtext = "Find your next ride"
                 CarScreen(
                     modifier = Modifier, viewModel = carsViewModel,
-                    onEventClick = { TODO() }
+                    onEventClick = {navController.navigate("cars_detail")}
                 )
             }
             composable("add_car") {
@@ -154,6 +155,25 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 currentSubtext = "View your profile"
                 ProfileScreen(modifier = Modifier, viewModel = profileViewModel)
             }
+
+            composable("cars_detail"){
+                val carListBackStackEntry = remember { navController.getBackStackEntry("cars") }
+                val carsViewModel: CarsViewModel = viewModel(carListBackStackEntry)
+                CarDetailScreen(
+                    viewModel = carsViewModel,
+                    onBackClick = {
+                        navController.navigate("cars"){
+                            popUpTo("cars"){
+                                inclusive = true
+                                saveState = true
+                            }
+                        }
+                    }
+
+                )
+            }
+
+
             }
         }
     }
