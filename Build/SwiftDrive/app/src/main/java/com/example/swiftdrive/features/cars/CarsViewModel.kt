@@ -2,10 +2,10 @@ package com.example.swiftdrive.features.cars
 
 import android.app.Application
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.dbhelpers.CarDatabaseHelper
 import com.example.swiftdrive.data.models.Car
 
@@ -22,6 +22,8 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
     var engineType by mutableStateOf("")
     var condition by mutableStateOf("")
     var category by mutableStateOf("")
+    var imageRes by mutableStateOf(R.drawable.logo)
+
 
 
     var cars = mutableStateOf<List<Car>>(emptyList())
@@ -29,6 +31,10 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
 
     var selectedCar by mutableStateOf<Car?>(null)
         private set
+
+    init {
+        seedCars()
+    }
 
     //Select all cars
     fun selectCar(car: Car){
@@ -39,11 +45,25 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         cars.value = dbHelper.getAllCars()
     }
 
+    fun seedCars() {
+        if (dbHelper.getAllCars().isEmpty()) {
+            dbHelper.insertCar(2020, "Toyota", "Camry", 50.0, true, "Gasoline", "Excellent", "Sedan", R.drawable.logo)
+            dbHelper.insertCar(2019, "Honda", "Civic", 45.0, true, "Gasoline", "Good", "Sedan", R.drawable.logo)
+            dbHelper.insertCar(2021, "Ford", "F-150", 70.0, true, "Diesel", "Excellent", "Truck", R.drawable.logo)
+            loadCars()
+        } else {
+            loadCars()
+        }
+    }
+
     //Validate Data
 
 
     fun addCar(){
-        dbHelper.insertCar(year, make, model, pricePerDay, isAvailable, engineType, condition, category)
+        dbHelper.insertCar(
+            year.toInt(), make, model, pricePerDay.toDouble(), isAvailable, engineType, condition, category,
+            imageRes
+        )
         loadCars()
         cars.value = dbHelper.getAllCars()
     }
@@ -66,4 +86,3 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 }
-

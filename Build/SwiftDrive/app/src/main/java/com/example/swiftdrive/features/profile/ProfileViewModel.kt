@@ -1,4 +1,6 @@
 package com.example.swiftdrive.features.profile
 
-class ProfileViewModel {
+import androidx.lifecycle.ViewModel
+
+class ProfileViewModel: ViewModel() {
 }

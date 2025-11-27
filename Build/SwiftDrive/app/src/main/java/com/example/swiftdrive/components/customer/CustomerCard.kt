@@ -23,8 +23,7 @@ import com.example.swiftdrive.data.models.UserRoles
 fun CustomerCard(customer: Customer, onEdit: () -> Unit) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -44,7 +43,7 @@ fun CustomerCard(customer: Customer, onEdit: () -> Unit) {
                         .background(MaterialTheme.colorScheme.secondaryContainer)
                 ) {
                     Text(
-                        text = "${customer.firstName.first()}${customer.lastName.first()}",
+                        text = "${customer.firstName.firstOrNull() ?: '?'}${customer.lastName.firstOrNull() ?: '?'}",
                         style = MaterialTheme.typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSecondaryContainer
@@ -80,7 +79,7 @@ fun CustomerCard(customer: Customer, onEdit: () -> Unit) {
             Spacer(modifier = Modifier.height(16.dp))
 
             // Divider line
-            Divider()
+            HorizontalDivider()
 
             Spacer(modifier = Modifier.height(16.dp))
 

@@ -9,16 +9,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.swiftdrive.components.CarCard
 
 
 @Composable
 fun CarScreen(
-    viewModel: CarsViewModel = viewModel(),
     modifier: Modifier = Modifier,
-    onEventClick: () -> Unit
+    onEventClick: () -> Unit,
+    viewModel: CarsViewModel
 ) {
+
     Column(
         modifier = modifier
             .fillMaxSize()
