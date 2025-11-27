@@ -96,7 +96,7 @@ fun CarDetailScreen(
 
             // Car Image
             Image(
-                painter = painterResource(id = R.drawable.logo),
+                painter = painterResource(id = car.imageRes),
                 contentDescription = "Car Image",
                 modifier = Modifier
                     .fillMaxWidth()

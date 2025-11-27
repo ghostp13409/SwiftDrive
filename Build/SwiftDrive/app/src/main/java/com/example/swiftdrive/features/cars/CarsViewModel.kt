@@ -11,6 +11,7 @@ import com.example.swiftdrive.data.models.Car
 
 class CarsViewModel(application: Application) : AndroidViewModel(application) {
 
+
     private val dbHelper = CarDatabaseHelper(application)
 
     var year by mutableStateOf("")
@@ -33,7 +34,7 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         private set
 
     init {
-        seedCars()
+        loadCars()
     }
 
     //Select all cars
@@ -45,16 +46,6 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         cars.value = dbHelper.getAllCars()
     }
 
-    fun seedCars() {
-        if (dbHelper.getAllCars().isEmpty()) {
-            dbHelper.insertCar(2020, "Toyota", "Camry", 50.0, true, "Gasoline", "Excellent", "Sedan", R.drawable.logo)
-            dbHelper.insertCar(2019, "Honda", "Civic", 45.0, true, "Gasoline", "Good", "Sedan", R.drawable.logo)
-            dbHelper.insertCar(2021, "Ford", "F-150", 70.0, true, "Diesel", "Excellent", "Truck", R.drawable.logo)
-            loadCars()
-        } else {
-            loadCars()
-        }
-    }
 
     //Validate Data
 
