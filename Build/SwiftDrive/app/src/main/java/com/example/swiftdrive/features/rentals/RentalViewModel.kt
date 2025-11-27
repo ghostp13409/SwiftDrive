@@ -1,4 +1,7 @@
 package com.example.swiftdrive.features.rentals
 
-class RentalViewModel {
+import androidx.lifecycle.ViewModel
+
+
+class RentalViewModel : ViewModel() {
 }

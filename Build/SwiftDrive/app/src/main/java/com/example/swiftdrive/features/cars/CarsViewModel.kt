@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.dbhelpers.CarDatabaseHelper
 import com.example.swiftdrive.data.models.Car
 
@@ -22,6 +23,8 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
     var engineType by mutableStateOf("")
     var condition by mutableStateOf("")
     var category by mutableStateOf("")
+    var imageRes by mutableStateOf(R.drawable.logo)
+
 
 
     var cars = mutableStateOf<List<Car>>(emptyList())
@@ -43,7 +46,10 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
 
 
     fun addCar(){
-        dbHelper.insertCar(year, make, model, pricePerDay, isAvailable, engineType, condition, category)
+        dbHelper.insertCar(
+            year, make, model, pricePerDay, isAvailable, engineType, condition, category,
+            imageRes
+        )
         loadCars()
         cars.value = dbHelper.getAllCars()
     }

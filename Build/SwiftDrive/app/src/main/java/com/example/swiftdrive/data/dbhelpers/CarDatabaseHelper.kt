@@ -21,7 +21,8 @@ class CarDatabaseHelper(context : Context) :
                 isAvailable INTEGER,
                 engineType TEXT,
                 condition TEXT,
-                category TEXT
+                category TEXT,
+                imageRes INTEGER
             )
         """.trimIndent()
         db?.execSQL(createTableQuery)
@@ -32,7 +33,7 @@ class CarDatabaseHelper(context : Context) :
         onCreate(db)
     }
 
-    fun insertCar(year: String, make: String, model: String, pricePerDay: String, isAvailable: Boolean, engineType: String, condition: String, category: String) {
+    fun insertCar(year: String, make: String, model: String, pricePerDay: String, isAvailable: Boolean, engineType: String, condition: String, category: String, imageRes: Int) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("year", year)
@@ -43,6 +44,7 @@ class CarDatabaseHelper(context : Context) :
             put("engineType", engineType)
             put("condition", condition)
             put("category", category)
+            put("imageRes", imageRes)
         }
         db.insert("cars", null, values)
         db.close()
@@ -63,7 +65,8 @@ class CarDatabaseHelper(context : Context) :
                     isAvailable = cursor.getInt(5) == 1,
                     engineType = cursor.getString(6),
                     condition = cursor.getString(7),
-                    category = cursor.getString(8)
+                    category = cursor.getString(8),
+                    imageRes = cursor.getInt(9)
                 )
             )
         }

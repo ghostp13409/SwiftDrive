@@ -9,5 +9,6 @@ data class Car (
     val isAvailable: Boolean,
     val engineType: String,
     val condition: String,
-    val category: String
+    val category: String,
+    val imageRes: Int,
 )

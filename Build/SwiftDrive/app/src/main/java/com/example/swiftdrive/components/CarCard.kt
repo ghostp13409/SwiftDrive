@@ -49,7 +49,7 @@ fun CarCard(
             ){
                 Image(
                     //This will be updated with the image
-                    painter = painterResource(id = car.image),
+                    painter = painterResource(id = car.imageRes),
                     contentDescription = "${car.make} ${car.model}",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxWidth()

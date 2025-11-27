@@ -23,7 +23,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun AddCarScreen(carsViewModel: CarsViewModel = viewModel()) {
+fun AddCarScreen(
+    modifier: Modifier,
+    viewModel: CarsViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,52 +36,52 @@ fun AddCarScreen(carsViewModel: CarsViewModel = viewModel()) {
         verticalArrangement = Arrangement.Center
     ) {
         OutlinedTextField(
-            value = carsViewModel.year,
-            onValueChange = { carsViewModel.year = it },
+            value = viewModel.year,
+            onValueChange = { viewModel.year = it },
             label = { Text("Year") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = carsViewModel.make,
-            onValueChange = { carsViewModel.make = it },
+            value = viewModel.make,
+            onValueChange = { viewModel.make = it },
             label = { Text("Make") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = carsViewModel.model,
-            onValueChange = { carsViewModel.model = it },
+            value = viewModel.model,
+            onValueChange = { viewModel.model = it },
             label = { Text("Model") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = carsViewModel.pricePerDay,
-            onValueChange = { carsViewModel.pricePerDay = it },
+            value = viewModel.pricePerDay,
+            onValueChange = { viewModel.pricePerDay = it },
             label = { Text("Price Per Day") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = carsViewModel.engineType,
-            onValueChange = { carsViewModel.engineType = it },
+            value = viewModel.engineType,
+            onValueChange = { viewModel.engineType = it },
             label = { Text("Engine Type") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = carsViewModel.condition,
-            onValueChange = { carsViewModel.condition = it },
+            value = viewModel.condition,
+            onValueChange = { viewModel.condition = it },
             label = { Text("Condition") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
-            value = carsViewModel.category,
-            onValueChange = { carsViewModel.category = it }, // Corrected typo here
+            value = viewModel.category,
+            onValueChange = { viewModel.category = it }, // Corrected typo here
             label = { Text("Category") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -88,15 +91,15 @@ fun AddCarScreen(carsViewModel: CarsViewModel = viewModel()) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Checkbox(
-                checked = carsViewModel.isAvailable,
-                onCheckedChange = { carsViewModel.isAvailable = it }
+                checked = viewModel.isAvailable,
+                onCheckedChange = { viewModel.isAvailable = it }
             )
             Text("Available")
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             onClick = {
-                carsViewModel.addCar()
+                viewModel.addCar()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
