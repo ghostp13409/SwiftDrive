@@ -23,17 +23,19 @@ import com.example.swiftdrive.data.models.UserRoles
 @Composable
 fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
     // In a real app, you would get this list from a ViewModel
-    val customers = remember {
-        listOf(
-            Customer(1, UserRoles.USER, "John", "Doe", 30, "(555) 123-4567", "JD123", "john.doe@email.com", "pass"),
-            Customer(2, UserRoles.USER, "Sarah", "Smith", 28, "(555) 234-5678", "SS123", "sarah.smith@email.com", "pass"),
-            Customer(3, UserRoles.USER, "Michael", "Johnson", 45, "(555) 345-6789", "MJ123", "m.johnson@email.com", "pass"),
-            Customer(4, UserRoles.USER, "Emily", "Davis", 35, "(555) 456-7890", "ED123", "emily.d@email.com", "pass")
-        )
-    }
+//    val customers = remember {
+//        listOf(
+//            Customer(1, UserRoles.USER, "John", "Doe", 30, "(555) 123-4567", "JD123", "john.doe@email.com", "pass"),
+//            Customer(2, UserRoles.USER, "Sarah", "Smith", 28, "(555) 234-5678", "SS123", "sarah.smith@email.com", "pass"),
+//            Customer(3, UserRoles.USER, "Michael", "Johnson", 45, "(555) 345-6789", "MJ123", "m.johnson@email.com", "pass"),
+//            Customer(4, UserRoles.USER, "Emily", "Davis", 35, "(555) 456-7890", "ED123", "emily.d@email.com", "pass")
+//        )
+//    }
 
     // In a real app, the onEdit lambda would navigate to an edit screen or show a dialog
-    val onEditCustomer: (Customer) -> Unit = { /* TODO: Handle customer edit */ }
+    val onEditCustomer: (Customer) -> Unit = { customer ->
+        viewModel.editCustomer(customer)
+    }
 
     Column(
         modifier = Modifier
@@ -47,7 +49,7 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "${customers.size} total customers",
+            text = "${viewModel.customers.size} total customers",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -56,7 +58,7 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
 
         // --- Customer List ---
         CustomerList(
-            customers = customers,
+            customers = viewModel.customers,
             onEdit = onEditCustomer
         )
     }
@@ -66,7 +68,7 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
 @Preview(showBackground = true, widthDp = 360, heightDp = 800)
 @Composable
 fun CustomerScreenPreview() {
-    // Using a Scaffold to mimic a real screen with a background color
+
     Scaffold { paddingValues ->
         Column(modifier = Modifier.padding(paddingValues)) {
             CustomerScreen(modifier = Modifier, viewModel = CustomerViewModel(application = Application()))
