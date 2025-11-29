@@ -22,7 +22,7 @@ fun CarScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(25.dp)
+            .padding(16.dp)
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth()

@@ -19,6 +19,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.*
 import com.example.swiftdrive.components.BottomNavigationBar
 import com.example.swiftdrive.components.FabButton
 import com.example.swiftdrive.components.TopBar
@@ -28,7 +30,11 @@ import com.example.swiftdrive.features.customers.AddCustomerScreen
 import com.example.swiftdrive.features.customers.CustomerScreen
 import com.example.swiftdrive.features.home.HomeScreen
 import com.example.swiftdrive.features.home.HomeViewModel
+import com.example.swiftdrive.features.login.LoginScreen
+import com.example.swiftdrive.features.login.LoginViewModel
 import com.example.swiftdrive.features.rentals.AddRentalScreen
+import com.example.swiftdrive.features.signup.RegistrationScreen
+import com.example.swiftdrive.features.signup.RegistrationViewModel
 import com.example.swiftdrive.features.splashscreen.SplashScreen
 import com.example.swiftdrive.features.cars.CarsViewModel
 import com.example.swiftdrive.features.customers.CustomerViewModel
@@ -40,6 +46,8 @@ import com.example.swiftdrive.features.rentals.RentalsScreen
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun AppNavigation (modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager(context) }
     val viewModel : AppNavigationViewModel = viewModel()
     val navController = rememberNavController()
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
@@ -51,7 +59,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            if(currentRoute != "splash"){
+            if(currentRoute != "splash" && currentRoute != "login" && currentRoute != "register"){
                 TopBar(
                     title = currentTitle,
                     subText = currentSubtext
@@ -60,7 +68,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
         },
         bottomBar = {
             // NOTE: Add More if needed to hide bottom bar on other screens (eg. login, signup)
-            if(currentRoute != "splash"){
+            if(currentRoute != "splash" && currentRoute != "login" && currentRoute != "register"){
                 BottomNavigationBar(
                     navController = navController,
                     viewModel = viewModel
@@ -87,12 +95,47 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 modifier = Modifier.fillMaxSize(),
             ) {
             composable("splash") {
-
                 SplashScreen(onTimeout = {
-                    navController.navigate("home") {
-                        popUpTo("splash") { inclusive = true }
+                    if (sessionManager.isLoggedIn()) {
+                        navController.navigate("home") {
+                            popUpTo("splash") { inclusive = true }
+                        }
+                    } else {
+                        navController.navigate("login") {
+                            popUpTo("splash") { inclusive = true }
+                        }
                     }
                 })
+            }
+            composable("login") {
+                val loginViewModel: LoginViewModel = viewModel()
+                LoginScreen(
+                    viewModel = loginViewModel,
+                    onLoginSuccess = {
+                        navController.navigate("home") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    },
+                    onNavigateToRegister = {
+                        navController.navigate("register")
+                    }
+                )
+            }
+            composable("register") {
+                val registrationViewModel: RegistrationViewModel = viewModel()
+                RegistrationScreen(
+                    viewModel = registrationViewModel,
+                    onRegistrationSuccess = {
+                        navController.navigate("login") {
+                            popUpTo("register") { inclusive = true }
+                        }
+                    },
+                    onNavigateToLogin = {
+                        navController.navigate("login") {
+                            popUpTo("register") { inclusive = true }
+                        }
+                    }
+                )
             }
             composable("home") {
                 val homeViewModel: HomeViewModel = viewModel()
@@ -137,7 +180,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
             composable("rentals") {
                 val rentalViewModel: RentalViewModel = viewModel()
                 currentTitle = "Rentals"
-                currentSubtext = "View your rentals"
+                currentSubtext = "${rentalViewModel.rentals.value.size} total rentals"
                 RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
             }
             composable("add_rental") {
@@ -152,7 +195,15 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 val profileViewModel: ProfileViewModel = viewModel()
                 currentTitle = "Profile"
                 currentSubtext = "View your profile"
-                ProfileScreen(modifier = Modifier, viewModel = profileViewModel)
+                ProfileScreen(
+                    modifier = Modifier,
+                    viewModel = profileViewModel,
+                    onLogout = {
+                        navController.navigate("login") {
+                            popUpTo("profile") { inclusive = true }
+                        }
+                    }
+                )
             }
             }
         }
