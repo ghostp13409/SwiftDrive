@@ -22,6 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.Car
+import com.example.swiftdrive.components.Cars.AvailabilityAndPriceSection
+import com.example.swiftdrive.components.Cars.DetailRow
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -137,89 +140,3 @@ fun CarDetailScreen(
         }
     }
 }
-
-
-
-//THIS WILL BE MOVED TO THE COMPOSABLE SCREEN
-@Composable
-private fun DetailRow(label: String, value: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 18.sp
-            )
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 17.sp
-            )
-        )
-    }
-}
-
-//THIS WILL ALSO BE MOVED TO THE COMPOSABLE SCREEN
-@Composable
-private fun AvailabilityAndPriceSection(
-    car: Car,
-) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "$${"%.2f".format(car.pricePerDay)} / day",
-            style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        val isAvailable = car.isAvailable
-        val availabilityText = if (isAvailable) "Available" else "Not Available"
-        val availabilityColor =
-            if (isAvailable) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error
-
-        Surface(
-            color = availabilityColor.copy(alpha = 0.15f),
-            shape = RoundedCornerShape(50)
-        ) {
-            Text(
-                text = availabilityText,
-                modifier = Modifier.padding(horizontal = 18.dp, vertical = 6.dp),
-                color = availabilityColor,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(26.dp))
-
-        //-----------BOOK NOW BUTTON-----------
-        Button(
-            onClick = { /* TODO */ },
-            enabled = isAvailable,
-            modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .height(50.dp),
-            shape = RoundedCornerShape(14.dp)
-        ) {
-            Text("Book Now", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
