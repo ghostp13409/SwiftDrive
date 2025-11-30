@@ -31,7 +31,8 @@ import com.example.swiftdrive.components.Cars.DetailRow
 fun CarDetailScreen(
     viewModel: CarsViewModel,
     onBackClick: () -> Unit,
-    onEditClick: (Car) -> Unit
+    onEditClick: (Car) -> Unit,
+    onBookClicked: (Car) -> Unit    //This is The Book Button Fucntion
 ) {
     val car = viewModel.selectedCar ?: return
 
@@ -122,7 +123,7 @@ fun CarDetailScreen(
                 Divider(modifier = Modifier.padding(vertical = 18.dp))
 
                 // ────────────────────ON BOOK BUTTON CLICKED───────────────────
-                AvailabilityAndPriceSection(car, onBookClicked = {})
+                AvailabilityAndPriceSection(car, onBookClicked = {onBookClicked})
             }
 
             Spacer(modifier = Modifier.height(20.dp))

@@ -220,8 +220,8 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     CarDetailScreen(
                         viewModel = carsViewModel,
                         onBackClick = {
-                            navController.navigate("cars"){
-                                popUpTo("cars"){
+                            navController.navigate("cars") {
+                                popUpTo("cars") {
                                     inclusive = true
                                     saveState = true
                                 }
@@ -229,8 +229,12 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                         },
                         onEditClick = {
                             carsViewModel.selectCar(it)
-                            navController.navigate("add_car"){
+                            navController.navigate("add_car") {
                             }
+                        },
+                        onBookClicked = {
+                            carsViewModel.selectCar(it)
+                            navController.navigate("add_rental")  //This would be changed to navigate and send the id
                         }
                     )
                 }
