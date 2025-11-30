@@ -231,13 +231,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                             carsViewModel.selectCar(it)
                             navController.navigate("add_car"){
                             }
-                        },
-                        onBookClick= {
-                            navController.navigate("add_rental"){
-
-                            }
                         }
-
                     )
                 }
             }
