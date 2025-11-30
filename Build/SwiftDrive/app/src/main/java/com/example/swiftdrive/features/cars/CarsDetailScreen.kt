@@ -209,6 +209,7 @@ private fun AvailabilityAndPriceSection(
 
         Spacer(modifier = Modifier.height(26.dp))
 
+        //-----------BOOK NOW BUTTON-----------
         Button(
             onClick = { /* TODO */ },
             enabled = isAvailable,
