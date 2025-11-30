@@ -29,6 +29,7 @@ fun CarDetailScreen(
     viewModel: CarsViewModel,
     onBackClick: () -> Unit,
     onEditClick: (Car) -> Unit,
+    onBookClick: () -> Unit
 ) {
     val car = viewModel.selectedCar ?: return
 
