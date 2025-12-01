@@ -25,6 +25,7 @@ import com.example.swiftdrive.components.BottomNavigationBar
 import com.example.swiftdrive.components.FabButton
 import com.example.swiftdrive.components.TopBar
 import com.example.swiftdrive.features.cars.AddCarScreen
+import com.example.swiftdrive.features.cars.CarDetailScreen
 import com.example.swiftdrive.features.cars.CarScreen
 import com.example.swiftdrive.features.customers.AddCustomerScreen
 import com.example.swiftdrive.features.customers.CustomerScreen
@@ -150,7 +151,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 currentSubtext = "Find your next ride"
                 CarScreen(
                     modifier = Modifier, viewModel = carsViewModel,
-                    onEventClick = { TODO() }
+                    onEventClick = { navController.navigate("cars_detail") }
                 )
             }
             composable("add_car") {
@@ -159,6 +160,12 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 val carViewModel: CarsViewModel = viewModel(carsStackEntry)
                 currentTitle = "Add Car"
                 AddCarScreen(
+                    onEventClick = { navController.navigate("cars"){
+                        popUpTo("cars"){
+                            inclusive = true
+                            saveState = true
+                        }
+                    } },
                     modifier = Modifier,
                     viewModel = carViewModel,
                 )
@@ -205,6 +212,32 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     }
                 )
             }
+
+
+                composable("cars_detail"){
+                    val carListBackStackEntry = remember { navController.getBackStackEntry("cars") }
+                    val carsViewModel: CarsViewModel = viewModel(carListBackStackEntry)
+                    CarDetailScreen(
+                        viewModel = carsViewModel,
+                        onBackClick = {
+                            navController.navigate("cars") {
+                                popUpTo("cars") {
+                                    inclusive = true
+                                    saveState = true
+                                }
+                            }
+                        },
+                        onEditClick = {
+                            carsViewModel.selectCar(it)
+                            navController.navigate("add_car") {
+                            }
+                        },
+                        onBookClicked = {
+                            carsViewModel.selectCar(it)
+                            navController.navigate("add_rental")  //This would be changed to navigate and send the id
+                        }
+                    )
+                }
             }
         }
     }

@@ -24,17 +24,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun AddCarScreen(
-    modifier: Modifier,
+    onEventClick: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: CarsViewModel
 ) {
+    val isEditing = viewModel.selectedCar != null
+
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
-            .verticalScroll(rememberScrollState()), // Added for better small-screen support
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         OutlinedTextField(
             value = viewModel.year,
             onValueChange = { viewModel.year = it },
@@ -43,6 +46,7 @@ fun AddCarScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = viewModel.make,
             onValueChange = { viewModel.make = it },
@@ -50,6 +54,7 @@ fun AddCarScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = viewModel.model,
             onValueChange = { viewModel.model = it },
@@ -57,6 +62,7 @@ fun AddCarScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = viewModel.pricePerDay,
             onValueChange = { viewModel.pricePerDay = it },
@@ -65,6 +71,7 @@ fun AddCarScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = viewModel.engineType,
             onValueChange = { viewModel.engineType = it },
@@ -72,6 +79,7 @@ fun AddCarScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = viewModel.condition,
             onValueChange = { viewModel.condition = it },
@@ -79,13 +87,15 @@ fun AddCarScreen(
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         OutlinedTextField(
             value = viewModel.category,
-            onValueChange = { viewModel.category = it }, // Corrected typo here
+            onValueChange = { viewModel.category = it },
             label = { Text("Category") },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
+
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
@@ -96,14 +106,20 @@ fun AddCarScreen(
             )
             Text("Available")
         }
+
         Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = {
-                viewModel.addCar()
+                if (isEditing) viewModel.updateCar()
+                else viewModel.addCar()
+
+                onEventClick()
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Add Car")
+            Text(if (isEditing) "Save Changes" else "Add Car")
         }
     }
 }
+

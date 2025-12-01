@@ -11,6 +11,7 @@ import com.example.swiftdrive.data.models.Car
 
 class CarsViewModel(application: Application) : AndroidViewModel(application) {
 
+
     private val dbHelper = CarDatabaseHelper(application)
 
     var year by mutableStateOf("")
@@ -33,28 +34,28 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         private set
 
     init {
-        seedCars()
+        loadCars()
     }
 
     //Select all cars
     fun selectCar(car: Car){
         selectedCar = car
+
+        year = car.year.toString()
+        make = car.make
+        model = car.model
+        pricePerDay = car.pricePerDay.toString()
+        isAvailable = car.isAvailable
+        engineType = car.engineType
+        condition = car.condition
+        category = car.category
+        imageRes = car.imageRes
     }
 
     fun loadCars(){
         cars.value = dbHelper.getAllCars()
     }
 
-    fun seedCars() {
-        if (dbHelper.getAllCars().isEmpty()) {
-            dbHelper.insertCar(2020, "Toyota", "Camry", 50.0, true, "Gasoline", "Excellent", "Sedan", R.drawable.logo)
-            dbHelper.insertCar(2019, "Honda", "Civic", 45.0, true, "Gasoline", "Good", "Sedan", R.drawable.logo)
-            dbHelper.insertCar(2021, "Ford", "F-150", 70.0, true, "Diesel", "Excellent", "Truck", R.drawable.logo)
-            loadCars()
-        } else {
-            loadCars()
-        }
-    }
 
     //Validate Data
 
@@ -73,7 +74,7 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         loadCars()
     }
 
-    private fun resetInputFields(){
+    fun resetInputFields() {
         year = ""
         make = ""
         model = ""
@@ -82,7 +83,29 @@ class CarsViewModel(application: Application) : AndroidViewModel(application) {
         engineType = ""
         condition = ""
         category = ""
-
+        imageRes = R.drawable.logo
+        selectedCar = null
     }
+
+
+    fun updateCar() {
+        val car = selectedCar ?: return
+
+        val updatedCar = car.copy(
+            year = year.toIntOrNull() ?: car.year,
+            make = make,
+            model = model,
+            pricePerDay = pricePerDay.toDoubleOrNull() ?: car.pricePerDay,
+            isAvailable = isAvailable,
+            engineType = engineType,
+            condition = condition,
+            category = category,
+            imageRes = imageRes
+        )
+
+        dbHelper.updateCar(updatedCar)
+        loadCars()
+    }
+
 
 }
