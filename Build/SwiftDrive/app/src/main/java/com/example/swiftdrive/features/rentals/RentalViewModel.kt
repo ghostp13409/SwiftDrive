@@ -62,6 +62,8 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
         loadCars()
         seedRentals()
     }
+
+    //This just loads the car into the screen
     fun loadCarDetails(carId: Int) {
         val car = cars.value.firstOrNull { it.id == carId }
         if (car != null) {

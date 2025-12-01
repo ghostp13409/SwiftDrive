@@ -40,10 +40,10 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel,carId: Int) {
-    // Load car details based on carId
+
     //runs a piece of code one time when a certain value changes
     LaunchedEffect(carId) {
-        viewModel.loadCarDetails(carId)
+        viewModel.loadCarDetails(carId) // Load car details based on carId
     }
 
     Column(

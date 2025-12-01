@@ -190,7 +190,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 currentSubtext = "${rentalViewModel.rentals.value.size} total rentals"
                 RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
             }
-            composable("add_rental/{carId}") {
+            composable("add_rental/{carId}") { // Get Car id from AddRentalScreen
                 // Get ViewModel from backstack entry of event_list screen
                 val rentalsStackEntry = remember { navController.getBackStackEntry("rentals") }
                 val rentalViewModel: RentalViewModel = viewModel(rentalsStackEntry)
