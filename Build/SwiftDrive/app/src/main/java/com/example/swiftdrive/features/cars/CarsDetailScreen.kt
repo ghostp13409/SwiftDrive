@@ -32,7 +32,7 @@ fun CarDetailScreen(
     viewModel: CarsViewModel,
     onBackClick: () -> Unit,
     onEditClick: (Car) -> Unit,
-    onBookClicked: (Car) -> Unit    //This is The Book Button Fucntion
+    onBookClicked: (Car) -> Unit    //This is The Book Button Function
 ) {
     val car = viewModel.selectedCar ?: return
 
@@ -123,7 +123,7 @@ fun CarDetailScreen(
                 Divider(modifier = Modifier.padding(vertical = 18.dp))
 
                 // ────────────────────ON BOOK BUTTON CLICKED───────────────────
-                AvailabilityAndPriceSection(car, onBookClicked = {onBookClicked})
+                AvailabilityAndPriceSection(car, onBookClicked = {onBookClicked(car)})
             }
 
             Spacer(modifier = Modifier.height(20.dp))

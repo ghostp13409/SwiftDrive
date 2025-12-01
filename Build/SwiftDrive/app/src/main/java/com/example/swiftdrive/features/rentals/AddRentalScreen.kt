@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,7 +39,13 @@ import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel) {
+fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel,carId: Int) {
+    // Load car details based on carId
+    //runs a piece of code one time when a certain value changes
+    LaunchedEffect(carId) {
+        viewModel.loadCarDetails(carId)
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()

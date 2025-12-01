@@ -55,10 +55,18 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
     var errorMessage by mutableStateOf("")
         private set
 
+
+
     init {
         loadCustomers()
         loadCars()
         seedRentals()
+    }
+    fun loadCarDetails(carId: Int) {
+        val car = cars.value.firstOrNull { it.id == carId }
+        if (car != null) {
+            selectedCar = car
+        }
     }
 
     fun selectRental(rental: Rentals) {

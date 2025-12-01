@@ -190,12 +190,13 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 currentSubtext = "${rentalViewModel.rentals.value.size} total rentals"
                 RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
             }
-            composable("add_rental") {
+            composable("add_rental/{carId}") {
                 // Get ViewModel from backstack entry of event_list screen
                 val rentalsStackEntry = remember { navController.getBackStackEntry("rentals") }
                 val rentalViewModel: RentalViewModel = viewModel(rentalsStackEntry)
+                val id = it.arguments?.getString("carId")!!.toInt()
                 currentTitle = "Add Rental"
-                AddRentalScreen(modifier = Modifier, viewModel = rentalViewModel)
+                AddRentalScreen(modifier = Modifier, viewModel = rentalViewModel,carId = id)
             }
 
             composable ("profile") {
@@ -234,7 +235,13 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                         },
                         onBookClicked = {
                             carsViewModel.selectCar(it)
-                            navController.navigate("add_rental")  //This would be changed to navigate and send the id
+
+                            // Ensure rentals is in the back stack
+                            navController.navigate("rentals") {
+                                launchSingleTop = true
+                            }
+                            // Now navigate to add rental
+                            navController.navigate("add_rental/${carsViewModel.selectedCar?.id}")
                         }
                     )
                 }

@@ -21,7 +21,6 @@ import com.example.swiftdrive.data.models.Car
 
 @Composable
 fun AvailabilityAndPriceSection(
-    //Might have to add the Car viewModel for the button to work
     car: Car,
     onBookClicked: () -> Unit
 ) {
@@ -64,7 +63,7 @@ fun AvailabilityAndPriceSection(
 
         //-----------BOOK NOW BUTTON-----------
         Button(
-            onClick = { onBookClicked },
+            onClick = onBookClicked,
             enabled = isAvailable,
             modifier = Modifier
                 .fillMaxWidth(0.85f)
