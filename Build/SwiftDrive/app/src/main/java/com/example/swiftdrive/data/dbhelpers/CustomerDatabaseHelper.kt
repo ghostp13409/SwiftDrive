@@ -8,17 +8,20 @@ import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.models.UserRoles
 
 class CustomerDatabaseHelper(context: Context) :
-SQLiteOpenHelper(context, "customer", null, 1)
+SQLiteOpenHelper(context, "customer", null, 2)
 {
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE customer(
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
+                roles TEXT,
                 firstName TEXT,
                 lastName TEXT,
+                age INTEGER,
+                phoneNumber TEXT,
+                drivingLicence TEXT,
                 email TEXT,
-                phoneNumber TEXT
-               
+                password TEXT
             )
         """.trimIndent())
     }
@@ -120,10 +123,7 @@ SQLiteOpenHelper(context, "customer", null, 1)
     // function for deleting the customer
     fun deleteCustomer(id: Int){
         val db = writableDatabase
-        db.delete("expenses", "id=?", arrayOf(id.toString()))
+        db.delete("customer", "id=?", arrayOf(id.toString()))
         db.close()
     }
 }
-
-
-

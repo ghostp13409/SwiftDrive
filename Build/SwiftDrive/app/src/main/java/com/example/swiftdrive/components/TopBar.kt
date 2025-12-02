@@ -3,6 +3,7 @@ package com.example.swiftdrive.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -28,34 +29,35 @@ import com.example.swiftdrive.R
 @Composable
 fun TopBar(title: String, subText: String) {
     TopAppBar(
+        colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
         title = {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                 Text(
                     text = title,
                     modifier = Modifier
-                        .weight(1f)
                         .padding(start = 8.dp),
-                    style = MaterialTheme.typography.headlineLarge,
+                    style = MaterialTheme.typography.headlineMedium,
                     textAlign = TextAlign.Left,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = subText,
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray,
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }
         },
+        windowInsets = TopAppBarDefaults.windowInsets
 
-        navigationIcon = {
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "App Logo",
-                modifier = Modifier
-                    .size(55.dp)
-                    .clip(CircleShape)
-            )
-        }
+//        navigationIcon = {
+//            Image(
+//                painter = painterResource(id = R.drawable.logo),
+//                contentDescription = "App Logo",
+//                modifier = Modifier
+//                    .size(55.dp)
+//                    .clip(CircleShape)
+//            )
+//        }
     )
 }

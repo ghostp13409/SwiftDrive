@@ -18,6 +18,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.swiftdrive.components.customer.RoleDropdown
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 
 
@@ -193,3 +196,6 @@ fun AddCustomerScreenPreview() {
     AddCustomerScreen(modifier = Modifier, viewModel())
 }
 
+fun AddCustomerScreen(viewModel: CustomerViewModel, modifier: Modifier) {
+    Text("Add Customer Screen")
+}

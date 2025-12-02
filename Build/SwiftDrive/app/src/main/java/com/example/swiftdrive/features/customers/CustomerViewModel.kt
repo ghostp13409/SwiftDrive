@@ -1,6 +1,7 @@
 package com.example.swiftdrive.features.customers
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -14,7 +15,7 @@ class CustomerViewModel(application: Application): AndroidViewModel(application)
 {
 
     private val dbHelper= CustomerDatabaseHelper(application)
-    var customers by mutableStateOf<List<Customer>>(dbHelper.getAllCustomers())
+    var customers by mutableStateOf<List<Customer>>(emptyList())
         private set
 
     var roles by mutableStateOf(UserRoles.USER)
@@ -79,10 +80,25 @@ class CustomerViewModel(application: Application): AndroidViewModel(application)
     var showError by mutableStateOf(false)
         private set
 
-    fun loadCustomers() {
-        customers = dbHelper.getAllCustomers()
+    init {
+        seedCustomers()
     }
 
+    fun loadCustomers() {
+        customers = dbHelper.getAllCustomers()
+        Log.d("CustomerViewModel", "Loaded ${customers.size} customers.")
+    }
+
+    fun seedCustomers() {
+        if (dbHelper.getAllCustomers().isEmpty()) {
+            dbHelper.insertCustomer(UserRoles.USER, "John", "Doe", 25, "123-456-7890", "DL123456", "john.doe@example.com", "password1")
+            dbHelper.insertCustomer(UserRoles.USER, "Jane", "Smith", 30, "098-765-4321", "DL654321", "jane.smith@example.com", "password2")
+            dbHelper.insertCustomer(UserRoles.ADMIN, "Admin", "User", 35, "111-222-3333", "DL999999", "admin@example.com", "adminpass")
+            loadCustomers()
+        } else {
+            loadCustomers()
+        }
+    }
 
     fun editCustomer(customer: Customer){
 
@@ -186,3 +202,4 @@ class CustomerViewModel(application: Application): AndroidViewModel(application)
 
 
 
+}

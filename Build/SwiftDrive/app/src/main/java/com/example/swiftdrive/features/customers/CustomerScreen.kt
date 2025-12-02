@@ -11,14 +11,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.components.customer.CustomerList
 import com.example.swiftdrive.data.models.Customer
-import com.example.swiftdrive.data.models.UserRoles
 
 @Composable
 fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
@@ -36,9 +35,12 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
     val onEditCustomer: (Customer) -> Unit = { customer ->
         viewModel.editCustomer(customer)
     }
+    val customers = viewModel.customers
+
+    val onEditCustomer: (Customer) -> Unit = { /* TODO: Handle customer edit */ }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
@@ -60,7 +62,18 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
         CustomerList(
             customers = viewModel.customers,
             onEdit = onEditCustomer
+        CustomerList(
+            customers = customers,
+            onEdit = onEditCustomer,
+            modifier = Modifier
         )
+
+        if(customers.isEmpty()){
+            Text(
+                text = "No customers found",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
     }
 }
 

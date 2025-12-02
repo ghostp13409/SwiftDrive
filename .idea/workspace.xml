@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="08b92f3e-2559-4d61-a638-120933c51e24" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Build/SwiftDrive/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Build/SwiftDrive/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="20f725c5-758a-44b5-b266-829e49168860" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/Build/SwiftDrive/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Build/SwiftDrive/.idea/misc.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -19,37 +18,34 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 8
-}</component>
-  <component name="ProjectId" id="35yu1O1bUdwKGwUxxz1RVYFgdCY" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2
+}]]></component>
+  <component name="ProjectId" id="35ytqOrishhpYLO2T4d2KvrfC8s" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.readMode.enableVisualFormatting&quot;: &quot;true&quot;,
-    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asus/Documents/GitHub/SwiftDrive&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;AndroidSdkUpdater&quot;,
-    &quot;show.migrate.to.gradle.popup&quot;: &quot;false&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/C2005/OneDrive/Desktop/SwiftDrive"
   }
-}</component>
+}]]></component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="08b92f3e-2559-4d61-a638-120933c51e24" name="Changes" comment="" />
-      <created>1764094417212</created>
+      <changelist id="20f725c5-758a-44b5-b266-829e49168860" name="Changes" comment="" />
+      <created>1764094328425</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1764094417212</updated>
+      <updated>1764094328425</updated>
     </task>
     <servers />
   </component>
