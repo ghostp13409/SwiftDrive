@@ -13,7 +13,7 @@ SQLiteOpenHelper(context, "customer", null, 2)
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE customer(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id INTEGER PRIMARY KEY,
                 roles TEXT,
                 firstName TEXT,
                 lastName TEXT,

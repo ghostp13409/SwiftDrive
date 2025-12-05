@@ -1,4 +1,5 @@
 package com.example.swiftdrive.features.login
+
 import android.app.Application
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,11 +8,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.swiftdrive.data.dbhelpers.CustomerDatabaseHelper
 import com.example.swiftdrive.data.models.UserRoles
+import com.example.swiftdrive.data.repositories.CustomerRepository
 import com.example.swiftdrive.navigation.SessionManager
 import kotlinx.coroutines.launch
 
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val customerDbHelper = CustomerDatabaseHelper(application)
+    private val customerRepository = CustomerRepository(application)
     private val sessionManager = SessionManager(application)
 
     var email by mutableStateOf("")
@@ -48,13 +51,16 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             val customer = customers.find { it.email == email && it.password == password && it.roles == UserRoles.ADMIN }
             isLoading = false
             if (customer != null) {
-                sessionManager.createLoginSession(customer.email, customer.roles.name)
+                sessionManager.createLoginSession(customer.id, customer.email, customer.roles.name)
                 onLoginSuccess()
             } else {
                 errorMessage = "Invalid email or password, or not an admin"
             }
         }
     }
+
+    fun onAdminLoginClick(onLoginSuccess: () -> Unit) {
+        sessionManager.createLoginSession(1,"admin@debug.com", "ADMIN")
+        onLoginSuccess()
+    }
 }
-
-

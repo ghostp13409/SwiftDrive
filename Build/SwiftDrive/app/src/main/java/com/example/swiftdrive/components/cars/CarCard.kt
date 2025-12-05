@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components
+package com.example.swiftdrive.components.cars
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -85,7 +85,25 @@ fun CarCard(
                             .padding(horizontal = 12.dp, vertical = 6.dp)
                     ){
                         Text(
-                            text = car.engineType,
+                            text = car.engineType.toString(),
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .padding(start = 12.dp, top = 50.dp)
+                            .background(
+                                color = Color(0xFFE74C3C), // red badge for tier
+                                shape = RoundedCornerShape(50)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                    ){
+                        Text(
+                            text = car.tier.toString(),
                             color = Color.White,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold
@@ -103,6 +121,13 @@ fun CarCard(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
+                Text(
+                    text = "${car.category.toString()} • ${car.condition.toString()}",
+                    fontSize = 14.sp,
+                    color = Color.Gray
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

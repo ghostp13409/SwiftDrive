@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.swiftdrive.components.CarCard
+import com.example.swiftdrive.components.cars.CarCard
 
 
 @Composable
@@ -22,7 +22,7 @@ fun CarScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(25.dp)
+            .padding(16.dp)
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth()

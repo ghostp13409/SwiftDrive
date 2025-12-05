@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.swiftdrive.components.RentalCard
-import com.example.swiftdrive.components.TabButton
+import com.example.swiftdrive.components.registration.RentalCard
+import com.example.swiftdrive.components.registration.TabButton
 
 @Composable
 fun RentalsScreen(

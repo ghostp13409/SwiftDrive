@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components
+package com.example.swiftdrive.components.navigation
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme

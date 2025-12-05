@@ -38,10 +38,7 @@ fun ManageCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             modifier = Modifier
@@ -72,14 +69,12 @@ fun ManageCard(
                 text = count,
                 style = MaterialTheme.typography.headlineSmall,
                 fontSize = 24.sp,
-                color = Color.Black
             )
 
             // Label
             Text(
                 text = label,
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.Gray,
                 fontSize = 13.sp
             )
         }

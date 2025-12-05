@@ -1,27 +1,31 @@
 package com.example.swiftdrive.features.rentals
 
 import android.app.Application
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.example.swiftdrive.data.dbhelpers.CarDatabaseHelper
-import com.example.swiftdrive.data.dbhelpers.CustomerDatabaseHelper
-import com.example.swiftdrive.data.dbhelpers.RentalDatabaseHelper
+import androidx.lifecycle.viewModelScope
 import com.example.swiftdrive.data.models.Car
 import com.example.swiftdrive.data.models.Customer
-import com.example.swiftdrive.data.models.Rentals
+import com.example.swiftdrive.data.models.Rental
+import com.example.swiftdrive.data.repositories.CarRepository
+import com.example.swiftdrive.data.repositories.CustomerRepository
+import com.example.swiftdrive.data.repositories.RentalRepository
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 
-class RentalViewModel(application: Application) : AndroidViewModel(application) {
+class RentalViewModel(application: Application, val onChange: (() -> Unit)? = null) : AndroidViewModel(application) {
 
-    private val rentalDbHelper = RentalDatabaseHelper(application)
-    private val carDbHelper = CarDatabaseHelper(application)
-    private val customerDbHelper = CustomerDatabaseHelper(application)
+    private val rentalRepository = RentalRepository(application)
+    private val carRepository = CarRepository(application)
+    private val customerRepository = CustomerRepository(application)
 
-    var rentals = mutableStateOf<List<Rentals>>(emptyList())
+    var rentals = mutableStateOf<List<Rental>>(emptyList())
         private set
 
     var customers = mutableStateOf<List<Customer>>(emptyList())
@@ -30,7 +34,7 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
     var cars = mutableStateOf<List<Car>>(emptyList())
         private set
 
-    var selectedRental by mutableStateOf<Rentals?>(null)
+    var selectedRental by mutableStateOf<Rental?>(null)
         private set
 
     // Input fields for adding rental
@@ -58,49 +62,63 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
     init {
         loadCustomers()
         loadCars()
-        seedRentals()
+        loadRentals()
     }
 
-    fun selectRental(rental: Rentals) {
+    fun selectRental(rental: Rental) {
         selectedRental = rental
     }
 
     fun loadRentals() {
-        rentals.value = rentalDbHelper.getAllRentals()
+        rentals.value = rentalRepository.getRentals()
     }
 
     fun loadCustomers() {
-        customers.value = customerDbHelper.getAllCustomers()
+        customers.value = customerRepository.getCustomers()
     }
 
     fun loadCars() {
-        cars.value = carDbHelper.getAllCars()
+        cars.value = carRepository.getCars()
     }
 
-    fun seedRentals() {
-        if (rentalDbHelper.getAllRentals().isEmpty()) {
-            rentalDbHelper.seedRentals()
+    fun fetchFromFirestore() {
+        viewModelScope.launch {
+            rentalRepository.fetchAndStoreRentals()
+            carRepository.fetchAndStoreCars()
+            customerRepository.fetchAndStoreCustomers()
             loadRentals()
-        } else {
-            loadRentals()
+            loadCars()
+            loadCustomers()
         }
     }
 
+    fun syncToFirestore() {
+        viewModelScope.launch {
+            rentalRepository.syncToFirestore()
+            carRepository.syncToFirestore()
+            customerRepository.syncToFirestore()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateSelectedCustomer(customer: Customer?) {
         selectedCustomer = customer
         calculateTotalCost()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateSelectedCar(car: Car?) {
         selectedCar = car
         calculateTotalCost()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateRentalStart(date: String) {
         rentalStart = date
         calculateTotalCost()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun updateRentalEnd(date: String) {
         rentalEnd = date
         calculateTotalCost()
@@ -110,6 +128,7 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
         status = newStatus
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateTotalCost() {
         if (selectedCar != null && rentalStart.isNotEmpty() && rentalEnd.isNotEmpty()) {
             try {
@@ -129,6 +148,7 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addRental(): Boolean {
         errorMessage = ""
         if (selectedCustomer == null) {
@@ -156,41 +176,50 @@ class RentalViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         // Generate ID
-        val id = System.currentTimeMillis().toString()
-        rentalDbHelper.insertRental(
-            id,
-            selectedCustomer!!.id.toString(),
-            selectedCar!!.id.toString(),
-            rentalStart,
-            rentalEnd,
-            totalCost.toDouble(),
-            status
+        val id = System.currentTimeMillis().toInt()
+        val newRental = Rental(
+            id = id,
+            userId = selectedCustomer!!.id,
+            carId = selectedCar!!.id,
+            rentalStart = rentalStart,
+            rentalEnd = rentalEnd,
+            totalCost = totalCost.toDouble(),
+            status = status
         )
+        rentalRepository.addRental(newRental)
         // Mark car as unavailable
-        carDbHelper.updateCarAvailability(selectedCar!!.id, false)
+        val updatedCar = selectedCar!!.copy(isAvailable = false)
+        carRepository.updateCar(updatedCar)
         loadRentals()
-        loadCars() 
+        loadCars()
         resetInputFields()
+        onChange?.invoke()
         return true
     }
 
-    fun deleteRental(id: String) {
-        rentalDbHelper.deleteRental(id)
+    fun deleteRental(id: Int) {
+        val rentalToDelete = rentals.value.find { it.id == id } ?: return
+        rentalRepository.deleteRental(rentalToDelete)
         loadRentals()
+        onChange?.invoke()
     }
 
-    fun returnCar(rentalId: String) {
-        rentalDbHelper.updateRentalStatus(rentalId, "Completed")
+    fun returnCar(rentalId: Int) {
+        val rental = rentals.value.find { it.id == rentalId } ?: return
+        val updatedRental = rental.copy(status = "Completed")
+        rentalRepository.updateRental(updatedRental)
         // Find the car for this rental and mark it as available
-        val rental = rentals.value.find { it.id == rentalId }
-        rental?.let {
-            val carId = it.carId.toIntOrNull()
-            carId?.let { id ->
-                carDbHelper.updateCarAvailability(id, true)
+        val carId = rental.carId
+        carId?.let { id ->
+            val car = cars.value.find { it.id == id }
+            car?.let {
+                val updatedCar = it.copy(isAvailable = true)
+                carRepository.updateCar(updatedCar)
             }
         }
         loadRentals()
-        loadCars() 
+        loadCars()
+        onChange?.invoke()
     }
 
     private fun resetInputFields() {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "467193554834",
+    "project_id": "swiftdrive-702a4",
+    "storage_bucket": "swiftdrive-702a4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467193554834:android:bc94b94b10da7de221034b",
+        "android_client_info": {
+          "package_name": "com.example.swiftdrive"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDfpwMRuYWeFUrZYOJlOASaSNbQ_Mh5oWA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

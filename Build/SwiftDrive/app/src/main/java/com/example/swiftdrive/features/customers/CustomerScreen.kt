@@ -20,7 +20,7 @@ import com.example.swiftdrive.components.customer.CustomerList
 import com.example.swiftdrive.data.models.Customer
 
 @Composable
-fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
+fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onEdit: (Customer) -> Unit = {}) {
     // In a real app, you would get this list from a ViewModel
 //    val customers = remember {
 //        listOf(
@@ -33,35 +33,19 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel) {
 
     // In a real app, the onEdit lambda would navigate to an edit screen or show a dialog
     val onEditCustomer: (Customer) -> Unit = { customer ->
-        viewModel.editCustomer(customer)
+        viewModel.selectCustomer(customer)
+        onEdit(customer)
     }
     val customers = viewModel.customers
 
-    val onEditCustomer: (Customer) -> Unit = { /* TODO: Handle customer edit */ }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // --- Screen Header ---
-        Text(
-            text = "Customers",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = "${viewModel.customers.size} total customers",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
 
         // --- Customer List ---
-        CustomerList(
-            customers = viewModel.customers,
-            onEdit = onEditCustomer
         CustomerList(
             customers = customers,
             onEdit = onEditCustomer,

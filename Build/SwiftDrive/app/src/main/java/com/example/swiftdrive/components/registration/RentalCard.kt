@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components
+package com.example.swiftdrive.components.registration
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,22 +11,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.swiftdrive.data.models.Rentals
+import com.example.swiftdrive.data.models.Rental
 import com.example.swiftdrive.features.rentals.RentalViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
 fun RentalCard(
-    rental: Rentals,
+    rental: Rental,
     viewModel: RentalViewModel,
     onReturnCar: () -> Unit
 ) {
     // Get car and customer details
-    val car = viewModel.cars.value.find { it.id.toString() == rental.carId }
-    val customer = viewModel.customers.value.find { it.id.toString() == rental.userId }
+    val car = viewModel.cars.value.find { it.id == rental.carId }
+    val customer = viewModel.customers.value.find { it.id == rental.userId }
 
     // Format dates
     val formatter = DateTimeFormatter.ofPattern("MMM d, yyyy")
@@ -60,6 +61,8 @@ fun RentalCard(
                         text = car?.let { "${it.year} ${it.make} ${it.model}" } ?: "Unknown Car",
                         fontSize = 18.sp,
                         fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

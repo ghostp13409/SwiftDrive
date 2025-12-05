@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.swiftdrive.data.models.Rentals
+import com.example.swiftdrive.data.models.Rental
 
 class RentalDatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, "rentals.db", null, 1) {
@@ -12,9 +12,9 @@ class RentalDatabaseHelper(context: Context) :
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE rentals(
-                id TEXT PRIMARY KEY,
-                userId TEXT,
-                carId TEXT,
+                id INTEGER PRIMARY KEY,
+                userId INTEGER,
+                carId INTEGER,
                 rentalStart TEXT,
                 rentalEnd TEXT,
                 totalCost REAL,
@@ -28,7 +28,7 @@ class RentalDatabaseHelper(context: Context) :
         onCreate(db)
     }
 
-    fun insertRental(id: String, userId: String, carId: String, rentalStart: String, rentalEnd: String, totalCost: Double, status: String) {
+    fun insertRental(id: Int, userId: Int, carId: Int, rentalStart: String, rentalEnd: String, totalCost: Double, status: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("id", id)
@@ -43,16 +43,16 @@ class RentalDatabaseHelper(context: Context) :
         db.close()
     }
 
-    fun getAllRentals(): List<Rentals> {
-        val rentals = mutableListOf<Rentals>()
+    fun getAllRentals(): List<Rental> {
+        val rentals = mutableListOf<Rental>()
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM rentals", null)
         while (cursor.moveToNext()) {
             rentals.add(
-                Rentals(
-                    id = cursor.getString(0),
-                    userId = cursor.getString(1),
-                    carId = cursor.getString(2),
+                Rental(
+                    id = cursor.getInt(0),
+                    userId = cursor.getInt(1),
+                    carId = cursor.getInt(2),
                     rentalStart = cursor.getString(3),
                     rentalEnd = cursor.getString(4),
                     totalCost = cursor.getDouble(5),
@@ -82,8 +82,8 @@ class RentalDatabaseHelper(context: Context) :
 
     fun seedRentals() {
         if (getAllRentals().isEmpty()) {
-            insertRental("1", "1", "1", "2023-01-01", "2023-01-05", 250.0, "Completed")
-            insertRental("2", "2", "2", "2023-02-01", "2023-02-03", 90.0, "Active")
+            insertRental(1, 1, 1, "2023-01-01", "2023-01-05", 250.0, "Completed")
+            insertRental(2, 2, 2, "2023-02-01", "2023-02-03", 90.0, "Active")
         }
     }
 }

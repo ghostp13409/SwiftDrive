@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.swiftdrive.R
+import com.example.swiftdrive.features.login.LoginViewModel
 import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 
 
@@ -138,6 +139,18 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
         ) {
             Text("Sign Up")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedButton(
+            onClick = { viewModel.onAdminLoginClick(onLoginSuccess) },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.error
+            ),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
+        ) {
+            Text("Admin Login (Debug)")
         }
 
         Spacer(modifier = Modifier.height(16.dp))

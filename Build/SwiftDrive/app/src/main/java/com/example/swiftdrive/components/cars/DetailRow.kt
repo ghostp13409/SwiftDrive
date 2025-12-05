@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components.Cars
+package com.example.swiftdrive.components.cars
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

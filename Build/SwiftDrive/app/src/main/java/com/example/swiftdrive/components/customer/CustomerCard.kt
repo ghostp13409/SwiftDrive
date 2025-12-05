@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -66,11 +67,11 @@ fun CustomerCard(customer: Customer, onEdit: () -> Unit) {
                     )
                 }
 
-                // Edit button
+                // Info button
                 IconButton(onClick = onEdit, modifier = Modifier.size(24.dp)) {
                     Icon(
-                        imageVector = Icons.Default.Edit,
-                        contentDescription = "Edit Customer",
+                        imageVector = Icons.Default.Info,
+                        contentDescription = "Customer Details",
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

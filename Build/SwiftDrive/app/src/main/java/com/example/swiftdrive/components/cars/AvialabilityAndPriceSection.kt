@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components.Cars
+package com.example.swiftdrive.components.cars
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,9 +21,8 @@ import com.example.swiftdrive.data.models.Car
 
 @Composable
 fun AvailabilityAndPriceSection(
-    //Might have to add the Car viewModel for the button to work
     car: Car,
-    onBookClicked: () -> Unit
+    onBookClicked: (Car) -> Unit
 ) {
 
     Column(
@@ -64,7 +63,7 @@ fun AvailabilityAndPriceSection(
 
         //-----------BOOK NOW BUTTON-----------
         Button(
-            onClick = { onBookClicked },
+            onClick = { onBookClicked(car) },
             enabled = isAvailable,
             modifier = Modifier
                 .fillMaxWidth(0.85f)

@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components
+package com.example.swiftdrive.components.registration
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.RoundedCornerShape

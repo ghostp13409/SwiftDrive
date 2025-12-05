@@ -22,6 +22,7 @@ import com.example.swiftdrive.R
 class AppNavigationViewModel: ViewModel() {
 
     val items = listOf("home", "cars", "customer", "rentals", "profile")
+
     var selectedItem by mutableStateOf(items[0])
         private set
     val icons = listOf(
@@ -40,6 +41,10 @@ class AppNavigationViewModel: ViewModel() {
     )
     val labels = listOf("Home", "Cars", "Customers", "Rentals", "Profile")
 
+    val allowFab = listOf("cars", "customer", "rentals")
+
+    val allowBottomTopBar = listOf("home", "cars", "customer", "rentals", "profile")
+
     var showFab by mutableStateOf(false)
         private set
 
@@ -48,19 +53,10 @@ class AppNavigationViewModel: ViewModel() {
         selectedItem = item
     }
 
-    // Update IcontoSHow
-    fun updateFabVisibility() {
-        showFab = selectedItem != "home" && selectedItem != "profile" && selectedItem != "slash"
-    }
 
     fun handleButtonClick(item: String){
         // update selected route
         selectedItem = item
-
-        // update FAB visibility
-        updateFabVisibility()
-
-
     }
 
     fun getFabRoute(): String {

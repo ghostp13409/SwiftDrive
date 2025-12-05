@@ -47,9 +47,6 @@ fun QuickActionButton(
             defaultElevation = 2.dp
         ),
         shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )
     ) {
         Row(
             modifier = Modifier
@@ -87,7 +84,6 @@ fun QuickActionButton(
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Medium,
                     fontSize = 16.sp,
-                    color = Color.Black
                 )
             }
 

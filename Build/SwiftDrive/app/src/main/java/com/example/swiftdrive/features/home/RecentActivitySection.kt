@@ -36,10 +36,7 @@ fun RecentActivitySection(modifier: Modifier = Modifier) {
         elevation = CardDefaults.cardElevation(
             defaultElevation = 2.dp
         ),
-        shape = MaterialTheme.shapes.large,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        )
+        shape = MaterialTheme.shapes.large
     ) {
         Column(
             modifier = Modifier.padding(20.dp)
@@ -78,19 +75,16 @@ fun RecentActivitySection(modifier: Modifier = Modifier) {
                         text = "New Rental Created",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
-                        color = Color.Black
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Toyota Camry rented to John Doe",
                         fontSize = 14.sp,
-                        color = Color.Gray
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "2 hours ago",
                         fontSize = 13.sp,
-                        color = Color.LightGray
                     )
                 }
             }
@@ -136,19 +130,16 @@ fun RecentActivitySection(modifier: Modifier = Modifier) {
                         text = "Car Returned",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
-                        color = Color.Black
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Honda Civic returned by Sarah Smith",
                         fontSize = 14.sp,
-                        color = Color.Gray
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "5 hours ago",
                         fontSize = 13.sp,
-                        color = Color.LightGray
                     )
                 }
             }
@@ -194,19 +185,16 @@ fun RecentActivitySection(modifier: Modifier = Modifier) {
                         text = "New Car Added",
                         fontWeight = FontWeight.SemiBold,
                         fontSize = 16.sp,
-                        color = Color.Black
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "Tesla Model 3 added to inventory",
                         fontSize = 14.sp,
-                        color = Color.Gray
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = "1 day ago",
                         fontSize = 13.sp,
-                        color = Color.LightGray
                     )
                 }
             }

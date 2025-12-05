@@ -7,52 +7,61 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.example.swiftdrive.data.dbhelpers.CustomerDatabaseHelper
+import androidx.lifecycle.viewModelScope
 import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.models.UserRoles
+import com.example.swiftdrive.data.repositories.CustomerRepository
+import kotlinx.coroutines.launch
 
-class CustomerViewModel(application: Application): AndroidViewModel(application)
-{
+class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = null): AndroidViewModel(application) {
 
-    private val dbHelper= CustomerDatabaseHelper(application)
+    private val customerRepository = CustomerRepository(application)
     var customers by mutableStateOf<List<Customer>>(emptyList())
+        private set
+
+    var selectedCustomer by mutableStateOf<Customer?>(null)
         private set
 
     var roles by mutableStateOf(UserRoles.USER)
         private set
+
     fun updateRoles(newRole: UserRoles) {
         roles = newRole
     }
 
     var firstName by mutableStateOf("")
         private set
+
     fun updateFirstName(newFirstName: String) {
         firstName = newFirstName
     }
 
     var lastName by mutableStateOf("")
         private set
+
     fun updateLastName(newLastName: String) {
         lastName = newLastName
     }
 
-    var age  by mutableIntStateOf(0)
+    var age by mutableIntStateOf(0)
         private set
+
     fun updateAge(newAgeString: String) {
 
         age = newAgeString.toIntOrNull() ?: 0
     }
+
     var phoneNumber by mutableStateOf("")
         private set
 
-    fun  updatePhoneNumber(newPhoneNumber: String) {
+    fun updatePhoneNumber(newPhoneNumber: String) {
         phoneNumber = newPhoneNumber
     }
 
     var drivingLicence by mutableStateOf("")
         private set
 
-    fun  updateDrivingLicence(newDrivingLicence: String) {
+    fun updateDrivingLicence(newDrivingLicence: String) {
         drivingLicence = newDrivingLicence
     }
 
@@ -81,88 +90,142 @@ class CustomerViewModel(application: Application): AndroidViewModel(application)
         private set
 
     init {
-        seedCustomers()
+        loadCustomers()
     }
 
+    // Fetch from Firestore and update local
+    fun fetchFromFirestore() {
+        viewModelScope.launch {
+            customerRepository.fetchAndStoreCustomers()
+            loadCustomers()
+        }
+    }
     fun loadCustomers() {
-        customers = dbHelper.getAllCustomers()
+        customers = customerRepository.getCustomers()
         Log.d("CustomerViewModel", "Loaded ${customers.size} customers.")
     }
 
+    fun syncToFirestore() {
+        viewModelScope.launch {
+            customerRepository.syncToFirestore()
+        }
+    }
+
     fun seedCustomers() {
-        if (dbHelper.getAllCustomers().isEmpty()) {
-            dbHelper.insertCustomer(UserRoles.USER, "John", "Doe", 25, "123-456-7890", "DL123456", "john.doe@example.com", "password1")
-            dbHelper.insertCustomer(UserRoles.USER, "Jane", "Smith", 30, "098-765-4321", "DL654321", "jane.smith@example.com", "password2")
-            dbHelper.insertCustomer(UserRoles.ADMIN, "Admin", "User", 35, "111-222-3333", "DL999999", "admin@example.com", "adminpass")
+        if (customerRepository.getCustomers().isEmpty()) {
+            val john = Customer(
+                1,
+                UserRoles.USER,
+                "John",
+                "Doe",
+                25,
+                "123-456-7890",
+                "DL123456",
+                "john.doe@example.com",
+                "password1"
+            )
+            val jane = Customer(
+                2,
+                UserRoles.USER,
+                "Jane",
+                "Smith",
+                30,
+                "098-765-4321",
+                "DL654321",
+                "jane.smith@example.com",
+                "password2"
+            )
+            val admin = Customer(
+                3,
+                UserRoles.ADMIN,
+                "Admin",
+                "User",
+                35,
+                "111-222-3333",
+                "DL999999",
+                "admin@example.com",
+                "adminpass"
+            )
+            customerRepository.addCustomer(john)
+            customerRepository.addCustomer(jane)
+            customerRepository.addCustomer(admin)
             loadCustomers()
         } else {
             loadCustomers()
         }
     }
 
-    fun editCustomer(customer: Customer){
+    fun selectCustomer(customer: Customer) {
+        selectedCustomer = customer
 
-        roles=customer.roles
-        editingId=customer.id
-        firstName=customer.firstName
-        lastName=customer.lastName
-        age=customer.age
-        phoneNumber=customer.phoneNumber
-        drivingLicence=customer.drivingLicence.toString()
-        email=customer.email
-        password=customer.password
+        roles = customer.roles
+        editingId = customer.id
+        firstName = customer.firstName
+        lastName = customer.lastName
+        age = customer.age
+        phoneNumber = customer.phoneNumber
+        drivingLicence = customer.drivingLicence.toString()
+        email = customer.email
+        password = customer.password
     }
-    fun deleteCustomer(id: Int){
-        dbHelper.deleteCustomer(id)
+
+    fun deleteCustomer(id: Int) {
+        val customerToDelete = customers.find { it.id == id } ?: return
+        customerRepository.deleteCustomer(customerToDelete)
         loadCustomers()
+        onChange?.invoke()
     }
 
-    fun saveCustomer(){
+    fun saveCustomer() {
         errorMessage = ""
         if (validateInput()) {
 
-            // Edit existing expense
+            // Edit existing customer
             if (editingId != null) {
-                dbHelper.updateCustomer(
+                val updatedCustomer = Customer(
                     id = editingId!!,
                     roles = roles,
-                    firstName=firstName,
-                    lastName=lastName,
-                    age=age,
-                    phoneNumber=phoneNumber,
-                    drivingLicence=drivingLicence,
-                    email=email,
-                    password=password
+                    firstName = firstName,
+                    lastName = lastName,
+                    age = age,
+                    phoneNumber = phoneNumber,
+                    drivingLicence = drivingLicence,
+                    email = email,
+                    password = password
                 )
+                customerRepository.updateCustomer(updatedCustomer)
                 editingId = null
             } else {
-                dbHelper.insertCustomer(
+                // New Random ID
+                val id = System.currentTimeMillis().toInt()
 
+                val newCustomer = Customer(
+                    id = id,
                     roles = roles,
-                    firstName=firstName,
-                    lastName=lastName,
-                    age=age,
-                    phoneNumber=phoneNumber,
-                    drivingLicence=drivingLicence,
-                    email=email,
-                    password=password
-
+                    firstName = firstName,
+                    lastName = lastName,
+                    age = age,
+                    phoneNumber = phoneNumber,
+                    drivingLicence = drivingLicence,
+                    email = email,
+                    password = password
                 )
+                customerRepository.addCustomer(newCustomer)
             }
             loadCustomers()
             clearInput()
             showError = false
+            onChange?.invoke()
         } else {
             showError = true
         }
     }
-
     fun validateInput(): Boolean {
-        if (firstName.isEmpty()&& lastName.isEmpty()) {
+        if (firstName.isEmpty() && lastName.isEmpty()) {
             errorMessage = "First and Last Name Cannot be empty"
             return false
         }
-        if (age==0||age<=16) {
+        if (age == 0 || age <= 16) {
             errorMessage = "Please enter a valid age "
             return false
         }
@@ -183,23 +246,17 @@ class CustomerViewModel(application: Application): AndroidViewModel(application)
         }
         return true
     }
-
     fun clearInput() {
+        selectedCustomer = null
+        editingId = null
         roles = UserRoles.USER
-        firstName=""
-        lastName=""
-        age=0
-        phoneNumber=""
-        drivingLicence=""
-        email=""
-        password=""
+        firstName = ""
+        lastName = ""
+        age = 0
+        phoneNumber = ""
+        drivingLicence = ""
+        email = ""
+        password = ""
         errorMessage = ""
     }
-
-}
-
-
-
-
-
 }

@@ -10,11 +10,13 @@ class SessionManager(context: Context) {
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
         private const val KEY_USER_EMAIL = "user_email"
         private const val KEY_USER_ROLE = "user_role"
+        private const val KEY_USER_ID = "user_id"
     }
 
-    fun createLoginSession(email: String, role: String) {
+    fun createLoginSession(id: Int, email: String, role: String) {
         val editor = prefs.edit()
         editor.putBoolean(KEY_IS_LOGGED_IN, true)
+        editor.putInt(KEY_USER_ID, id)
         editor.putString(KEY_USER_EMAIL, email)
         editor.putString(KEY_USER_ROLE, role)
         editor.apply()
@@ -28,6 +30,10 @@ class SessionManager(context: Context) {
 
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
+    }
+
+    fun getUserId(): Int? {
+        return prefs.getInt(KEY_USER_ID, -1)
     }
 
     fun getUserEmail(): String? {

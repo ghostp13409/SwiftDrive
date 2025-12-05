@@ -1,18 +1,24 @@
 package com.example.swiftdrive.navigation
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -20,14 +26,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.runtime.*
-import com.example.swiftdrive.components.BottomNavigationBar
-import com.example.swiftdrive.components.FabButton
-import com.example.swiftdrive.components.TopBar
+import kotlinx.coroutines.launch
+import com.example.swiftdrive.components.navigation.BottomNavigationBar
+import com.example.swiftdrive.components.navigation.FabButton
+import com.example.swiftdrive.components.navigation.TopBar
 import com.example.swiftdrive.features.cars.AddCarScreen
 import com.example.swiftdrive.features.cars.CarDetailScreen
 import com.example.swiftdrive.features.cars.CarScreen
 import com.example.swiftdrive.features.customers.AddCustomerScreen
+import com.example.swiftdrive.features.customers.CustomerDetailScreen
 import com.example.swiftdrive.features.customers.CustomerScreen
 import com.example.swiftdrive.features.home.HomeScreen
 import com.example.swiftdrive.features.home.HomeViewModel
@@ -44,32 +51,49 @@ import com.example.swiftdrive.features.profile.ProfileViewModel
 import com.example.swiftdrive.features.rentals.RentalViewModel
 import com.example.swiftdrive.features.rentals.RentalsScreen
 
-@SuppressLint("UnrememberedGetBackStackEntry")
+@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("UnrememberedGetBackStackEntry", "CoroutineCreationDuringComposition")
 @Composable
 fun AppNavigation (modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val viewModel : AppNavigationViewModel = viewModel()
+    val homeViewModel: HomeViewModel = viewModel()  // Global homeViewModel for sync
+    val rentalViewModel: RentalViewModel = viewModel { RentalViewModel(context.applicationContext as Application, { homeViewModel.markAsChanged() }) }  // Global rentalViewModel
     val navController = rememberNavController()
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
     val currentRoute = navBackStackEntry?.destination?.route
 
     var currentTitle by remember { mutableStateOf<String>("SwiftDrive") }  // Default title
     var currentSubtext by remember { mutableStateOf<String>("Drive Fast. Drive Safe.") }  // Default subtext
+    var onSyncClick by remember { mutableStateOf<(() -> Unit)?>(null) }  // Sync callback
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
+    // Show snackbar when sync success
+    if (homeViewModel.showSyncSuccess) {
+        scope.launch {
+            snackbarHostState.showSnackbar("Sync completed successfully!")
+            homeViewModel.dismissSyncSuccess()
+        }
+    }
 
     Scaffold(
         modifier = modifier,
         topBar = {
-            if(currentRoute != "splash" && currentRoute != "login" && currentRoute != "register"){
+            if(viewModel.allowBottomTopBar.contains(currentRoute)){
                 TopBar(
                     title = currentTitle,
-                    subText = currentSubtext
+                    subText = currentSubtext,
+                    onSyncClick = onSyncClick,
+                    isSyncing = homeViewModel.isSyncing,
+                    hasUnsyncedChanges = homeViewModel.hasUnsyncedChanges
                 )
             }
         },
         bottomBar = {
             // NOTE: Add More if needed to hide bottom bar on other screens (eg. login, signup)
-            if(currentRoute != "splash" && currentRoute != "login" && currentRoute != "register"){
+            if(viewModel.allowBottomTopBar.contains(currentRoute)){
                 BottomNavigationBar(
                     navController = navController,
                     viewModel = viewModel
@@ -77,12 +101,13 @@ fun AppNavigation (modifier: Modifier = Modifier) {
             }
         },
         floatingActionButton = {
-            if(viewModel.showFab) {
+            if(viewModel.allowFab.contains(currentRoute)) {
                 FabButton(onAddClick = {
                     navController.navigate(viewModel.getFabRoute())
                 })
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Box(
             modifier = Modifier
@@ -143,12 +168,14 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 // Change Title and SubText on TopBar
                 currentTitle = "Dashboard"
                 currentSubtext = "Drive Fast. Drive Safe."
+                onSyncClick = { homeViewModel.syncAllToFirestore() }
                 HomeScreen(modifier = Modifier, viewModel = homeViewModel )
             }
             composable("cars") {
-                val carsViewModel: CarsViewModel = viewModel()
+                val carsViewModel: CarsViewModel = viewModel { CarsViewModel(context.applicationContext as Application, { homeViewModel.markAsChanged() }) }
                 currentTitle = "Cars"
                 currentSubtext = "Find your next ride"
+                onSyncClick = { homeViewModel.syncAllToFirestore() }
                 CarScreen(
                     modifier = Modifier, viewModel = carsViewModel,
                     onEventClick = { navController.navigate("cars_detail") }
@@ -158,7 +185,6 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 // Get ViewModel from backstack entry of cars screen
                 val carsStackEntry = remember { navController.getBackStackEntry("cars") }
                 val carViewModel: CarsViewModel = viewModel(carsStackEntry)
-                currentTitle = "Add Car"
                 AddCarScreen(
                     onEventClick = { navController.navigate("cars"){
                         popUpTo("cars"){
@@ -166,54 +192,37 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                             saveState = true
                         }
                     } },
+                    onBackClick = { navController.popBackStack() },
                     modifier = Modifier,
                     viewModel = carViewModel,
                 )
             }
             composable("customer") {
                 Log.d("AppNavigation", "Navigated to CustomerScreen")
-                val customerViewModel: CustomerViewModel = viewModel()
+                val customerViewModel: CustomerViewModel = viewModel { CustomerViewModel(context.applicationContext as Application, { homeViewModel.markAsChanged() }) }
                 currentTitle = "Customers"
                 currentSubtext = "${customerViewModel.customers.size} total customers"
-                CustomerScreen(modifier = Modifier, viewModel = customerViewModel)
+                onSyncClick = { homeViewModel.syncAllToFirestore() }
+                CustomerScreen(modifier = Modifier, viewModel = customerViewModel, onEdit = { navController.navigate("customer_detail") })
             }
             composable("add_customer") {
-                // Get ViewModel from backstack entry of event_list screen
+                // Get ViewModel from backstack entry of customer screen
                 val customerStackEntry = remember { navController.getBackStackEntry("customer") }
                 val customerViewModel: CustomerViewModel = viewModel(customerStackEntry)
-                currentTitle = "Add Customer"
-                AddCustomerScreen(modifier = Modifier, viewModel = customerViewModel)
-            }
-            composable("rentals") {
-                val rentalViewModel: RentalViewModel = viewModel()
-                currentTitle = "Rentals"
-                currentSubtext = "${rentalViewModel.rentals.value.size} total rentals"
-                RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
-            }
-            composable("add_rental") {
-                // Get ViewModel from backstack entry of event_list screen
-                val rentalsStackEntry = remember { navController.getBackStackEntry("rentals") }
-                val rentalViewModel: RentalViewModel = viewModel(rentalsStackEntry)
-                currentTitle = "Add Rental"
-                AddRentalScreen(modifier = Modifier, viewModel = rentalViewModel)
-            }
-
-            composable ("profile") {
-                val profileViewModel: ProfileViewModel = viewModel()
-                currentTitle = "Profile"
-                currentSubtext = "View your profile"
-                ProfileScreen(
+                AddCustomerScreen(
                     modifier = Modifier,
-                    viewModel = profileViewModel,
-                    onLogout = {
-                        navController.navigate("login") {
-                            popUpTo("profile") { inclusive = true }
+                    viewModel = customerViewModel,
+                    onEventClick = {
+                        navController.navigate("customer") {
+                            popUpTo("customer") {
+                                inclusive = true
+                                saveState = true
+                            }
                         }
-                    }
+                    },
+                    onBackClick = { navController.popBackStack() }
                 )
             }
-
-
                 composable("cars_detail"){
                     val carListBackStackEntry = remember { navController.getBackStackEntry("cars") }
                     val carsViewModel: CarsViewModel = viewModel(carListBackStackEntry)
@@ -234,10 +243,79 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                         },
                         onBookClicked = {
                             carsViewModel.selectCar(it)
-                            navController.navigate("add_rental")  //This would be changed to navigate and send the id
+                            navController.navigate("add_rental?carId=${it.id}")
                         }
                     )
                 }
+            composable("customer_detail") {
+                val customerListBackStackEntry = remember { navController.getBackStackEntry("customer") }
+                val customerViewModel: CustomerViewModel = viewModel(customerListBackStackEntry)
+                CustomerDetailScreen(
+                    viewModel = customerViewModel,
+                    onBackClick = {
+                        navController.navigate("customer") {
+                            popUpTo("customer") {
+                                inclusive = true
+                                saveState = true
+                            }
+                        }
+                    },
+                    onEditClick = {
+                        customerViewModel.selectCustomer(it)
+                        navController.navigate("add_customer") {
+                        }
+                    }
+                )
+            }
+            composable("rentals") {
+                currentTitle = "Rentals"
+                currentSubtext = "${rentalViewModel.rentals.value.size} total rentals"
+                onSyncClick = { homeViewModel.syncAllToFirestore() }
+                RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
+            }
+            composable("add_rental?carId={carId}") { backStackEntry ->
+                val carId = backStackEntry.arguments?.getString("carId")?.toIntOrNull()
+                carId?.let { id ->
+                    val car = rentalViewModel.cars.value.find { it.id == id }
+                    car?.let { rentalViewModel.updateSelectedCar(it) }
+                }
+                AddRentalScreen(modifier = Modifier, viewModel = rentalViewModel, onBackClick = { navController.popBackStack() })
+            }
+
+            composable ("profile") {
+                val profileViewModel: ProfileViewModel = viewModel { ProfileViewModel(context.applicationContext as Application) }
+                currentTitle = "Profile"
+                currentSubtext = "View your profile"
+                ProfileScreen(
+                    viewModel = profileViewModel,
+                    onEditProfile = {
+                        navController.navigate("edit_profile")
+                    },
+                    onLogout = {
+                        navController.navigate("login") {
+                            popUpTo("profile") { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            composable("edit_profile") {
+                val profileViewModel: ProfileViewModel = viewModel { ProfileViewModel(context.applicationContext as Application) }
+                val customerViewModel: CustomerViewModel = viewModel { CustomerViewModel(context.applicationContext as Application, { profileViewModel.refreshData() }) }
+                profileViewModel.currentUser?.let { user ->
+                    customerViewModel.selectCustomer(user)
+                }
+                AddCustomerScreen(
+                    modifier = Modifier,
+                    viewModel = customerViewModel,
+                    onEventClick = {
+                        navController.navigate("profile") {
+                            popUpTo("profile") { inclusive = true }
+                        }
+                    },
+                    onBackClick = { navController.popBackStack() }
+                )
+            }
             }
         }
     }

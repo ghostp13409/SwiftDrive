@@ -13,11 +13,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.outlined.CalendarToday
+import androidx.compose.material.icons.outlined.CloudDownload
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -28,8 +30,9 @@ import com.example.swiftdrive.navigation.AppNavigationViewModel
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
-
-    val viewModel : AppNavigationViewModel = viewModel()
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllFromFirestore()
+    }
 
     Column(
         modifier = Modifier
@@ -117,6 +120,18 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel) {
             iconTint = Color(0xFF6B7280),
             onClick = {
                 // TODO: Navigate to View Rentals screen
+            }
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        QuickActionButton(
+            title = "Seed Data",
+            icon = Icons.Outlined.CloudDownload,
+            iconBackgroundColor = Color(0xFFD1FAE5),
+            iconTint = Color(0xFF10B981),
+            onClick = {
+                viewModel.seedData()
             }
         )
 
