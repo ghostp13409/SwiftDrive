@@ -24,7 +24,7 @@ import com.example.swiftdrive.data.models.UserRoles
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onEventClick: () -> Unit = {}, onBackClick: () -> Unit = {}) {
+fun AddCustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onSaveClick: () -> Unit = {}, onBackClick: () -> Unit = {}) {
 
     val isEditing = viewModel.editingId != null
     val scrollState = rememberScrollState()
@@ -186,7 +186,7 @@ fun AddCustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onEventC
                 Button(
                     onClick = {
                         viewModel.saveCustomer()
-                        onEventClick()
+                        onSaveClick()
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(8.dp),

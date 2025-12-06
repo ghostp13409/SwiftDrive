@@ -1,4 +1,4 @@
-package com.example.swiftdrive.components.registration
+package com.example.swiftdrive.components.rental
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -78,24 +78,9 @@ fun RentalCard(
                         Text(
                             text = "${customer?.firstName} ${customer?.lastName}",
                             fontSize = 14.sp,
-                            color = Color(0xFF6B7280)
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     }
-                }
-
-                Surface(
-                    color = if (rental.status.equals("Active", ignoreCase = true))
-                        Color(0xFFD1FAE5) else Color(0xFFE5E7EB),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = rental.status,
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                        fontSize = 12.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = if (rental.status.equals("Active", ignoreCase = true))
-                            Color(0xFF059669) else Color(0xFF6B7280)
-                    )
                 }
             }
 
@@ -157,11 +142,24 @@ fun RentalCard(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = "$ ${rental.totalCost.toInt()}",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold,
-                )
+
+                // Rental Status
+                Surface(
+                    color = if (rental.status.equals("Active", ignoreCase = true))
+                        Color(0xFFD1FAE5) else Color(0xFFE5E7EB),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        text = rental.status,
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = if (rental.status.equals("Active", ignoreCase = true))
+                            Color(0xFF059669) else Color(0xFF6B7280),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
 
                 if (rental.status.equals("Active", ignoreCase = true)) {
                     Button(
@@ -177,6 +175,13 @@ fun RentalCard(
                         )
                     }
                 }
+
+                Text(
+                    text = "$ ${rental.totalCost.toInt()}",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             }
         }
     }

@@ -39,7 +39,78 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
     var selectedCar by mutableStateOf<Car?>(null)
         private set
 
+    // Filter states
+    var selectedEngineTypes by mutableStateOf(setOf<EngineType>())
+    var selectedConditions by mutableStateOf(setOf<Condition>())
+    var selectedCategories by mutableStateOf(setOf<Category>())
+    var selectedTiers by mutableStateOf(setOf<Tier>())
+    var selectedAvailabilities by mutableStateOf(setOf<Boolean>())
+
+    val filteredCars: List<Car>
+        get() = cars.value.filter { car ->
+            (selectedEngineTypes.isEmpty() || car.engineType in selectedEngineTypes) &&
+            (selectedConditions.isEmpty() || car.condition in selectedConditions) &&
+            (selectedCategories.isEmpty() || car.category in selectedCategories) &&
+            (selectedTiers.isEmpty() || car.tier in selectedTiers) &&
+            (selectedAvailabilities.isEmpty() || car.isAvailable in selectedAvailabilities)
+        }
+
+    fun toggleEngineType(engineType: EngineType) {
+        selectedEngineTypes = if (engineType in selectedEngineTypes) {
+            selectedEngineTypes - engineType
+        } else {
+            selectedEngineTypes + engineType
+        }
+    }
+
+    fun toggleCondition(condition: Condition) {
+        selectedConditions = if (condition in selectedConditions) {
+            selectedConditions - condition
+        } else {
+            selectedConditions + condition
+        }
+    }
+
+    fun toggleCategory(category: Category) {
+        selectedCategories = if (category in selectedCategories) {
+            selectedCategories - category
+        } else {
+            selectedCategories + category
+        }
+    }
+
+    fun toggleTier(tier: Tier) {
+        selectedTiers = if (tier in selectedTiers) {
+            selectedTiers - tier
+        } else {
+            selectedTiers + tier
+        }
+    }
+
+    fun toggleAvailability(availability: Boolean) {
+        selectedAvailabilities = if (availability in selectedAvailabilities) {
+            selectedAvailabilities - availability
+        } else {
+            selectedAvailabilities + availability
+        }
+    }
+
+    fun clearAllFilters() {
+        selectedEngineTypes = emptySet()
+        selectedConditions = emptySet()
+        selectedCategories = emptySet()
+        selectedTiers = emptySet()
+        selectedAvailabilities = emptySet()
+    }
+
     init {
+        loadCars()
+    }
+
+    // Override onChange to also refresh car data
+    private val _onChange: (() -> Unit)? = onChange
+    fun notifyChange() {
+        _onChange?.invoke()
         loadCars()
     }
 
@@ -71,6 +142,11 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         }
     }
 
+    // Refresh car data when rentals change
+    fun refreshCarData() {
+        fetchFromFirestore()
+    }
+
     // Sync to Firestore
     fun syncToFirestore() {
         viewModelScope.launch {
@@ -99,7 +175,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         )
         carRepository.addCar(newCar)
         loadCars()
-        onChange?.invoke()
+        notifyChange()
     }
 
 
@@ -107,7 +183,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         val carToDelete = cars.value.find { it.id == id } ?: return
         carRepository.deleteCar(carToDelete)
         loadCars()
-        onChange?.invoke()
+        notifyChange()
     }
     fun resetInputFields() {
         year = ""
@@ -142,7 +218,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
 
         carRepository.updateCar(updatedCar)
         loadCars()
-        onChange?.invoke()
+        notifyChange()
     }
 
 

@@ -212,14 +212,14 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         val carId = rental.carId
         carId?.let { id ->
             val car = cars.value.find { it.id == id }
-            car?.let {
-                val updatedCar = it.copy(isAvailable = true)
-                carRepository.updateCar(updatedCar)
+                car?.let {
+                    val updatedCar = it.copy(isAvailable = true)
+                    carRepository.updateCar(updatedCar)
+                }
             }
-        }
-        loadRentals()
-        loadCars()
-        onChange?.invoke()
+            loadRentals()
+            loadCars()
+            onChange?.invoke()
     }
 
     private fun resetInputFields() {

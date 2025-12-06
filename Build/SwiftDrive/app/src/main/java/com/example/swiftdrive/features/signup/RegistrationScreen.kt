@@ -35,18 +35,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.swiftdrive.R
 import com.example.swiftdrive.ui.theme.SwiftDriveTheme
-import com.example.swiftdrive.features.signup.RegistrationViewModel
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(
@@ -65,6 +63,8 @@ fun RegistrationScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
+        // App Header (Logo + Name)
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = "App Logo",
@@ -81,10 +81,13 @@ fun RegistrationScreen(
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        // Registration Form
+
+        // First Name
         OutlinedTextField(
             value = viewModel.firstName,
             onValueChange = { viewModel.onFirstNameChange(it) },
-            label = { Text("First Name") },
+            label = { Text(stringResource(R.string.label_first_name)) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = MaterialTheme.colorScheme.primary,
@@ -96,10 +99,12 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Last Name
         OutlinedTextField(
             value = viewModel.lastName,
             onValueChange = { viewModel.onLastNameChange(it) },
-            label = { Text("Last Name") },
+            label = { Text(stringResource(R.string.label_last_name)) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = MaterialTheme.colorScheme.primary,
@@ -111,10 +116,12 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Email
         OutlinedTextField(
             value = viewModel.email,
             onValueChange = { viewModel.onEmailChange(it) },
-            label = { Text("Email") },
+            label = { Text(stringResource(R.string.label_email)) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = MaterialTheme.colorScheme.primary,
@@ -126,10 +133,12 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Age
         OutlinedTextField(
             value = viewModel.age,
             onValueChange = { viewModel.onAgeChange(it) },
-            label = { Text("Age") },
+            label = { Text(stringResource(R.string.label_age)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             colors = TextFieldDefaults.colors(
@@ -142,10 +151,12 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Phone Number
         OutlinedTextField(
             value = viewModel.phoneNumber,
             onValueChange = { viewModel.onPhoneNumberChange(it) },
-            label = { Text("Phone Number") },
+            label = { Text(stringResource(R.string.label_phone_number)) },
             modifier = Modifier.fillMaxWidth(),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             colors = TextFieldDefaults.colors(
@@ -158,10 +169,12 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Driving Licence
         OutlinedTextField(
             value = viewModel.drivingLicence,
             onValueChange = { viewModel.onDrivingLicenceChange(it) },
-            label = { Text("Driving Licence (Optional)") },
+            label = { Text(stringResource(R.string.label_driving_licence)) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = MaterialTheme.colorScheme.primary,
@@ -173,6 +186,8 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Role Selection
         var expanded by remember { mutableStateOf(false) }
         ExposedDropdownMenuBox(
             expanded = expanded,
@@ -182,7 +197,7 @@ fun RegistrationScreen(
                 value = viewModel.selectedRole.name,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Role") },
+                label = { Text(stringResource(R.string.label_role)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -212,10 +227,12 @@ fun RegistrationScreen(
         }
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Password
         OutlinedTextField(
             value = viewModel.password,
             onValueChange = { viewModel.onPasswordChange(it) },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.label_password)) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             colors = TextFieldDefaults.colors(
@@ -228,10 +245,12 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Confirm Password
         OutlinedTextField(
             value = viewModel.confirmPassword,
             onValueChange = { viewModel.onConfirmPasswordChange(it) },
-            label = { Text("Confirm Password") },
+            label = { Text(stringResource(R.string.label_confirm_password)) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             colors = TextFieldDefaults.colors(
@@ -244,6 +263,8 @@ fun RegistrationScreen(
         )
 
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Register Button
         Button(
             onClick = { viewModel.onRegisterClick(onRegistrationSuccess) },
             modifier = Modifier.fillMaxWidth(),
@@ -259,10 +280,11 @@ fun RegistrationScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text("Register")
+                Text(stringResource(R.string.button_register))
             }
         }
 
+        // Error Message
         viewModel.errorMessage?.let { error ->
             Spacer(modifier = Modifier.height(8.dp))
             Text(
@@ -273,6 +295,8 @@ fun RegistrationScreen(
         }
 
         Spacer(modifier = Modifier.height(12.dp))
+
+        // Back to Login Button
         Button(
             onClick = onNavigateToLogin,
             modifier = Modifier.fillMaxWidth(),
@@ -281,7 +305,7 @@ fun RegistrationScreen(
                 contentColor = MaterialTheme.colorScheme.onSecondary
             )
         ) {
-            Text("Back to Login")
+            Text(stringResource(R.string.button_back_to_login))
         }
     }
 }

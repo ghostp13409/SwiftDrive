@@ -52,7 +52,7 @@ import java.time.format.DateTimeFormatter
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onBackClick: () -> Unit = {}) {
+fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick: () -> Unit, onBackClick: () -> Unit = {}) {
     Scaffold(
         topBar = {
             Surface(
@@ -313,6 +313,7 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onBackClick:
             onClick = {
                 if (viewModel.addRental()) {
                     // Success, maybe navigate back or show message
+                    onSaveClick()
                 }
             },
             modifier = Modifier.fillMaxWidth()

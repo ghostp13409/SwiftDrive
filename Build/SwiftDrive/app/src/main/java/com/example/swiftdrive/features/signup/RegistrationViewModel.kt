@@ -12,7 +12,11 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableStateOf
 
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
+
+    // Customer DbHelper
     private val customerDbHelper = CustomerDatabaseHelper(application)
+
+    // Registration form fields
 
     var email by mutableStateOf("")
         private set
@@ -41,12 +45,14 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     var selectedRole by mutableStateOf(UserRoles.ADMIN)
         private set
 
+    // Loading and Error Tracking Fields
     var isLoading by mutableStateOf(false)
         private set
 
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
+    // Setters
     fun onEmailChange(newEmail: String) {
         email = newEmail
         errorMessage = null
@@ -92,7 +98,10 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
         errorMessage = null
     }
 
+    // Registration Click Handler
     fun onRegisterClick(onRegistrationSuccess: () -> Unit) {
+
+        // Get Errors
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank() ||
             firstName.isBlank() || lastName.isBlank() || age.isBlank() || phoneNumber.isBlank()) {
             errorMessage = "All fields are required"
@@ -128,6 +137,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
                 return@launch
             }
 
+            // Add customer to database
             customerDbHelper.insertCustomer(
                 roles = selectedRole,
                 firstName = firstName,

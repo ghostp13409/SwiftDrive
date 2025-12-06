@@ -71,7 +71,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
         OutlinedTextField(
              value = viewModel.email,
              onValueChange = {viewModel.onEmailChange(it)},
-             label = { Text("Email") },
+             label = { Text(stringResource(R.string.label_email)) },
             modifier = Modifier.fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = MaterialTheme.colorScheme.primary,
@@ -88,7 +88,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
             value = viewModel.password,
            // onValueChange = {newValue -> password = newValue},
             onValueChange = {viewModel.onPasswordChange(it)},
-            label = { Text("Password", color = MaterialTheme.colorScheme.onSurfaceVariant) },
+            label = { Text(stringResource(R.string.label_password), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             modifier = Modifier.fillMaxWidth(),
             visualTransformation = PasswordVisualTransformation(),
             colors = TextFieldDefaults.colors(
@@ -116,7 +116,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text("Login")
+                Text(stringResource(R.string.button_login))
             }
         }
 
@@ -138,9 +138,10 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
             ),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
         ) {
-            Text("Sign Up")
+            Text(stringResource(R.string.button_sign_up))
         }
 
+        // TODO: Remove This Before Submission and Demo Video!!!!!
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedButton(
             onClick = { viewModel.onAdminLoginClick(onLoginSuccess) },
@@ -152,13 +153,6 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
         ) {
             Text("Admin Login (Debug)")
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = "Forgot password?",
-            color = MaterialTheme.colorScheme.tertiary,
-            style = MaterialTheme.typography.bodyMedium
-        )
     }
 }
 

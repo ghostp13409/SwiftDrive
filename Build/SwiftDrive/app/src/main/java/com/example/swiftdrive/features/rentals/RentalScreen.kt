@@ -9,8 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.swiftdrive.components.registration.RentalCard
-import com.example.swiftdrive.components.registration.TabButton
+import com.example.swiftdrive.components.rental.RentalCard
+import com.example.swiftdrive.components.rental.TabButton
 
 @Composable
 fun RentalsScreen(
@@ -28,11 +28,10 @@ fun RentalsScreen(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding()
+                .padding(16.dp)
         )  {
                 Row(
                     modifier = modifier
-                        .padding(16.dp)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
@@ -50,6 +49,7 @@ fun RentalsScreen(
                     )
                 }
 
+            Spacer(modifier = modifier.height(16.dp))
             
             // Rental Cards
             val displayRentals = if (selectedTab == 0) activeRentals else historyRentals
@@ -67,7 +67,6 @@ fun RentalsScreen(
             } else {
                 LazyColumn(
                     modifier = modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(displayRentals) { rental ->

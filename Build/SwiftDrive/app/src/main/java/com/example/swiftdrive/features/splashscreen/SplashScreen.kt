@@ -39,6 +39,7 @@ fun SplashScreen (onTimeout: () -> Unit) {
         contentAlignment = Alignment.Center
     ){
         Column (horizontalAlignment = Alignment.CenterHorizontally) {
+            // App Logo
             Image(
                 painter = painterResource(R.drawable.logo),
                 contentDescription = "App Logo",
@@ -49,19 +50,12 @@ fun SplashScreen (onTimeout: () -> Unit) {
                     .clip(CircleShape),
             )
             Spacer(Modifier.height(16.dp))
+            // App Name
             Text(
                 text = stringResource(R.string.app_name),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.headlineLarge
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun SplashScreenPreview() {
-    SwiftDriveTheme {
-        SplashScreen(onTimeout = {})
     }
 }

@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.components.cars.CarCard
+import com.example.swiftdrive.components.cars.FilterChips
 
 
 @Composable
@@ -24,10 +25,24 @@ fun CarScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
+        FilterChips(
+            selectedEngineTypes = viewModel.selectedEngineTypes,
+            onEngineTypeToggle = viewModel::toggleEngineType,
+            selectedConditions = viewModel.selectedConditions,
+            onConditionToggle = viewModel::toggleCondition,
+            selectedCategories = viewModel.selectedCategories,
+            onCategoryToggle = viewModel::toggleCategory,
+            selectedTiers = viewModel.selectedTiers,
+            onTierToggle = viewModel::toggleTier,
+            selectedAvailabilities = viewModel.selectedAvailabilities,
+            onAvailabilityToggle = viewModel::toggleAvailability,
+            onClearAll = viewModel::clearAllFilters
+        )
+
         LazyColumn(
             modifier = Modifier.fillMaxWidth()
         ) {
-            items(viewModel.cars.value) { car ->
+            items(viewModel.filteredCars) { car ->
                 CarCard(
                     car = car,
                     onEventClick = {

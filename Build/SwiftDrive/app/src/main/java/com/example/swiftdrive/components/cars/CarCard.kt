@@ -8,11 +8,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.ElectricCar
+import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.LocalGasStation
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +36,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.swiftdrive.data.models.Car
+import com.example.swiftdrive.data.models.EngineType
+import com.example.swiftdrive.data.models.Tier
 
 @Composable
 fun CarCard(
@@ -52,7 +65,7 @@ fun CarCard(
                     painter = painterResource(id = car.imageRes),
                     contentDescription = "${car.make} ${car.model}",
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxSize()
                 )
 
                 if(car.isAvailable){
@@ -73,42 +86,6 @@ fun CarCard(
                             fontWeight = FontWeight.Bold
                         )
                     }
-
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .padding(12.dp)
-                            .background(
-                                color = Color(0xFF3498DB), // blue badge
-                                shape = RoundedCornerShape(50)
-                            )
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
-                    ){
-                        Text(
-                            text = car.engineType.toString(),
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    Box(
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .padding(start = 12.dp, top = 50.dp)
-                            .background(
-                                color = Color(0xFFE74C3C), // red badge for tier
-                                shape = RoundedCornerShape(50)
-                            )
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
-                    ){
-                        Text(
-                            text = car.tier.toString(),
-                            color = Color.White,
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
                 }
             }
 
@@ -121,11 +98,51 @@ fun CarCard(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Text(
-                    text = "${car.category.toString()} • ${car.condition.toString()}",
-                    fontSize = 14.sp,
-                    color = Color.Gray
-                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "${car.category.toString()} • ${car.condition.toString()}",
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Icon(
+                        imageVector = when(car.engineType) {
+                            EngineType.ELECTRIC -> Icons.Filled.FlashOn
+                            EngineType.PETROL -> Icons.Filled.LocalGasStation
+                            EngineType.DIESEL -> Icons.Filled.LocalGasStation
+                            EngineType.HYBRID -> Icons.Filled.ElectricCar
+                        },
+                        contentDescription = car.engineType.toString(),
+                        tint = when(car.engineType) {
+                            EngineType.ELECTRIC -> Color(0xFF3498DB)
+                            EngineType.PETROL -> Color(0xFFE74C3C)
+                            EngineType.DIESEL -> Color(0xFF8B4513)
+                            EngineType.HYBRID -> Color(0xFF2ECC71)
+                        },
+                        modifier = Modifier.size(16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Icon(
+                        imageVector = when(car.tier) {
+                            Tier.Economy -> Icons.Filled.AttachMoney
+                            Tier.PREMIUM -> Icons.Filled.Star
+                            Tier.LUXURY -> Icons.Filled.WorkspacePremium
+                        },
+                        contentDescription = car.tier.toString(),
+                        tint = when(car.tier) {
+                            Tier.Economy -> Color.Gray
+                            Tier.PREMIUM -> Color(0xFFFFD700)
+                            Tier.LUXURY -> Color(0xFFB9F2FF)
+                        },
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(8.dp))
 

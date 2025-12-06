@@ -54,8 +54,8 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(20.dp)
-                .verticalScroll(scrollState),
+                .verticalScroll(scrollState)
+                .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Profile Header
@@ -172,7 +172,7 @@ fun ProfileScreen(
                             onClick = onEditProfile,
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.outlinedButtonColors(
-                                contentColor = MaterialTheme.colorScheme.primary
+                                contentColor = MaterialTheme.colorScheme.secondaryContainer
                             )
                         ) {
                             Icon(
@@ -181,14 +181,14 @@ fun ProfileScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Edit")
+                            Text("Edit", color = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
 
                         Button(
                             onClick = onLogout,
                             modifier = Modifier.weight(1f),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.error
+                                containerColor = MaterialTheme.colorScheme.errorContainer
                             )
                         ) {
                             Icon(
@@ -197,7 +197,7 @@ fun ProfileScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Logout")
+                            Text("Logout", color = MaterialTheme.colorScheme.onErrorContainer)
                         }
                     }
                 }
