@@ -7,14 +7,17 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.swiftdrive.data.dbhelpers.CustomerDatabaseHelper
+import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.models.UserRoles
+import com.example.swiftdrive.data.repositories.CustomerRepository
 import kotlinx.coroutines.launch
 
 // Registration ViewModel
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
-    // Customer DbHelper
-    private val customerDbHelper = CustomerDatabaseHelper(application)
+    // Customer Repository
+    private val customerRepository = CustomerRepository(application)
+
 
     // Registration form fields
 
@@ -136,7 +139,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
         isLoading = true
         viewModelScope.launch {
             // Check if email already exists
-            val existingCustomers = customerDbHelper.getAllCustomers()
+            val existingCustomers = customerRepository.getCustomers()
             if (existingCustomers.any { it.email == email }) {
                 errorMessage = "Email already exists"
                 isLoading = false
@@ -144,16 +147,21 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
             }
 
             // Add customer to database
-            customerDbHelper.insertCustomer(
-                    roles = selectedRole,
-                    firstName = firstName,
-                    lastName = lastName,
-                    age = ageInt,
-                    phoneNumber = phoneNumber,
-                    drivingLicence = drivingLicence.ifBlank { null },
-                    email = email,
-                    password = password
+            val newCustomer = Customer(
+                roles = selectedRole,
+                firstName = firstName,
+                lastName = lastName,
+                age = ageInt,
+                phoneNumber = phoneNumber,
+                drivingLicence = drivingLicence.ifBlank { null },
+                email = email,
+                password = password
             )
+
+            customerRepository.addCustomer(newCustomer)
+
+            customerRepository.syncToFirestore()
+
             isLoading = false
             onRegistrationSuccess()
         }
