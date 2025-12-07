@@ -33,24 +33,25 @@ class SessionManager(context: Context) {
         editor.clear()
         editor.apply()
     }
-
+    // Check if user is logged in
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
     // Getters for user info
 
+    // gets user id
     fun getUserId(): Int? {
         return prefs.getInt(KEY_USER_ID, -1)
     }
-
+    // gets user email
     fun getUserEmail(): String? {
         return prefs.getString(KEY_USER_EMAIL, null)
     }
-
+    // gets user role
     fun getUserRole(): String? {
         return prefs.getString(KEY_USER_ROLE, null)
     }
-
+    // checks if user is admin
     fun isAdmin(): Boolean {
         return getUserRole() == "ADMIN"
     }

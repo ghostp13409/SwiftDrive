@@ -22,8 +22,10 @@ class AppNavigationViewModel : ViewModel() {
     // Navigation Items
     val items = listOf("home", "cars", "customer", "rentals", "profile")
 
+    // Selected Item
     var selectedItem by mutableStateOf(items[0])
         private set
+    // All Icons
     val icons =
             listOf(
                     Icons.Outlined.Home,
@@ -32,6 +34,7 @@ class AppNavigationViewModel : ViewModel() {
                     Icons.Outlined.CarRental,
                     Icons.Outlined.Person
             )
+    // Selected Icons
     val iconsSelected =
             listOf(
                     Icons.Filled.Home,
@@ -54,12 +57,12 @@ class AppNavigationViewModel : ViewModel() {
     fun updateSelectedItem(item: String) {
         selectedItem = item
     }
-
+    // Handle Button Click
     fun handleButtonClick(item: String) {
         // update selected route
         selectedItem = item
     }
-
+    // Get Fab Route
     fun getFabRoute(): String {
         return when (selectedItem) {
             "cars" -> "add_car"
