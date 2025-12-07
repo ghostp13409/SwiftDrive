@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.swiftdrive.data.models.Car
 import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.repositories.CustomerRepository
 import com.example.swiftdrive.data.repositories.RentalRepository
@@ -19,7 +18,6 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
     private val customerRepository = CustomerRepository(application)
     private val rentalRepository = RentalRepository(application)
     private val sessionManager = SessionManager(application)
-
 
     var currentUser by mutableStateOf<Customer?>(null)
         private set

@@ -21,45 +21,36 @@ import androidx.compose.ui.unit.sp
 import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.Car
 
-//Availability and Price Section for the car
+// Availability and Price Section for the car
 @Composable
-fun AvailabilityAndPriceSection(
-    car: Car,
-    onBookClicked: (Car) -> Unit
-) {
+fun AvailabilityAndPriceSection(car: Car, onBookClicked: (Car) -> Unit) {
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
         Text(
-            text = "$${"%.2f".format(car.pricePerDay)} / day",
-            style = MaterialTheme.typography.headlineMedium.copy(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary
-            )
+                text = "$${"%.2f".format(car.pricePerDay)} / day",
+                style =
+                        MaterialTheme.typography.headlineMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.primary
+                        )
         )
 
         Spacer(modifier = Modifier.height(10.dp))
 
-
         val isAvailable = car.isAvailable
         val availabilityText = if (isAvailable) "Available" else "Not Available"
         val availabilityColor =
-            if (isAvailable) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error
+                if (isAvailable) Color(0xFF2E7D32) else MaterialTheme.colorScheme.error
 
-        Surface(
-            color = availabilityColor.copy(alpha = 0.15f),
-            shape = RoundedCornerShape(50)
-        ) {
+        Surface(color = availabilityColor.copy(alpha = 0.15f), shape = RoundedCornerShape(50)) {
             Text(
-                text = availabilityText,
-                modifier = Modifier.padding(horizontal = 18.dp, vertical = 6.dp),
-                color = availabilityColor,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    text = availabilityText,
+                    modifier = Modifier.padding(horizontal = 18.dp, vertical = 6.dp),
+                    color = availabilityColor,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
             )
         }
 
@@ -67,17 +58,15 @@ fun AvailabilityAndPriceSection(
 
         // Book button
         Button(
-            onClick = { onBookClicked(car) },
-            enabled = isAvailable,
-            modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .height(50.dp),
-            shape = RoundedCornerShape(14.dp)
+                onClick = { onBookClicked(car) },
+                enabled = isAvailable,
+                modifier = Modifier.fillMaxWidth(0.85f).height(50.dp),
+                shape = RoundedCornerShape(14.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.button_book_now),
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                    text = stringResource(id = R.string.button_book_now),
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
             )
         }
     }

@@ -14,12 +14,13 @@ import com.example.swiftdrive.data.models.Rental
 import com.example.swiftdrive.data.repositories.CarRepository
 import com.example.swiftdrive.data.repositories.CustomerRepository
 import com.example.swiftdrive.data.repositories.RentalRepository
-import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import kotlinx.coroutines.launch
 
-class RentalViewModel(application: Application, val onChange: (() -> Unit)? = null) : AndroidViewModel(application) {
+class RentalViewModel(application: Application, val onChange: (() -> Unit)? = null) :
+        AndroidViewModel(application) {
 
     private val rentalRepository = RentalRepository(application)
     private val carRepository = CarRepository(application)
@@ -95,7 +96,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
             loadCustomers()
         }
     }
-// syncing to firestore
+    // syncing to firestore
     fun syncToFirestore() {
         viewModelScope.launch {
             rentalRepository.syncToFirestore()
@@ -111,7 +112,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         selectedCustomer = customer
         calculateTotalCost()
     }
-// Basic setters and calculations
+    // Basic setters and calculations
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateSelectedCar(car: Car?) {
@@ -131,11 +132,10 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         calculateTotalCost()
     }
 
-
     fun updateStatus(newStatus: String) {
         status = newStatus
     }
-// calculating total cost
+    // calculating total cost
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateTotalCost() {
         if (selectedCar != null && rentalStart.isNotEmpty() && rentalEnd.isNotEmpty()) {
@@ -185,15 +185,16 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
 
         // Generate ID
         val id = System.currentTimeMillis().toInt()
-        val newRental = Rental(
-            id = id,
-            userId = selectedCustomer!!.id,
-            carId = selectedCar!!.id,
-            rentalStart = rentalStart,
-            rentalEnd = rentalEnd,
-            totalCost = totalCost.toDouble(),
-            status = status
-        )
+        val newRental =
+                Rental(
+                        id = id,
+                        userId = selectedCustomer!!.id,
+                        carId = selectedCar!!.id,
+                        rentalStart = rentalStart,
+                        rentalEnd = rentalEnd,
+                        totalCost = totalCost.toDouble(),
+                        status = status
+                )
         rentalRepository.addRental(newRental)
         // Mark car as unavailable
         val updatedCar = selectedCar!!.copy(isAvailable = false)
@@ -212,7 +213,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         loadRentals()
         onChange?.invoke()
     }
-// returning car
+    // returning car
     fun returnCar(rentalId: Int) {
         val rental = rentals.value.find { it.id == rentalId } ?: return
         val updatedRental = rental.copy(status = "Completed")
@@ -221,14 +222,14 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         val carId = rental.carId
         carId?.let { id ->
             val car = cars.value.find { it.id == id }
-                car?.let {
-                    val updatedCar = it.copy(isAvailable = true)
-                    carRepository.updateCar(updatedCar)
-                }
+            car?.let {
+                val updatedCar = it.copy(isAvailable = true)
+                carRepository.updateCar(updatedCar)
             }
-            loadRentals()
-            loadCars()
-            onChange?.invoke()
+        }
+        loadRentals()
+        loadCars()
+        onChange?.invoke()
     }
 
     private fun resetInputFields() {

@@ -44,284 +44,295 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.R
-import com.example.swiftdrive.data.models.Car
-import com.example.swiftdrive.data.models.Customer
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick: () -> Unit, onBackClick: () -> Unit = {}) {
+fun AddRentalScreen(
+        modifier: Modifier,
+        viewModel: RentalViewModel,
+        onSaveClick: () -> Unit,
+        onBackClick: () -> Unit = {}
+) {
     Scaffold(
-        topBar = {
-            Surface(
-                shadowElevation = 6.dp,
-                tonalElevation = 2.dp,
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(
-                    bottomStart = 20.dp,
-                    bottomEnd = 20.dp
-                )
-            ) {
-                TopAppBar(
-                    title = {
-                        Text(
-                            text = stringResource(R.string.add_rental),
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent
+            topBar = {
+                Surface(
+                        shadowElevation = 6.dp,
+                        tonalElevation = 2.dp,
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+                ) {
+                    TopAppBar(
+                            title = {
+                                Text(
+                                        text = stringResource(R.string.add_rental),
+                                        style =
+                                                MaterialTheme.typography.titleLarge.copy(
+                                                        fontWeight = FontWeight.Bold,
+                                                        color = MaterialTheme.colorScheme.onSurface
+                                                )
+                                )
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = onBackClick) {
+                                    Icon(
+                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                            contentDescription = "Back",
+                                            tint = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            },
+                            colors =
+                                    TopAppBarDefaults.topAppBarColors(
+                                            containerColor = Color.Transparent
+                                    )
                     )
-                )
+                }
             }
-        }
     ) { padding ->
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(16.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                modifier =
+                        modifier.fillMaxSize()
+                                .padding(padding)
+                                .padding(16.dp)
+                                .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
         ) {
-        // Customer Dropdown
-        var customerExpanded by remember { mutableStateOf(false) }
-        ExposedDropdownMenuBox(
-            expanded = customerExpanded,
-            onExpandedChange = { customerExpanded = it }
-        ) {
+            // Customer Dropdown
+            var customerExpanded by remember { mutableStateOf(false) }
+            ExposedDropdownMenuBox(
+                    expanded = customerExpanded,
+                    onExpandedChange = { customerExpanded = it }
+            ) {
+                OutlinedTextField(
+                        value = viewModel.selectedCustomer?.let { "${it.firstName} ${it.lastName}" }
+                                        ?: "",
+                        onValueChange = {},
+                        label = { Text(stringResource(R.string.select_customer)) },
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = customerExpanded)
+                        },
+                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                )
+                ExposedDropdownMenu(
+                        expanded = customerExpanded,
+                        onDismissRequest = { customerExpanded = false }
+                ) {
+                    viewModel.customers.value.forEach { customer ->
+                        DropdownMenuItem(
+                                text = { Text("${customer.firstName} ${customer.lastName}") },
+                                onClick = {
+                                    viewModel.updateSelectedCustomer(customer)
+                                    customerExpanded = false
+                                }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Car Dropdown
+            var carExpanded by remember { mutableStateOf(false) }
+            ExposedDropdownMenuBox(
+                    expanded = carExpanded,
+                    onExpandedChange = { carExpanded = it }
+            ) {
+                OutlinedTextField(
+                        value = viewModel.selectedCar?.let { "${it.year} ${it.make} ${it.model}" }
+                                        ?: "",
+                        onValueChange = {},
+                        label = { Text(stringResource(R.string.select_car)) },
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = carExpanded)
+                        },
+                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                )
+                ExposedDropdownMenu(
+                        expanded = carExpanded,
+                        onDismissRequest = { carExpanded = false }
+                ) {
+                    viewModel.cars.value.filter { it.isAvailable }.forEach { car ->
+                        DropdownMenuItem(
+                                text = { Text("${car.year} ${car.make} ${car.model}") },
+                                onClick = {
+                                    viewModel.updateSelectedCar(car)
+                                    carExpanded = false
+                                }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Rental Start Date
+            var showStartDatePicker by remember { mutableStateOf(false) }
             OutlinedTextField(
-                value = viewModel.selectedCustomer?.let { "${it.firstName} ${it.lastName}" } ?: "",
-                onValueChange = {},
-                label = { Text(stringResource(R.string.select_customer)) },
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = customerExpanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
-            )
-            ExposedDropdownMenu(
-                expanded = customerExpanded,
-                onDismissRequest = { customerExpanded = false }
-            ) {
-                viewModel.customers.value.forEach { customer ->
-                    DropdownMenuItem(
-                        text = { Text("${customer.firstName} ${customer.lastName}") },
-                        onClick = {
-                            viewModel.updateSelectedCustomer(customer)
-                            customerExpanded = false
+                    value = viewModel.rentalStart,
+                    onValueChange = {},
+                    label = { Text(stringResource(R.string.rental_start_date)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    readOnly = true,
+                    trailingIcon = {
+                        TextButton(onClick = { showStartDatePicker = true }) {
+                            Text(stringResource(R.string.select))
                         }
-                    )
-                }
+                    }
+            )
+
+            if (showStartDatePicker) {
+                val datePickerState = rememberDatePickerState()
+                DatePickerDialog(
+                        onDismissRequest = { showStartDatePicker = false },
+                        confirmButton = {
+                            TextButton(
+                                    onClick = {
+                                        datePickerState.selectedDateMillis?.let { millis ->
+                                            val localDate =
+                                                    Instant.ofEpochMilli(millis)
+                                                            .atZone(ZoneId.systemDefault())
+                                                            .toLocalDate()
+                                            viewModel.updateRentalStart(
+                                                    localDate.format(
+                                                            DateTimeFormatter.ISO_LOCAL_DATE
+                                                    )
+                                            )
+                                        }
+                                        showStartDatePicker = false
+                                    }
+                            ) { Text(stringResource(R.string.ok)) }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showStartDatePicker = false }) {
+                                Text(stringResource(R.string.cancel))
+                            }
+                        }
+                ) { DatePicker(state = datePickerState) }
             }
-        }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        // Car Dropdown
-        var carExpanded by remember { mutableStateOf(false) }
-        ExposedDropdownMenuBox(
-            expanded = carExpanded,
-            onExpandedChange = { carExpanded = it }
-        ) {
+            // Rental End Date
+            var showEndDatePicker by remember { mutableStateOf(false) }
             OutlinedTextField(
-                value = viewModel.selectedCar?.let { "${it.year} ${it.make} ${it.model}" } ?: "",
-                onValueChange = {},
-                label = { Text(stringResource(R.string.select_car)) },
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = carExpanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
+                    value = viewModel.rentalEnd,
+                    onValueChange = {},
+                    label = { Text(stringResource(R.string.rental_end_date)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    readOnly = true,
+                    trailingIcon = {
+                        TextButton(onClick = { showEndDatePicker = true }) {
+                            Text(stringResource(R.string.select))
+                        }
+                    }
             )
-            ExposedDropdownMenu(
-                expanded = carExpanded,
-                onDismissRequest = { carExpanded = false }
-            ) {
-                viewModel.cars.value.filter { it.isAvailable }.forEach { car ->
-                    DropdownMenuItem(
-                        text = { Text("${car.year} ${car.make} ${car.model}") },
-                        onClick = {
-                            viewModel.updateSelectedCar(car)
-                            carExpanded = false
+
+            if (showEndDatePicker) {
+                val datePickerState = rememberDatePickerState()
+                DatePickerDialog(
+                        onDismissRequest = { showEndDatePicker = false },
+                        confirmButton = {
+                            TextButton(
+                                    onClick = {
+                                        datePickerState.selectedDateMillis?.let { millis ->
+                                            val localDate =
+                                                    Instant.ofEpochMilli(millis)
+                                                            .atZone(ZoneId.systemDefault())
+                                                            .toLocalDate()
+                                            viewModel.updateRentalEnd(
+                                                    localDate.format(
+                                                            DateTimeFormatter.ISO_LOCAL_DATE
+                                                    )
+                                            )
+                                        }
+                                        showEndDatePicker = false
+                                    }
+                            ) { Text(stringResource(R.string.ok)) }
+                        },
+                        dismissButton = {
+                            TextButton(onClick = { showEndDatePicker = false }) {
+                                Text(stringResource(R.string.cancel))
+                            }
                         }
-                    )
-                }
+                ) { DatePicker(state = datePickerState) }
             }
-        }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        // Rental Start Date
-        var showStartDatePicker by remember { mutableStateOf(false) }
-        OutlinedTextField(
-            value = viewModel.rentalStart,
-            onValueChange = {},
-            label = { Text(stringResource(R.string.rental_start_date)) },
-            modifier = Modifier.fillMaxWidth(),
-            readOnly = true,
-            trailingIcon = {
-                TextButton(onClick = { showStartDatePicker = true }) {
-                    Text(stringResource(R.string.select))
-                }
-            }
-        )
-
-        if (showStartDatePicker) {
-            val datePickerState = rememberDatePickerState()
-            DatePickerDialog(
-                onDismissRequest = { showStartDatePicker = false },
-                confirmButton = {
-                    TextButton(onClick = {
-                        datePickerState.selectedDateMillis?.let { millis ->
-                            val localDate = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate()
-                            viewModel.updateRentalStart(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                        }
-                        showStartDatePicker = false
-                    }) {
-                        Text(stringResource(R.string.ok))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showStartDatePicker = false }) {
-                        Text(stringResource(R.string.cancel))
-                    }
-                }
+            // Status Dropdown
+            var statusExpanded by remember { mutableStateOf(false) }
+            val statuses = listOf("Active", "Completed", "Cancelled")
+            ExposedDropdownMenuBox(
+                    expanded = statusExpanded,
+                    onExpandedChange = { statusExpanded = it }
             ) {
-                DatePicker(state = datePickerState)
-            }
-        }
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Rental End Date
-        var showEndDatePicker by remember { mutableStateOf(false) }
-        OutlinedTextField(
-            value = viewModel.rentalEnd,
-            onValueChange = {},
-            label = { Text(stringResource(R.string.rental_end_date)) },
-            modifier = Modifier.fillMaxWidth(),
-            readOnly = true,
-            trailingIcon = {
-                TextButton(onClick = { showEndDatePicker = true }) {
-                    Text(stringResource(R.string.select))
-                }
-            }
-        )
-
-        if (showEndDatePicker) {
-            val datePickerState = rememberDatePickerState()
-            DatePickerDialog(
-                onDismissRequest = { showEndDatePicker = false },
-                confirmButton = {
-                    TextButton(onClick = {
-                        datePickerState.selectedDateMillis?.let { millis ->
-                            val localDate = Instant.ofEpochMilli(millis).atZone(ZoneId.systemDefault()).toLocalDate()
-                            viewModel.updateRentalEnd(localDate.format(DateTimeFormatter.ISO_LOCAL_DATE))
-                        }
-                        showEndDatePicker = false
-                    }) {
-                        Text(stringResource(R.string.ok))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showEndDatePicker = false }) {
-                        Text(stringResource(R.string.cancel))
+                OutlinedTextField(
+                        value = viewModel.status,
+                        onValueChange = {},
+                        label = { Text("Status") },
+                        readOnly = true,
+                        trailingIcon = {
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = statusExpanded)
+                        },
+                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                )
+                ExposedDropdownMenu(
+                        expanded = statusExpanded,
+                        onDismissRequest = { statusExpanded = false }
+                ) {
+                    statuses.forEach { status ->
+                        DropdownMenuItem(
+                                text = { Text(status) },
+                                onClick = {
+                                    viewModel.updateStatus(status)
+                                    statusExpanded = false
+                                }
+                        )
                     }
                 }
-            ) {
-                DatePicker(state = datePickerState)
             }
-        }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        // Status Dropdown
-        var statusExpanded by remember { mutableStateOf(false) }
-        val statuses = listOf("Active", "Completed", "Cancelled")
-        ExposedDropdownMenuBox(
-            expanded = statusExpanded,
-            onExpandedChange = { statusExpanded = it }
-        ) {
+            // Total Cost Display
             OutlinedTextField(
-                value = viewModel.status,
-                onValueChange = {},
-                label = { Text("Status") },
-                readOnly = true,
-                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = statusExpanded) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .menuAnchor()
+                    value = viewModel.totalCost,
+                    onValueChange = {},
+                    label = { Text(stringResource(R.string.total_cost)) },
+                    readOnly = true,
+                    modifier = Modifier.fillMaxWidth()
             )
-            ExposedDropdownMenu(
-                expanded = statusExpanded,
-                onDismissRequest = { statusExpanded = false }
-            ) {
-                statuses.forEach { status ->
-                    DropdownMenuItem(
-                        text = { Text(status) },
-                        onClick = {
-                            viewModel.updateStatus(status)
-                            statusExpanded = false
-                        }
-                    )
-                }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Error Message
+            if (viewModel.errorMessage.isNotEmpty()) {
+                Text(
+                        text = viewModel.errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                )
             }
-        }
 
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        // Total Cost Display
-        OutlinedTextField(
-            value = viewModel.totalCost,
-            onValueChange = {},
-            label = { Text(stringResource(R.string.total_cost)) },
-            readOnly = true,
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Error Message
-        if (viewModel.errorMessage.isNotEmpty()) {
-            Text(
-                text = viewModel.errorMessage,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(vertical = 8.dp)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Add Button
-        Button(
-            onClick = {
-                if (viewModel.addRental()) {
-                    // Success, maybe navigate back or show message
-                    onSaveClick()
-                }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Add Rental")
-        }
+            // Add Button
+            Button(
+                    onClick = {
+                        if (viewModel.addRental()) {
+                            // Success, maybe navigate back or show message
+                            onSaveClick()
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth()
+            ) { Text("Add Rental") }
         }
     }
 }

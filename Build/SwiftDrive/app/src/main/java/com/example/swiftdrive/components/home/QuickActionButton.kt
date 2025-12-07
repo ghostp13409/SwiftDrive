@@ -31,48 +31,40 @@ import androidx.compose.ui.unit.sp
 @Composable
 // function for displaying quick actions in a card view
 fun QuickActionButton(
-    title: String,
-    icon: ImageVector,
-    iconBackgroundColor: Color,
-    iconTint: Color,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+        title: String,
+        icon: ImageVector,
+        iconBackgroundColor: Color,
+        iconTint: Color,
+        onClick: () -> Unit,
+        modifier: Modifier = Modifier
 ) {
     // Card for displaying the quick action
     Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        ),
-        shape = MaterialTheme.shapes.large,
+            modifier = modifier.fillMaxWidth().clickable { onClick() },
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            shape = MaterialTheme.shapes.large,
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 // Circular icon background
                 Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(
-                            color = iconBackgroundColor,
-                            shape = CircleShape
-                        ),
-                    contentAlignment = Alignment.Center
+                        modifier =
+                                Modifier.size(48.dp)
+                                        .background(
+                                                color = iconBackgroundColor,
+                                                shape = CircleShape
+                                        ),
+                        contentAlignment = Alignment.Center
                 ) {
                     Icon(
-                        imageVector = icon,
-                        contentDescription = title,
-                        tint = iconTint,
-                        modifier = Modifier.size(24.dp)
+                            imageVector = icon,
+                            contentDescription = title,
+                            tint = iconTint,
+                            modifier = Modifier.size(24.dp)
                     )
                 }
 
@@ -80,21 +72,20 @@ fun QuickActionButton(
 
                 // Title
                 Text(
-                    text = title,
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    fontSize = 16.sp,
+                        text = title,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontWeight = FontWeight.Medium,
+                        fontSize = 16.sp,
                 )
             }
 
             // Arrow icon
             Icon(
-                imageVector = Icons.Default.KeyboardArrowRight,
-                contentDescription = "Navigate",
-                tint = Color.Gray,
-                modifier = Modifier.size(24.dp)
+                    imageVector = Icons.Default.KeyboardArrowRight,
+                    contentDescription = "Navigate",
+                    tint = Color.Gray,
+                    modifier = Modifier.size(24.dp)
             )
         }
     }
 }
-

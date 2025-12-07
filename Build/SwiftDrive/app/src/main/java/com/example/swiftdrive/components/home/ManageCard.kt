@@ -24,60 +24,51 @@ import androidx.compose.ui.unit.sp
 @Composable
 // function  for displaying rental statistics in a card view
 fun ManageCard(
-    count: String,
-    label: String,
-    icon: ImageVector,
-    iconBackgroundColor: Color,
-    iconTint: Color,
-    modifier: Modifier = Modifier
+        count: String,
+        label: String,
+        icon: ImageVector,
+        iconBackgroundColor: Color,
+        iconTint: Color,
+        modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier
-            .size(width = 120.dp, height = 150.dp), // Increased height from 140dp to 150dp
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 2.dp
-        ),
-        shape = MaterialTheme.shapes.large
+            modifier =
+                    modifier.size(
+                            width = 120.dp,
+                            height = 150.dp
+                    ), // Increased height from 140dp to 150dp
+            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            shape = MaterialTheme.shapes.large
     ) {
-
         Column(
-            modifier = Modifier
-                .padding(16.dp),
-            horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             // Circular icon background
             Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(
-                        color = iconBackgroundColor,
-                        shape = CircleShape
-                    ),
-                contentAlignment = Alignment.Center
+                    modifier =
+                            Modifier.size(48.dp)
+                                    .background(color = iconBackgroundColor, shape = CircleShape),
+                    contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = icon,
-                    contentDescription = label,
-                    tint = iconTint,
-                    modifier = Modifier.size(24.dp)
+                        imageVector = icon,
+                        contentDescription = label,
+                        tint = iconTint,
+                        modifier = Modifier.size(24.dp)
                 )
             }
 
             // Count
             Text(
-                text = count,
-                style = MaterialTheme.typography.headlineSmall,
-                fontSize = 24.sp,
+                    text = count,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontSize = 24.sp,
             )
 
             // Label
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                fontSize = 13.sp
-            )
+            Text(text = label, style = MaterialTheme.typography.bodySmall, fontSize = 13.sp)
         }
     }
-
 }

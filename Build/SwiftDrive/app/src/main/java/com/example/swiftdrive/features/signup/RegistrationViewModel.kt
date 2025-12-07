@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.swiftdrive.data.dbhelpers.CustomerDatabaseHelper
 import com.example.swiftdrive.data.models.UserRoles
 import kotlinx.coroutines.launch
-import androidx.compose.runtime.mutableStateOf
 
 // Registration ViewModel
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
@@ -103,8 +102,14 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     fun onRegisterClick(onRegistrationSuccess: () -> Unit) {
 
         // Get Errors
-        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank() ||
-            firstName.isBlank() || lastName.isBlank() || age.isBlank() || phoneNumber.isBlank()) {
+        if (email.isBlank() ||
+                        password.isBlank() ||
+                        confirmPassword.isBlank() ||
+                        firstName.isBlank() ||
+                        lastName.isBlank() ||
+                        age.isBlank() ||
+                        phoneNumber.isBlank()
+        ) {
             errorMessage = "All fields are required"
             return
         }
@@ -140,35 +145,17 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
             // Add customer to database
             customerDbHelper.insertCustomer(
-                roles = selectedRole,
-                firstName = firstName,
-                lastName = lastName,
-                age = ageInt,
-                phoneNumber = phoneNumber,
-                drivingLicence = drivingLicence.ifBlank { null },
-                email = email,
-                password = password
+                    roles = selectedRole,
+                    firstName = firstName,
+                    lastName = lastName,
+                    age = ageInt,
+                    phoneNumber = phoneNumber,
+                    drivingLicence = drivingLicence.ifBlank { null },
+                    email = email,
+                    password = password
             )
             isLoading = false
             onRegistrationSuccess()
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

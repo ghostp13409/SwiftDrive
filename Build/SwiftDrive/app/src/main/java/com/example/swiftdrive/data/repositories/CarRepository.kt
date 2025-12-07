@@ -19,17 +19,17 @@ class CarRepository(context: Context) {
         localDb.writableDatabase.execSQL("DELETE FROM cars")
         remoteCars.forEach { car ->
             localDb.insertCar(
-                car.id,
-                car.year,
-                car.make,
-                car.model,
-                car.pricePerDay,
-                car.isAvailable,
-                car.engineType,
-                car.condition,
-                car.category,
-                car.tier,
-                car.imageRes
+                    car.id,
+                    car.year,
+                    car.make,
+                    car.model,
+                    car.pricePerDay,
+                    car.isAvailable,
+                    car.engineType,
+                    car.condition,
+                    car.category,
+                    car.tier,
+                    car.imageRes
             )
         }
     }
@@ -42,30 +42,28 @@ class CarRepository(context: Context) {
     // Add car locally and mark for sync
     fun addCar(car: Car) {
         localDb.insertCar(
-            car.id,
-            car.year,
-            car.make,
-            car.model,
-            car.pricePerDay,
-            car.isAvailable,
-            car.engineType,
-            car.condition,
-            car.category,
-            car.tier,
-            car.imageRes
+                car.id,
+                car.year,
+                car.make,
+                car.model,
+                car.pricePerDay,
+                car.isAvailable,
+                car.engineType,
+                car.condition,
+                car.category,
+                car.tier,
+                car.imageRes
         )
     }
 
     // Update car locally and mark for sync
     fun updateCar(car: Car) {
         localDb.updateCar(car)
-
     }
 
     // Delete car locally and mark for sync
     fun deleteCar(car: Car) {
         localDb.deleteCar(car.id)
-
     }
 
     suspend fun getCarById(carId: String): Car? {
@@ -77,9 +75,6 @@ class CarRepository(context: Context) {
         val localCars = localDb.getAllCars()
         // For simplicity, replace all in Firestore with local data
         // In a real app, you'd track changes
-        localCars.forEach { car ->
-            carsRef.document(car.id.toString()).set(car).await()
-        }
+        localCars.forEach { car -> carsRef.document(car.id.toString()).set(car).await() }
     }
 }
-

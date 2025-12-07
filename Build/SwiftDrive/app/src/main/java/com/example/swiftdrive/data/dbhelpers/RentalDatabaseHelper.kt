@@ -6,12 +6,12 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.swiftdrive.data.models.Rental
 
-class RentalDatabaseHelper(context: Context) :
-    SQLiteOpenHelper(context, "rentals.db", null, 1) {
+class RentalDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "rentals.db", null, 1) {
 
-        // on create method for creating the rentals table
+    // on create method for creating the rentals table
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("""
+        db?.execSQL(
+                """
             CREATE TABLE rentals(
                 id INTEGER PRIMARY KEY,
                 userId INTEGER,
@@ -21,7 +21,8 @@ class RentalDatabaseHelper(context: Context) :
                 totalCost REAL,
                 status TEXT
             )
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     // on upgrade method for updating the rentals table
@@ -31,21 +32,29 @@ class RentalDatabaseHelper(context: Context) :
     }
 
     // Insert method for inserting a new rental into the rentals table
-    fun insertRental(id: Int, userId: Int, carId: Int, rentalStart: String, rentalEnd: String, totalCost: Double, status: String) {
+    fun insertRental(
+            id: Int,
+            userId: Int,
+            carId: Int,
+            rentalStart: String,
+            rentalEnd: String,
+            totalCost: Double,
+            status: String
+    ) {
         val db = writableDatabase
-        val values = ContentValues().apply {
-            put("id", id)
-            put("userId", userId)
-            put("carId", carId)
-            put("rentalStart", rentalStart)
-            put("rentalEnd", rentalEnd)
-            put("totalCost", totalCost)
-            put("status", status)
-        }
+        val values =
+                ContentValues().apply {
+                    put("id", id)
+                    put("userId", userId)
+                    put("carId", carId)
+                    put("rentalStart", rentalStart)
+                    put("rentalEnd", rentalEnd)
+                    put("totalCost", totalCost)
+                    put("status", status)
+                }
         db.insert("rentals", null, values)
         db.close()
     }
-
 
     //
     fun getAllRentals(): List<Rental> {
@@ -54,15 +63,15 @@ class RentalDatabaseHelper(context: Context) :
         val cursor = db.rawQuery("SELECT * FROM rentals", null)
         while (cursor.moveToNext()) {
             rentals.add(
-                Rental(
-                    id = cursor.getInt(0),
-                    userId = cursor.getInt(1),
-                    carId = cursor.getInt(2),
-                    rentalStart = cursor.getString(3),
-                    rentalEnd = cursor.getString(4),
-                    totalCost = cursor.getDouble(5),
-                    status = cursor.getString(6)
-                )
+                    Rental(
+                            id = cursor.getInt(0),
+                            userId = cursor.getInt(1),
+                            carId = cursor.getInt(2),
+                            rentalStart = cursor.getString(3),
+                            rentalEnd = cursor.getString(4),
+                            totalCost = cursor.getDouble(5),
+                            status = cursor.getString(6)
+                    )
             )
         }
         cursor.close()
@@ -79,9 +88,7 @@ class RentalDatabaseHelper(context: Context) :
 
     fun updateRentalStatus(id: String, status: String) {
         val db = writableDatabase
-        val values = ContentValues().apply {
-            put("status", status)
-        }
+        val values = ContentValues().apply { put("status", status) }
         db.update("rentals", values, "id=?", arrayOf(id))
         db.close()
     }

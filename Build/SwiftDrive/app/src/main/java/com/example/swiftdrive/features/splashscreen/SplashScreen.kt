@@ -3,9 +3,9 @@ package com.example.swiftdrive.features.splashscreen
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -20,42 +20,35 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.R
-import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 import kotlinx.coroutines.delay
 
 // Splash screen
 @Composable
-fun SplashScreen (onTimeout: () -> Unit) {
+fun SplashScreen(onTimeout: () -> Unit) {
     LaunchedEffect(true) {
         delay(2000)
         onTimeout()
     }
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
-        contentAlignment = Alignment.Center
-    ){
-        Column (horizontalAlignment = Alignment.CenterHorizontally) {
+            modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+            contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             // App Logo
             Image(
-                painter = painterResource(R.drawable.logo),
-                contentDescription = "App Logo",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .width(200.dp)
-                    .aspectRatio(1f)
-                    .clip(CircleShape),
+                    painter = painterResource(R.drawable.logo),
+                    contentDescription = "App Logo",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.width(200.dp).aspectRatio(1f).clip(CircleShape),
             )
             Spacer(Modifier.height(16.dp))
             // App Name
             Text(
-                text = stringResource(R.string.app_name),
-                color = MaterialTheme.colorScheme.onBackground,
-                style = MaterialTheme.typography.headlineLarge
+                    text = stringResource(R.string.app_name),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.headlineLarge
             )
         }
     }

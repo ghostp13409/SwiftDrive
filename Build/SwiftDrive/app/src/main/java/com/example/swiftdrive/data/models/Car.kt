@@ -34,19 +34,31 @@ enum class Tier {
 
 // Data class for representing a car
 @IgnoreExtraProperties
-data class Car (
-    val id: Int = 0,
-    val year: Int = 0,
-    val make: String = "",
-    val model: String = "",
-    val pricePerDay: Double = 0.0,
-    val isAvailable: Boolean = true,
-    val engineType: EngineType = EngineType.PETROL,
-    val condition: Condition = Condition.NEW,
-    val category: Category = Category.SEDAN,
-    val tier: Tier = Tier.Economy,
-    val imageRes: Int = 0,
+data class Car(
+        val id: Int = 0,
+        val year: Int = 0,
+        val make: String = "",
+        val model: String = "",
+        val pricePerDay: Double = 0.0,
+        val isAvailable: Boolean = true,
+        val engineType: EngineType = EngineType.PETROL,
+        val condition: Condition = Condition.NEW,
+        val category: Category = Category.SEDAN,
+        val tier: Tier = Tier.Economy,
+        val imageRes: Int = 0,
 ) {
-    constructor() : this(0, 0, "", "", 0.0, true, EngineType.PETROL, Condition.NEW, Category.SEDAN, Tier.Economy, 0)
+    constructor() :
+            this(
+                    0,
+                    0,
+                    "",
+                    "",
+                    0.0,
+                    true,
+                    EngineType.PETROL,
+                    Condition.NEW,
+                    Category.SEDAN,
+                    Tier.Economy,
+                    0
+            )
 }
-

@@ -14,7 +14,8 @@ import com.example.swiftdrive.data.repositories.CustomerRepository
 import kotlinx.coroutines.launch
 
 // Customer View Model for Customer Screen and Customer Detail Screen and Add Customer Screen
-class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = null): AndroidViewModel(application) {
+class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = null) :
+        AndroidViewModel(application) {
 
     // Customer Repository
     private val customerRepository = CustomerRepository(application)
@@ -87,7 +88,6 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
     var errorMessage by mutableStateOf("")
         private set
 
-
     var showError by mutableStateOf(false)
         private set
 
@@ -110,48 +110,49 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
     // Sync to Firestore
 
     fun syncToFirestore() {
-        viewModelScope.launch {
-            customerRepository.syncToFirestore()
-        }
+        viewModelScope.launch { customerRepository.syncToFirestore() }
     }
 
     // Seed Customer function for testing
 
     fun seedCustomers() {
         if (customerRepository.getCustomers().isEmpty()) {
-            val john = Customer(
-                1,
-                UserRoles.USER,
-                "John",
-                "Doe",
-                25,
-                "123-456-7890",
-                "DL123456",
-                "john.doe@example.com",
-                "password1"
-            )
-            val jane = Customer(
-                2,
-                UserRoles.USER,
-                "Jane",
-                "Smith",
-                30,
-                "098-765-4321",
-                "DL654321",
-                "jane.smith@example.com",
-                "password2"
-            )
-            val admin = Customer(
-                3,
-                UserRoles.ADMIN,
-                "Admin",
-                "User",
-                35,
-                "111-222-3333",
-                "DL999999",
-                "admin@example.com",
-                "adminpass"
-            )
+            val john =
+                    Customer(
+                            1,
+                            UserRoles.USER,
+                            "John",
+                            "Doe",
+                            25,
+                            "123-456-7890",
+                            "DL123456",
+                            "john.doe@example.com",
+                            "password1"
+                    )
+            val jane =
+                    Customer(
+                            2,
+                            UserRoles.USER,
+                            "Jane",
+                            "Smith",
+                            30,
+                            "098-765-4321",
+                            "DL654321",
+                            "jane.smith@example.com",
+                            "password2"
+                    )
+            val admin =
+                    Customer(
+                            3,
+                            UserRoles.ADMIN,
+                            "Admin",
+                            "User",
+                            35,
+                            "111-222-3333",
+                            "DL999999",
+                            "admin@example.com",
+                            "adminpass"
+                    )
             customerRepository.addCustomer(john)
             customerRepository.addCustomer(jane)
             customerRepository.addCustomer(admin)
@@ -191,34 +192,36 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
 
             // Edit existing customer
             if (editingId != null) {
-                val updatedCustomer = Customer(
-                    id = editingId!!,
-                    roles = roles,
-                    firstName = firstName,
-                    lastName = lastName,
-                    age = age,
-                    phoneNumber = phoneNumber,
-                    drivingLicence = drivingLicence,
-                    email = email,
-                    password = password
-                )
+                val updatedCustomer =
+                        Customer(
+                                id = editingId!!,
+                                roles = roles,
+                                firstName = firstName,
+                                lastName = lastName,
+                                age = age,
+                                phoneNumber = phoneNumber,
+                                drivingLicence = drivingLicence,
+                                email = email,
+                                password = password
+                        )
                 customerRepository.updateCustomer(updatedCustomer)
                 editingId = null
             } else {
                 // New Random ID
                 val id = System.currentTimeMillis().toInt()
 
-                val newCustomer = Customer(
-                    id = id,
-                    roles = roles,
-                    firstName = firstName,
-                    lastName = lastName,
-                    age = age,
-                    phoneNumber = phoneNumber,
-                    drivingLicence = drivingLicence,
-                    email = email,
-                    password = password
-                )
+                val newCustomer =
+                        Customer(
+                                id = id,
+                                roles = roles,
+                                firstName = firstName,
+                                lastName = lastName,
+                                age = age,
+                                phoneNumber = phoneNumber,
+                                drivingLicence = drivingLicence,
+                                email = email,
+                                password = password
+                        )
                 customerRepository.addCustomer(newCustomer)
             }
             loadCustomers()

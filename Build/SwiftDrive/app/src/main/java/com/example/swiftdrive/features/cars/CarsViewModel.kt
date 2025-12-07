@@ -8,15 +8,16 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.Car
-import com.example.swiftdrive.data.models.EngineType
-import com.example.swiftdrive.data.models.Condition
 import com.example.swiftdrive.data.models.Category
+import com.example.swiftdrive.data.models.Condition
+import com.example.swiftdrive.data.models.EngineType
 import com.example.swiftdrive.data.models.Tier
 import com.example.swiftdrive.data.repositories.CarRepository
 import kotlinx.coroutines.launch
 
 // Cars viw model for managing cars
-class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null) : AndroidViewModel(application) {
+class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null) :
+        AndroidViewModel(application) {
 
     private val carRepository = CarRepository(application)
 
@@ -31,8 +32,6 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
     var category by mutableStateOf(Category.SEDAN)
     var tier by mutableStateOf(Tier.Economy)
     var imageRes by mutableStateOf(R.drawable.logo)
-
-
 
     var cars = mutableStateOf<List<Car>>(emptyList())
         private set
@@ -49,57 +48,64 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
 
     //   List for filtered cars
     val filteredCars: List<Car>
-        get() = cars.value.filter { car ->
-            (selectedEngineTypes.isEmpty() || car.engineType in selectedEngineTypes) &&
-            (selectedConditions.isEmpty() || car.condition in selectedConditions) &&
-            (selectedCategories.isEmpty() || car.category in selectedCategories) &&
-            (selectedTiers.isEmpty() || car.tier in selectedTiers) &&
-            (selectedAvailabilities.isEmpty() || car.isAvailable in selectedAvailabilities)
-        }
+        get() =
+                cars.value.filter { car ->
+                    (selectedEngineTypes.isEmpty() || car.engineType in selectedEngineTypes) &&
+                            (selectedConditions.isEmpty() || car.condition in selectedConditions) &&
+                            (selectedCategories.isEmpty() || car.category in selectedCategories) &&
+                            (selectedTiers.isEmpty() || car.tier in selectedTiers) &&
+                            (selectedAvailabilities.isEmpty() ||
+                                    car.isAvailable in selectedAvailabilities)
+                }
 
     // function for toggling filter states
     fun toggleEngineType(engineType: EngineType) {
-        selectedEngineTypes = if (engineType in selectedEngineTypes) {
-            selectedEngineTypes - engineType
-        } else {
-            selectedEngineTypes + engineType
-        }
+        selectedEngineTypes =
+                if (engineType in selectedEngineTypes) {
+                    selectedEngineTypes - engineType
+                } else {
+                    selectedEngineTypes + engineType
+                }
     }
 
     // Toggle condition for filtering cars
     fun toggleCondition(condition: Condition) {
-        selectedConditions = if (condition in selectedConditions) {
-            selectedConditions - condition
-        } else {
-            selectedConditions + condition
-        }
+        selectedConditions =
+                if (condition in selectedConditions) {
+                    selectedConditions - condition
+                } else {
+                    selectedConditions + condition
+                }
     }
 
     // Toggle Category for filtering cars
     fun toggleCategory(category: Category) {
-        selectedCategories = if (category in selectedCategories) {
-            selectedCategories - category
-        } else {
-            selectedCategories + category
-        }
+        selectedCategories =
+                if (category in selectedCategories) {
+                    selectedCategories - category
+                } else {
+                    selectedCategories + category
+                }
     }
 
     // Toggle Tier for filtering cars
     fun toggleTier(tier: Tier) {
-        selectedTiers = if (tier in selectedTiers) {
-            selectedTiers - tier
-        } else {
-            selectedTiers + tier
-        }
+        selectedTiers =
+                if (tier in selectedTiers) {
+                    selectedTiers - tier
+                } else {
+                    selectedTiers + tier
+                }
     }
 
     // Toggle Availability for filtering cars
     fun toggleAvailability(availability: Boolean) {
-        selectedAvailabilities = if (availability in selectedAvailabilities) {
-            selectedAvailabilities - availability
-        } else {
-            selectedAvailabilities + availability
-        }
+        selectedAvailabilities =
+                if (availability in selectedAvailabilities) {
+                    selectedAvailabilities - availability
+                } else {
+                    selectedAvailabilities + availability
+                }
     }
 
     // Function for clear all filters
@@ -122,8 +128,8 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         loadCars()
     }
 
-    //Select all cars
-    fun selectCar(car: Car){
+    // Select all cars
+    fun selectCar(car: Car) {
         selectedCar = car
 
         year = car.year.toString()
@@ -138,7 +144,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         imageRes = car.imageRes
     }
 
-    fun loadCars(){
+    fun loadCars() {
         cars.value = carRepository.getCars()
     }
 
@@ -157,37 +163,34 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
 
     // Sync to Firestore
     fun syncToFirestore() {
-        viewModelScope.launch {
-            carRepository.syncToFirestore()
-        }
+        viewModelScope.launch { carRepository.syncToFirestore() }
     }
 
-    //Validate Data
+    // Validate Data
 
-
-    fun addCar(){
+    fun addCar() {
         val id = System.currentTimeMillis().toInt()
 
-        val newCar = Car(
-            id = id,
-            year = year.toInt(),
-            make = make,
-            model = model,
-            pricePerDay = pricePerDay.toDouble(),
-            isAvailable = isAvailable,
-            engineType = engineType,
-            condition = condition,
-            category = category,
-            tier = tier,
-            imageRes = imageRes
-        )
+        val newCar =
+                Car(
+                        id = id,
+                        year = year.toInt(),
+                        make = make,
+                        model = model,
+                        pricePerDay = pricePerDay.toDouble(),
+                        isAvailable = isAvailable,
+                        engineType = engineType,
+                        condition = condition,
+                        category = category,
+                        tier = tier,
+                        imageRes = imageRes
+                )
         carRepository.addCar(newCar)
         loadCars()
         notifyChange()
     }
 
-
-    fun deleteCar(id: Int){
+    fun deleteCar(id: Int) {
         val carToDelete = cars.value.find { it.id == id } ?: return
         carRepository.deleteCar(carToDelete)
         loadCars()
@@ -207,27 +210,25 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         selectedCar = null
     }
 
-
     fun updateCar() {
         val car = selectedCar ?: return
 
-        val updatedCar = car.copy(
-            year = year.toIntOrNull() ?: car.year,
-            make = make,
-            model = model,
-            pricePerDay = pricePerDay.toDoubleOrNull() ?: car.pricePerDay,
-            isAvailable = isAvailable,
-            engineType = engineType,
-            condition = condition,
-            category = category,
-            tier = tier,
-            imageRes = imageRes
-        )
+        val updatedCar =
+                car.copy(
+                        year = year.toIntOrNull() ?: car.year,
+                        make = make,
+                        model = model,
+                        pricePerDay = pricePerDay.toDoubleOrNull() ?: car.pricePerDay,
+                        isAvailable = isAvailable,
+                        engineType = engineType,
+                        condition = condition,
+                        category = category,
+                        tier = tier,
+                        imageRes = imageRes
+                )
 
         carRepository.updateCar(updatedCar)
         loadCars()
         notifyChange()
     }
-
-
 }

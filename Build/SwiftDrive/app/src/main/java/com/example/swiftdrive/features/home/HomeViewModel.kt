@@ -6,26 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.*
 import com.example.swiftdrive.data.repositories.CarRepository
 import com.example.swiftdrive.data.repositories.CustomerRepository
 import com.example.swiftdrive.data.repositories.RentalRepository
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.outlined.CalendarToday
-import androidx.compose.material.icons.outlined.DirectionsCar
 import com.example.swiftdrive.navigation.SessionManager
+import kotlinx.coroutines.launch
 
 // View Model for Home Page
-class HomeViewModel(application: Application): AndroidViewModel(application) {
+class HomeViewModel(application: Application) : AndroidViewModel(application) {
 
     // Repositories for Remote Db
     private val carRepository = CarRepository(application)
@@ -34,8 +23,6 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     // Session Manager for tracking Current User
     private val sessionManager = SessionManager(application)
-
-
 
     // Sync Tracking Fields
     var isSyncing by mutableStateOf(false)
@@ -46,7 +33,6 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
 
     var showSyncSuccess by mutableStateOf(false)
         private set
-
 
     // Metrics Tracking Fields
     var totalCars by mutableStateOf(0)
@@ -67,8 +53,6 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
     var isFetched by mutableStateOf(false)
         private set
 
-
-
     // Fetch Data from Firestore
     fun fetchAllFromFirestore() {
         viewModelScope.launch {
@@ -80,7 +64,7 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
     }
 
     // Setter
-    fun updateIsFetched(fetchStatus: Boolean){
+    fun updateIsFetched(fetchStatus: Boolean) {
         isFetched = fetchStatus
     }
 
@@ -96,10 +80,12 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
         activeRentals = rentals.count { it.status == "Active" }
         availableCars = cars.count { it.isAvailable }
         activeRentalsList = rentals.filter { it.status == "Active" }
-        currentUserActiveRental = userId?.let { rentals.find { rental -> rental.userId == it && rental.status == "Active" } }
+        currentUserActiveRental =
+                userId?.let {
+                    rentals.find { rental -> rental.userId == it && rental.status == "Active" }
+                }
 
         hasUnsyncedChanges = false
-
     }
 
     // Sync Data to Firestore
@@ -127,8 +113,6 @@ class HomeViewModel(application: Application): AndroidViewModel(application) {
     fun getCustomerById(customerId: Int): Customer? {
         return customerRepository.getCustomers().find { it.id == customerId }
     }
-
-
 
     fun markAsChanged() {
         hasUnsyncedChanges = true

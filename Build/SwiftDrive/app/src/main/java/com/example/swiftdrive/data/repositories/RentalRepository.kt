@@ -14,18 +14,19 @@ class RentalRepository(context: Context) {
 
     // Fetch from Firestore and store locally
     suspend fun fetchAndStoreRentals() {
-        val remoteRentals = rentalsRef.get().await().documents.mapNotNull { it.toObject(Rental::class.java) }
+        val remoteRentals =
+                rentalsRef.get().await().documents.mapNotNull { it.toObject(Rental::class.java) }
         // Clear local and store remote
         localDb.writableDatabase.execSQL("DELETE FROM rentals")
         remoteRentals.forEach { rental ->
             localDb.insertRental(
-                rental.id,
-                rental.userId,
-                rental.carId,
-                rental.rentalStart,
-                rental.rentalEnd,
-                rental.totalCost,
-                rental.status
+                    rental.id,
+                    rental.userId,
+                    rental.carId,
+                    rental.rentalStart,
+                    rental.rentalEnd,
+                    rental.totalCost,
+                    rental.status
             )
         }
     }
@@ -38,13 +39,13 @@ class RentalRepository(context: Context) {
     // Add rental locally and mark for sync
     fun addRental(rental: Rental) {
         localDb.insertRental(
-            rental.id,
-            rental.userId,
-            rental.carId,
-            rental.rentalStart,
-            rental.rentalEnd,
-            rental.totalCost,
-            rental.status
+                rental.id,
+                rental.userId,
+                rental.carId,
+                rental.rentalStart,
+                rental.rentalEnd,
+                rental.totalCost,
+                rental.status
         )
         // TODO: Mark for sync
     }

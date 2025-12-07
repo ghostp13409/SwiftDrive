@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.swiftdrive.data.dbhelpers.CustomerDatabaseHelper
 import com.example.swiftdrive.data.models.UserRoles
 import com.example.swiftdrive.data.repositories.CustomerRepository
 import com.example.swiftdrive.navigation.SessionManager
@@ -48,9 +47,11 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
         isLoading = true
         viewModelScope.launch {
-
             val customers = customerRepository.getCustomers()
-            val customer = customers.find { it.email == email && it.password == password && it.roles == UserRoles.ADMIN }
+            val customer =
+                    customers.find {
+                        it.email == email && it.password == password && it.roles == UserRoles.ADMIN
+                    }
             isLoading = false
             if (customer != null) {
                 sessionManager.createLoginSession(customer.id, customer.email, customer.roles.name)
@@ -62,10 +63,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchCustomers() {
-        viewModelScope.launch {
-            customerRepository.fetchAndStoreCustomers()
-        }
+        viewModelScope.launch { customerRepository.fetchAndStoreCustomers() }
     }
-
-
 }

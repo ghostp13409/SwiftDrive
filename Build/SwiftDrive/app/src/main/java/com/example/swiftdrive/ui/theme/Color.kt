@@ -1,4 +1,5 @@
 package com.example.swiftdrive.ui.theme
+
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF102820)
@@ -216,10 +217,3 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF1E211A)
 val surfaceContainerDarkHighContrast = Color(0xFF2E312A)
 val surfaceContainerHighDarkHighContrast = Color(0xFF393C35)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF454840)
-
-
-
-
-
-
-

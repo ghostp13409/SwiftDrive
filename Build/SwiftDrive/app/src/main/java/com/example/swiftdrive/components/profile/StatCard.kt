@@ -19,38 +19,38 @@ import androidx.compose.ui.unit.dp
 // Static Card Component for displaying statistics in a card view
 @Composable
 // function for displaying statistics in a card view
-fun StatCard(
-    title: String,
-    value: String,
-    modifier: Modifier = Modifier
-) {
+fun StatCard(title: String, value: String, modifier: Modifier = Modifier) {
     // Card for displaying the statistics
     Card(
-        modifier = modifier.shadow(6.dp, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        )
+            modifier = modifier.shadow(6.dp, RoundedCornerShape(16.dp)),
+            shape = RoundedCornerShape(16.dp),
+            colors =
+                    CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer
+                    )
     ) {
         Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = value,
-                style = MaterialTheme.typography.headlineMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                    text = value,
+                    style =
+                            MaterialTheme.typography.headlineMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
             )
             Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f)
-                ),
-                textAlign = TextAlign.Center
+                    text = title,
+                    style =
+                            MaterialTheme.typography.bodyMedium.copy(
+                                    color =
+                                            MaterialTheme.colorScheme.onPrimaryContainer.copy(
+                                                    alpha = 0.8f
+                                            )
+                            ),
+                    textAlign = TextAlign.Center
             )
         }
     }

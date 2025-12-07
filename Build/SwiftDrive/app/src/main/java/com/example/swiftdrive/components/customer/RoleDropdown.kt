@@ -20,41 +20,32 @@ import com.example.swiftdrive.data.models.UserRoles
 // Role Dropdown Component for selecting user roles
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RoleDropdown(
-    selectedRole: UserRoles,
-    onRoleSelected: (UserRoles) -> Unit
-) {
+fun RoleDropdown(selectedRole: UserRoles, onRoleSelected: (UserRoles) -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     val roles = UserRoles.values() // Gets all possible enum values.
 
     // This box handles the state of the dropdown menu (expanded or collapsed).
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
-    ) {
+    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }) {
         // This is the visible text field part of the dropdown.
         OutlinedTextField(
-            value = selectedRole.name,
-            onValueChange = {}, // readOnly, so no change is handled here.
-            readOnly = true,
-            label = { Text(stringResource(id = R.string.user_role)) },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            modifier = Modifier
-                .menuAnchor() // Anchors the dropdown menu to this text field.
-                .fillMaxWidth()
+                value = selectedRole.name,
+                onValueChange = {}, // readOnly, so no change is handled here.
+                readOnly = true,
+                label = { Text(stringResource(id = R.string.user_role)) },
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier =
+                        Modifier.menuAnchor() // Anchors the dropdown menu to this text field.
+                                .fillMaxWidth()
         )
         // This is the actual dropdown that appears when expanded.
-        ExposedDropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             roles.forEach { role ->
                 DropdownMenuItem(
-                    text = { Text(role.name) },
-                    onClick = {
-                        onRoleSelected(role)
-                        expanded = false
-                    }
+                        text = { Text(role.name) },
+                        onClick = {
+                            onRoleSelected(role)
+                            expanded = false
+                        }
                 )
             }
         }

@@ -7,12 +7,11 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.models.UserRoles
 
-class CustomerDatabaseHelper(context: Context) :
-SQLiteOpenHelper(context, "customer", null, 2)
-{
+class CustomerDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "customer", null, 2) {
     // on create method for creating the customer table
     override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL("""
+        db?.execSQL(
+                """
             CREATE TABLE customer(
                 id INTEGER PRIMARY KEY,
                 roles TEXT,
@@ -24,7 +23,8 @@ SQLiteOpenHelper(context, "customer", null, 2)
                 email TEXT,
                 password TEXT
             )
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     // on upgrade method for updating the customer table
@@ -34,31 +34,31 @@ SQLiteOpenHelper(context, "customer", null, 2)
     }
 
     // function for inserting the expense
-    fun insertCustomer( roles: UserRoles,
-                        firstName: String,
-                        lastName: String,
-                        age: Int,
-                        phoneNumber: String,
-                        drivingLicence: String?,
-                        email: String,
-                        password: String) {
+    fun insertCustomer(
+            roles: UserRoles,
+            firstName: String,
+            lastName: String,
+            age: Int,
+            phoneNumber: String,
+            drivingLicence: String?,
+            email: String,
+            password: String
+    ) {
         // defining the db into writable mode
         val db = writableDatabase
-        val values = ContentValues().apply {
+        val values =
+                ContentValues().apply {
+                    put("roles", roles.toString())
+                    put("firstName", firstName)
+                    put("lastName", lastName)
+                    put("age", age)
+                    put("phoneNumber", phoneNumber)
 
-            put("roles", roles.toString())
-            put("firstName", firstName)
-            put("lastName", lastName)
-            put("age", age)
-            put("phoneNumber", phoneNumber)
+                    put("drivingLicence", drivingLicence)
 
-            put("drivingLicence", drivingLicence)
-
-            put("email", email)
-            put("password", password)
-
-
-        }
+                    put("email", email)
+                    put("password", password)
+                }
         db.insert("customer", null, values)
         db.close()
     }
@@ -70,21 +70,17 @@ SQLiteOpenHelper(context, "customer", null, 2)
         val cursor = db.rawQuery("SELECT * FROM customer", null)
         while (cursor.moveToNext()) {
             customers.add(
-                Customer(
-                    cursor.getInt(0),
-                    UserRoles.valueOf(cursor.getString(1)),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getInt(4),
-                    cursor.getString(5),
-
-                    cursor.getString(6),
-
-                    cursor.getString(7),
-                    cursor.getString(8)
-
-
-                )
+                    Customer(
+                            cursor.getInt(0),
+                            UserRoles.valueOf(cursor.getString(1)),
+                            cursor.getString(2),
+                            cursor.getString(3),
+                            cursor.getInt(4),
+                            cursor.getString(5),
+                            cursor.getString(6),
+                            cursor.getString(7),
+                            cursor.getString(8)
+                    )
             )
         }
         cursor.close()
@@ -93,37 +89,37 @@ SQLiteOpenHelper(context, "customer", null, 2)
     }
 
     // Function for updating the Customer
-    fun updateCustomer( id: Int,
-                       roles: UserRoles,
-                       firstName: String,
-                       lastName: String,
-                       age: Int,
-                       phoneNumber: String,
-                       drivingLicence: String?,
-                       email: String,
-                       password: String) {
+    fun updateCustomer(
+            id: Int,
+            roles: UserRoles,
+            firstName: String,
+            lastName: String,
+            age: Int,
+            phoneNumber: String,
+            drivingLicence: String?,
+            email: String,
+            password: String
+    ) {
         val db = writableDatabase
-        val values = ContentValues().apply {
-            put("roles", roles.toString())
-            put("firstName", firstName)
-            put("lastName", lastName)
-            put("age", age)
-            put("phoneNumber", phoneNumber)
+        val values =
+                ContentValues().apply {
+                    put("roles", roles.toString())
+                    put("firstName", firstName)
+                    put("lastName", lastName)
+                    put("age", age)
+                    put("phoneNumber", phoneNumber)
 
-            put("drivingLicence", drivingLicence)
+                    put("drivingLicence", drivingLicence)
 
-            put("email", email)
-            put("password", password)
-        }
+                    put("email", email)
+                    put("password", password)
+                }
         db.update("customer", values, "id=?", arrayOf(id.toString()))
         db.close()
     }
 
-
-
-
     // function for deleting the customer
-    fun deleteCustomer(id: Int){
+    fun deleteCustomer(id: Int) {
         val db = writableDatabase
         db.delete("customer", "id=?", arrayOf(id.toString()))
         db.close()

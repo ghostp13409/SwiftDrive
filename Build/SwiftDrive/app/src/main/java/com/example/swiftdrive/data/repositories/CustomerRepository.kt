@@ -14,19 +14,22 @@ class CustomerRepository(context: Context) {
 
     // Fetch from Firestore and store locally
     suspend fun fetchAndStoreCustomers() {
-        val remoteCustomers = customersRef.get().await().documents.mapNotNull { it.toObject(Customer::class.java) }
+        val remoteCustomers =
+                customersRef.get().await().documents.mapNotNull {
+                    it.toObject(Customer::class.java)
+                }
         // Clear local and store remote
         localDb.writableDatabase.execSQL("DELETE FROM customer")
         remoteCustomers.forEach { customer ->
             localDb.insertCustomer(
-                customer.roles,
-                customer.firstName,
-                customer.lastName,
-                customer.age,
-                customer.phoneNumber,
-                customer.drivingLicence,
-                customer.email,
-                customer.password
+                    customer.roles,
+                    customer.firstName,
+                    customer.lastName,
+                    customer.age,
+                    customer.phoneNumber,
+                    customer.drivingLicence,
+                    customer.email,
+                    customer.password
             )
         }
     }
@@ -39,14 +42,14 @@ class CustomerRepository(context: Context) {
     // Add customer locally and mark for sync
     fun addCustomer(customer: Customer) {
         localDb.insertCustomer(
-            customer.roles,
-            customer.firstName,
-            customer.lastName,
-            customer.age,
-            customer.phoneNumber,
-            customer.drivingLicence,
-            customer.email,
-            customer.password
+                customer.roles,
+                customer.firstName,
+                customer.lastName,
+                customer.age,
+                customer.phoneNumber,
+                customer.drivingLicence,
+                customer.email,
+                customer.password
         )
         // TODO: Mark for sync
     }
@@ -54,15 +57,15 @@ class CustomerRepository(context: Context) {
     // Update customer locally and mark for sync
     fun updateCustomer(customer: Customer) {
         localDb.updateCustomer(
-            customer.id,
-            customer.roles,
-            customer.firstName,
-            customer.lastName,
-            customer.age,
-            customer.phoneNumber,
-            customer.drivingLicence,
-            customer.email,
-            customer.password
+                customer.id,
+                customer.roles,
+                customer.firstName,
+                customer.lastName,
+                customer.age,
+                customer.phoneNumber,
+                customer.drivingLicence,
+                customer.email,
+                customer.password
         )
         // TODO: Mark for sync
     }

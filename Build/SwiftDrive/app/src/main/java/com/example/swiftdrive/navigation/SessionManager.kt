@@ -5,7 +5,8 @@ import android.content.SharedPreferences
 
 // Session Manager
 class SessionManager(context: Context) {
-    private val prefs: SharedPreferences = context.getSharedPreferences("SwiftDrivePrefs", Context.MODE_PRIVATE)
+    private val prefs: SharedPreferences =
+            context.getSharedPreferences("SwiftDrivePrefs", Context.MODE_PRIVATE)
 
     // Constants for SharedPreferences keys
     companion object {
@@ -36,7 +37,7 @@ class SessionManager(context: Context) {
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
-//Getters for user info
+    // Getters for user info
 
     fun getUserId(): Int? {
         return prefs.getInt(KEY_USER_ID, -1)

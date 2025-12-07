@@ -14,10 +14,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun FabButton(onAddClick: () -> Unit) {
     FloatingActionButton(
-        onClick = onAddClick,
-        shape = CircleShape,
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Icon(Icons.Default.Add, contentDescription = "Add Task")
-    }
+            onClick = onAddClick,
+            shape = CircleShape,
+            modifier = Modifier.padding(16.dp)
+    ) { Icon(Icons.Default.Add, contentDescription = "Add Task") }
 }

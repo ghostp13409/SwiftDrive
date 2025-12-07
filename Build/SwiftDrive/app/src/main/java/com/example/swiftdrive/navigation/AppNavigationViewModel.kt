@@ -13,37 +13,35 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import com.example.swiftdrive.R
 
 // App Navigation View Model
-class AppNavigationViewModel: ViewModel() {
+class AppNavigationViewModel : ViewModel() {
 
     // Navigation Items
     val items = listOf("home", "cars", "customer", "rentals", "profile")
 
     var selectedItem by mutableStateOf(items[0])
         private set
-    val icons = listOf(
-        Icons.Outlined.Home,
-        Icons.Outlined.DirectionsCar,
-        Icons.Outlined.Group,
-        Icons.Outlined.CarRental,
-        Icons.Outlined.Person
-    )
-    val iconsSelected = listOf(
-        Icons.Filled.Home,
-        Icons.Filled.DirectionsCar,
-        Icons.Filled.Group,
-        Icons.Filled.CarRental,
-        Icons.Filled.Person
-    )
+    val icons =
+            listOf(
+                    Icons.Outlined.Home,
+                    Icons.Outlined.DirectionsCar,
+                    Icons.Outlined.Group,
+                    Icons.Outlined.CarRental,
+                    Icons.Outlined.Person
+            )
+    val iconsSelected =
+            listOf(
+                    Icons.Filled.Home,
+                    Icons.Filled.DirectionsCar,
+                    Icons.Filled.Group,
+                    Icons.Filled.CarRental,
+                    Icons.Filled.Person
+            )
     // Bottom Navigation Bar
     val labels = listOf("Home", "Cars", "Customers", "Rentals", "Profile")
-
 
     val allowFab = listOf("cars", "customer", "rentals")
 
@@ -57,8 +55,7 @@ class AppNavigationViewModel: ViewModel() {
         selectedItem = item
     }
 
-
-    fun handleButtonClick(item: String){
+    fun handleButtonClick(item: String) {
         // update selected route
         selectedItem = item
     }
