@@ -190,12 +190,15 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         notifyChange()
     }
 
+    //Deletes Car from database using the id
     fun deleteCar(id: Int) {
         val carToDelete = cars.value.find { it.id == id } ?: return
         carRepository.deleteCar(carToDelete)
         loadCars()
         notifyChange()
     }
+
+    //Resets input fields on click
     fun resetInputFields() {
         year = ""
         make = ""
@@ -210,6 +213,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         selectedCar = null
     }
 
+    //Updates Car
     fun updateCar() {
         val car = selectedCar ?: return
 

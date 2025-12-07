@@ -109,15 +109,15 @@ class HomeViewModel(application: Application) : AndroidViewModel(application) {
     fun getCarbyId(carId: Int): Car? {
         return carRepository.getCars().find { it.id == carId }
     }
-
+    // Get Customer by Id
     fun getCustomerById(customerId: Int): Customer? {
         return customerRepository.getCustomers().find { it.id == customerId }
     }
-
+    // Mark as Changed
     fun markAsChanged() {
         hasUnsyncedChanges = true
     }
-
+    // Dismiss Sync Success
     fun dismissSyncSuccess() {
         showSyncSuccess = false
     }

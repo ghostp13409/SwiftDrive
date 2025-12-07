@@ -33,7 +33,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         email = newEmail
         errorMessage = null
     }
-
+    // function for changing the password
     fun onPasswordChange(newPassword: String) {
         password = newPassword
         errorMessage = null
@@ -61,7 +61,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
-
+    // function for fetching customers
     fun fetchCustomers() {
         viewModelScope.launch { customerRepository.fetchAndStoreCustomers() }
     }

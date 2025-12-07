@@ -33,7 +33,7 @@ fun AddCustomerScreen(
 
     val isEditing = viewModel.editingId != null
     val scrollState = rememberScrollState()
-
+    // Main Scaffold
     Scaffold(
             topBar = {
                 Surface(
@@ -42,6 +42,7 @@ fun AddCustomerScreen(
                         color = MaterialTheme.colorScheme.surface,
                         shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
                 ) {
+                    // Top App Bar
                     TopAppBar(
                             title = {
                                 Text(

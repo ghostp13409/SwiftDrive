@@ -47,7 +47,7 @@ import com.example.swiftdrive.R
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-
+// ADD RENTAL SCREEN for Add Rental Page
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,6 +57,7 @@ fun AddRentalScreen(
         onSaveClick: () -> Unit,
         onBackClick: () -> Unit = {}
 ) {
+    // Main Scaffold
     Scaffold(
             topBar = {
                 Surface(
@@ -93,6 +94,7 @@ fun AddRentalScreen(
                 }
             }
     ) { padding ->
+
         Column(
                 modifier =
                         modifier.fillMaxSize()
@@ -186,7 +188,7 @@ fun AddRentalScreen(
                         }
                     }
             )
-
+            // this is where the date picker is displayed
             if (showStartDatePicker) {
                 val datePickerState = rememberDatePickerState()
                 DatePickerDialog(
@@ -233,7 +235,7 @@ fun AddRentalScreen(
                         }
                     }
             )
-
+            // this is where the date picker is displayed
             if (showEndDatePicker) {
                 val datePickerState = rememberDatePickerState()
                 DatePickerDialog(

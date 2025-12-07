@@ -55,6 +55,7 @@ fun RegistrationScreen(
         onNavigateToLogin: () -> Unit = {},
         modifier: Modifier = Modifier
 ) {
+    // enables scrolling
     val scrollState = rememberScrollState()
     Column(
             modifier =

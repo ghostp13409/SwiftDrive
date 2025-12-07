@@ -76,6 +76,7 @@ fun CustomerDetailScreen(
                                     )
                                     .padding(20.dp)
             ) {
+                // --- Customer Details ---
                 DetailRow("Customer ID", "#${customer.id}")
                 DetailRow("Role", customer.roles.name)
                 DetailRow("Age", customer.age.toString())

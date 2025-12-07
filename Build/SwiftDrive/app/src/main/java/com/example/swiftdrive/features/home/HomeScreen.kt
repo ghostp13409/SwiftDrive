@@ -40,15 +40,17 @@ fun HomeScreen(
         viewModel: HomeViewModel,
         navController: NavController
 ) {
+    // Fetch data only once
     LaunchedEffect(Unit) {
         if (!viewModel.isFetched) {
             viewModel.updateCounts()
             viewModel.updateIsFetched(true)
         }
     }
-
+    // This will run when the composable is disposed
     DisposableEffect(Unit) { onDispose { viewModel.updateIsFetched(false) } }
 
+    // Main Column
     Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp)) {
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -128,7 +130,7 @@ fun HomeScreen(
         )
 
         Spacer(modifier = Modifier.height(12.dp))
-
+        // Active Rental Card
         ActiveRentalCard(viewModel = viewModel)
     }
 }

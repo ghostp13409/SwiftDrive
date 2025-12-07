@@ -15,10 +15,13 @@ import kotlinx.coroutines.launch
 // Profile View Model for Profile Page
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
+
+    // Repositories for Remote Db
     private val customerRepository = CustomerRepository(application)
     private val rentalRepository = RentalRepository(application)
     private val sessionManager = SessionManager(application)
 
+    // variables for the profile
     var currentUser by mutableStateOf<Customer?>(null)
         private set
 
@@ -30,7 +33,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     var isLoading by mutableStateOf(true)
         private set
-
+    // function for loading profile data
     init {
         loadProfileData()
     }

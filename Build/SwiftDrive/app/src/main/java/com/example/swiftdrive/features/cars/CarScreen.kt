@@ -31,7 +31,7 @@ fun CarScreen(modifier: Modifier = Modifier, onEventClick: () -> Unit, viewModel
                 onAvailabilityToggle = viewModel::toggleAvailability,
                 onClearAll = viewModel::clearAllFilters
         )
-
+        // Lazy column for displaying filtered cars
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
             items(viewModel.filteredCars) { car ->
                 CarCard(

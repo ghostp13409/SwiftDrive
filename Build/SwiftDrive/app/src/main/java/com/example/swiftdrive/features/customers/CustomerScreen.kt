@@ -24,18 +24,19 @@ fun CustomerScreen(
         viewModel: CustomerViewModel,
         onEdit: (Customer) -> Unit = {}
 ) {
-
+    // Lambda for editing a customer
     val onEditCustomer: (Customer) -> Unit = { customer ->
         viewModel.selectCustomer(customer)
         onEdit(customer)
     }
+    // Get all customers
     val customers = viewModel.customers
 
     Column(modifier = modifier.fillMaxSize().padding(16.dp)) {
 
         // --- Customer List ---
         CustomerList(customers = customers, onEdit = onEditCustomer, modifier = Modifier)
-
+        // Checks to see if there are any customers
         if (customers.isEmpty()) {
             Text(
                     text = stringResource(R.string.no_customers_found),

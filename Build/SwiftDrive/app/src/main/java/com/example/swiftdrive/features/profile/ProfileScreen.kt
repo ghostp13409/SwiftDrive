@@ -26,9 +26,10 @@ import com.example.swiftdrive.components.profile.StatCard
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(viewModel: ProfileViewModel, onEditProfile: () -> Unit, onLogout: () -> Unit) {
+    // gets the current user
     val user = viewModel.currentUser
     val scrollState = rememberScrollState()
-
+    // what this this does is it will show the loading screen while the data is being fetched
     if (viewModel.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
@@ -140,7 +141,7 @@ fun ProfileScreen(viewModel: ProfileViewModel, onEditProfile: () -> Unit, onLogo
                                     ),
                             modifier = Modifier.padding(bottom = 16.dp)
                     )
-
+                    // This is where the user details are displayed
                     DetailRow("Role", user.roles.name)
                     DetailRow("Age", user.age.toString())
                     DetailRow("Phone", user.phoneNumber)

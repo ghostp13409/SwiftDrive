@@ -23,7 +23,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
 
     var email by mutableStateOf("")
         private set
-
+    // Password and Confirm Password
     var password by mutableStateOf("")
         private set
 
@@ -55,7 +55,7 @@ class RegistrationViewModel(application: Application) : AndroidViewModel(applica
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
-    // Setters
+    // SETTERS
     fun onEmailChange(newEmail: String) {
         email = newEmail
         errorMessage = null

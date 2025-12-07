@@ -102,6 +102,7 @@ fun AddCarScreen(
                 }
             }
     ) { padding ->
+        // Column for the content
         Column(
                 modifier =
                         modifier.fillMaxSize()
@@ -195,6 +196,7 @@ fun AddCarScreen(
                         },
                         modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
+                // Dropdown menu for selecting condition
                 ExposedDropdownMenu(
                         expanded = conditionExpanded,
                         onDismissRequest = { conditionExpanded = false }
@@ -214,11 +216,13 @@ fun AddCarScreen(
 
             @OptIn(ExperimentalMaterial3Api::class)
             var categoryExpanded by remember { mutableStateOf(false) }
+            // Dropdown menu for selecting category
             ExposedDropdownMenuBox(
                     expanded = categoryExpanded,
                     onExpandedChange = { categoryExpanded = it },
                     modifier = Modifier.fillMaxWidth()
             ) {
+
                 OutlinedTextField(
                         value = viewModel.category.toString(),
                         onValueChange = {},
@@ -248,6 +252,7 @@ fun AddCarScreen(
 
             @OptIn(ExperimentalMaterial3Api::class)
             var tierExpanded by remember { mutableStateOf(false) }
+            // Dropdown menu for selecting tier
             ExposedDropdownMenuBox(
                     expanded = tierExpanded,
                     onExpandedChange = { tierExpanded = it },
@@ -263,6 +268,7 @@ fun AddCarScreen(
                         },
                         modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
+                // Dropdown menu for selecting tier
                 ExposedDropdownMenu(
                         expanded = tierExpanded,
                         onDismissRequest = { tierExpanded = false }
@@ -279,7 +285,7 @@ fun AddCarScreen(
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-
+            // Checkbox for availability
             Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.fillMaxWidth()
@@ -293,6 +299,7 @@ fun AddCarScreen(
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Button to add or update car
             Button(
                     onClick = {
                         if (isEditing) viewModel.updateCar() else viewModel.addCar()

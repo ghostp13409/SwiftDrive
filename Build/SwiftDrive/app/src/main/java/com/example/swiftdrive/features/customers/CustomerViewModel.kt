@@ -19,58 +19,61 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
 
     // Customer Repository
     private val customerRepository = CustomerRepository(application)
+    // Customer Variables
     var customers by mutableStateOf<List<Customer>>(emptyList())
         private set
-
+    // Selected Customer
     var selectedCustomer by mutableStateOf<Customer?>(null)
         private set
-
+    // User Roles
     var roles by mutableStateOf(UserRoles.USER)
         private set
+    // Update User Roles
 
     fun updateRoles(newRole: UserRoles) {
         roles = newRole
     }
-
+    // Input Variables
     var firstName by mutableStateOf("")
         private set
-
+    // Update First Name
     fun updateFirstName(newFirstName: String) {
         firstName = newFirstName
     }
-
+    // Update Last Name
     var lastName by mutableStateOf("")
         private set
-
+    // Update Last Name
     fun updateLastName(newLastName: String) {
         lastName = newLastName
     }
-
+    // Update Age
     var age by mutableIntStateOf(0)
         private set
 
+    // Update Age
     fun updateAge(newAgeString: String) {
 
         age = newAgeString.toIntOrNull() ?: 0
     }
-
+    // Update Phone Number
     var phoneNumber by mutableStateOf("")
         private set
-
+    // Update Phone Number
     fun updatePhoneNumber(newPhoneNumber: String) {
         phoneNumber = newPhoneNumber
     }
-
+    // Update Driving Licence
     var drivingLicence by mutableStateOf("")
         private set
-
+    // Update Driving Licence
     fun updateDrivingLicence(newDrivingLicence: String) {
         drivingLicence = newDrivingLicence
     }
-
+    // Update Email
     var email by mutableStateOf("")
         private set
-
+    // Update Email
     fun updateEmail(newEmail: String) {
         email = newEmail
     }
@@ -78,6 +81,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
     var password by mutableStateOf("")
         private set
 
+    // Update Password
     fun updatePassword(newPassword: String) {
         password = newPassword
     }
@@ -90,7 +94,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
 
     var showError by mutableStateOf(false)
         private set
-
+    // Initialize viewmodel
     init {
         loadCustomers()
     }
@@ -232,6 +236,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
             showError = true
         }
     }
+    // validate all input Input
     fun validateInput(): Boolean {
         if (firstName.isEmpty() && lastName.isEmpty()) {
             errorMessage = "First and Last Name Cannot be empty"
@@ -258,7 +263,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
         }
         return true
     }
-    // Celaring Input
+    // clearing Input
     fun clearInput() {
         selectedCustomer = null
         editingId = null

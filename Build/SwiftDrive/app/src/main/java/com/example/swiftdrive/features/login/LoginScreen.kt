@@ -45,7 +45,7 @@ fun LoginScreen(
         onNavigateToRegister: () -> Unit = {},
         modifier: Modifier = Modifier
 ) {
-
+    // Main Column
     Column(
             modifier =
                     Modifier.fillMaxSize()
@@ -54,6 +54,7 @@ fun LoginScreen(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        // Image
         Image(
                 painter = painterResource(id = R.drawable.logo),
                 contentDescription = "App Logo",
@@ -67,6 +68,8 @@ fun LoginScreen(
                 color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Text Fields for Email and Password
         OutlinedTextField(
                 value = viewModel.email,
                 onValueChange = { viewModel.onEmailChange(it) },
@@ -105,6 +108,7 @@ fun LoginScreen(
         )
 
         Spacer(modifier = Modifier.height(24.dp))
+        // Login Button
         Button(
                 onClick = { viewModel.onLoginClick(onLoginSuccess) },
                 modifier = Modifier.fillMaxWidth(),
@@ -115,6 +119,7 @@ fun LoginScreen(
                                 contentColor = MaterialTheme.colorScheme.onPrimary
                         )
         ) {
+            // Loading Indicator
             if (viewModel.isLoading) {
                 CircularProgressIndicator(
                         modifier = Modifier.size(20.dp),
@@ -124,7 +129,7 @@ fun LoginScreen(
                 Text(stringResource(R.string.button_login))
             }
         }
-
+        // Error Message
         viewModel.errorMessage?.let { error ->
             Spacer(modifier = Modifier.height(8.dp))
             Text(

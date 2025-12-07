@@ -108,6 +108,7 @@ class CarDatabaseHelper(context: Context) : SQLiteOpenHelper(context, "cars.db",
         db.close()
     }
 
+    // Updates Car Availibility method for updating the availability of a car in the cars table
     fun updateCarAvailability(id: Int, isAvailable: Boolean) {
         val db = writableDatabase
         val values = ContentValues().apply { put("isAvailable", if (isAvailable) 1 else 0) }

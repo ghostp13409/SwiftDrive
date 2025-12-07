@@ -22,10 +22,12 @@ import kotlinx.coroutines.launch
 class RentalViewModel(application: Application, val onChange: (() -> Unit)? = null) :
         AndroidViewModel(application) {
 
+    //App Repositorys
     private val rentalRepository = RentalRepository(application)
     private val carRepository = CarRepository(application)
     private val customerRepository = CustomerRepository(application)
 
+    // Initilize A list of different Variables in the application
     var rentals = mutableStateOf<List<Rental>>(emptyList())
         private set
 
@@ -60,12 +62,13 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
     var errorMessage by mutableStateOf("")
         private set
 
+    // Initiation function loads All customers, cars and rentals
     init {
         loadCustomers()
         loadCars()
         loadRentals()
     }
-
+    // Selecting Rental
     fun selectRental(rental: Rental) {
         selectedRental = rental
     }
@@ -119,19 +122,21 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         selectedCar = car
         calculateTotalCost()
     }
+    // updating rental start and end
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateRentalStart(date: String) {
         rentalStart = date
         calculateTotalCost()
     }
+    // updating rental end
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateRentalEnd(date: String) {
         rentalEnd = date
         calculateTotalCost()
     }
-
+    // updates
     fun updateStatus(newStatus: String) {
         status = newStatus
     }
@@ -155,7 +160,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
             totalCost = "0.0"
         }
     }
-
+    // this is where the rental is added
     @RequiresApi(Build.VERSION_CODES.O)
     fun addRental(): Boolean {
         errorMessage = ""
@@ -231,7 +236,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         loadCars()
         onChange?.invoke()
     }
-
+    // resetting input fields
     private fun resetInputFields() {
         selectedCustomer = null
         selectedCar = null
