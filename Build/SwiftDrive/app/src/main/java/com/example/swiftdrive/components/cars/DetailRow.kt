@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+//Detail Row Component for displaying car details
 @Composable
 fun DetailRow(label: String, value: String) {
     Row(

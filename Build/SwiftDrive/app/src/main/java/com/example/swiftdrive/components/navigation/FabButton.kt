@@ -10,8 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-// TODO: Change the Color Scheme
-
+// Floating Action Button Component for adding new tasks
 @Composable
 fun FabButton(onAddClick: () -> Unit) {
     FloatingActionButton(

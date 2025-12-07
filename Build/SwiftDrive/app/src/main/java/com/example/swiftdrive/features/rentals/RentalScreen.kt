@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.sp
 import com.example.swiftdrive.components.rental.RentalCard
 import com.example.swiftdrive.components.rental.TabButton
 
+// Rentals Screen for Rentals Page
 @Composable
 fun RentalsScreen(
     viewModel: RentalViewModel,

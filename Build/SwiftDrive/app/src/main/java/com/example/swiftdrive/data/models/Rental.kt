@@ -2,6 +2,7 @@ package com.example.swiftdrive.data.models
 
 import com.google.firebase.firestore.IgnoreExtraProperties
 
+// Data class for representing a rental
 @IgnoreExtraProperties
 data class Rental (
     val id: Int = 0,

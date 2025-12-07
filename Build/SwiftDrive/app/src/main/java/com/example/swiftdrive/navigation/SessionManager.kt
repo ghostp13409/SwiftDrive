@@ -3,9 +3,11 @@ package com.example.swiftdrive.navigation
 import android.content.Context
 import android.content.SharedPreferences
 
+// Session Manager
 class SessionManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("SwiftDrivePrefs", Context.MODE_PRIVATE)
 
+    // Constants for SharedPreferences keys
     companion object {
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
         private const val KEY_USER_EMAIL = "user_email"
@@ -13,6 +15,7 @@ class SessionManager(context: Context) {
         private const val KEY_USER_ID = "user_id"
     }
 
+    // Session management methods
     fun createLoginSession(id: Int, email: String, role: String) {
         val editor = prefs.edit()
         editor.putBoolean(KEY_IS_LOGGED_IN, true)
@@ -21,6 +24,8 @@ class SessionManager(context: Context) {
         editor.putString(KEY_USER_ROLE, role)
         editor.apply()
     }
+
+    // functions  to check if user is logged in
 
     fun logout() {
         val editor = prefs.edit()
@@ -31,6 +36,7 @@ class SessionManager(context: Context) {
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
+//Getters for user info
 
     fun getUserId(): Int? {
         return prefs.getInt(KEY_USER_ID, -1)

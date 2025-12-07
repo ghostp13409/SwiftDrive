@@ -23,11 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+// Top Bar Component for displaying the top bar of the app
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(title: String, subText: String, onSyncClick: (() -> Unit)? = null, isSyncing: Boolean = false, hasUnsyncedChanges: Boolean = false) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
+        // the title parameter is used to display the title of the app
         title = {
             Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.Start) {
                 Text(
@@ -46,6 +48,7 @@ fun TopBar(title: String, subText: String, onSyncClick: (() -> Unit)? = null, is
                 )
             }
         },
+        // the actions parameter is used to display the actions of the app
         actions = {
             if (onSyncClick != null && hasUnsyncedChanges) {
                 IconButton(onClick = onSyncClick) {
@@ -67,14 +70,7 @@ fun TopBar(title: String, subText: String, onSyncClick: (() -> Unit)? = null, is
         },
         windowInsets = TopAppBarDefaults.windowInsets
 
-//        navigationIcon = {
-//            Image(
-//                painter = painterResource(id = R.drawable.logo),
-//                contentDescription = "App Logo",
-//                modifier = Modifier
-//                    .size(55.dp)
-//                    .clip(CircleShape)
-//            )
-//        }
+
+
     )
 }

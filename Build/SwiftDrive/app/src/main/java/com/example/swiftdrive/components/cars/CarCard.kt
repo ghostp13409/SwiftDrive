@@ -39,6 +39,7 @@ import com.example.swiftdrive.data.models.Car
 import com.example.swiftdrive.data.models.EngineType
 import com.example.swiftdrive.data.models.Tier
 
+// Car Card Component for displaying car information in a card view
 @Composable
 fun CarCard(
     car: Car,

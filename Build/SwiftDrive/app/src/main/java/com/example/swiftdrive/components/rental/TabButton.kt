@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Tab Button Component for displaying tabs in a tab bar
 @Composable
 fun TabButton(
     text: String,

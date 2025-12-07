@@ -6,6 +6,7 @@ import com.example.swiftdrive.data.models.Car
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
+// Repository for managing cars in the local database and syncing with Firestore
 class CarRepository(context: Context) {
     private val db = FirebaseFirestore.getInstance()
     val carsRef = db.collection("cars")
@@ -53,19 +54,18 @@ class CarRepository(context: Context) {
             car.tier,
             car.imageRes
         )
-        // TODO: Mark for sync
     }
 
     // Update car locally and mark for sync
     fun updateCar(car: Car) {
         localDb.updateCar(car)
-        // TODO: Mark for sync
+
     }
 
     // Delete car locally and mark for sync
     fun deleteCar(car: Car) {
         localDb.deleteCar(car.id)
-        // TODO: Mark for sync
+
     }
 
     suspend fun getCarById(carId: String): Car? {

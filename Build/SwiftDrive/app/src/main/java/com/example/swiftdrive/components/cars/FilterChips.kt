@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.data.models.*
 
+//Filter Chip Component for filtering cars
 @Composable
 fun FilterChips(
     selectedEngineTypes: Set<EngineType>,

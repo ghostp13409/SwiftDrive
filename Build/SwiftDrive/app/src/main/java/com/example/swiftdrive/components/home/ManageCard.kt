@@ -20,7 +20,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Manage Card Component for displaying rental statistics in a card view
 @Composable
+// function  for displaying rental statistics in a card view
 fun ManageCard(
     count: String,
     label: String,
@@ -37,6 +39,7 @@ fun ManageCard(
         ),
         shape = MaterialTheme.shapes.large
     ) {
+
         Column(
             modifier = Modifier
                 .padding(16.dp),

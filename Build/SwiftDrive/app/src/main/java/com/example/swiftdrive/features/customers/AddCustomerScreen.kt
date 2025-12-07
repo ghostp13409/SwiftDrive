@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import com.example.swiftdrive.data.models.UserRoles
 
 
+// Add Customer Screen for adding or editing a customer
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onSaveClick: () -> Unit = {}, onBackClick: () -> Unit = {}) {

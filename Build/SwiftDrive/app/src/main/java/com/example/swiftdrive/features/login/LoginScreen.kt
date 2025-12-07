@@ -41,7 +41,7 @@ import com.example.swiftdrive.R
 import com.example.swiftdrive.features.login.LoginViewModel
 import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 
-
+// Login Screen for Login Page
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit = {}, modifier: Modifier = Modifier) {
 
@@ -84,9 +84,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
 
         Spacer(modifier = Modifier.height(12.dp))
         OutlinedTextField(
-            //value = password,
             value = viewModel.password,
-           // onValueChange = {newValue -> password = newValue},
             onValueChange = {viewModel.onPasswordChange(it)},
             label = { Text(stringResource(R.string.label_password), color = MaterialTheme.colorScheme.onSurfaceVariant) },
             modifier = Modifier.fillMaxWidth(),
@@ -141,18 +139,7 @@ fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> U
             Text(stringResource(R.string.button_sign_up))
         }
 
-        // TODO: Remove This Before Submission and Demo Video!!!!!
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedButton(
-            onClick = { viewModel.onAdminLoginClick(onLoginSuccess) },
-            modifier = Modifier.fillMaxWidth(),
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.error
-            ),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
-        ) {
-            Text("Admin Login (Debug)")
-        }
+
     }
 }
 

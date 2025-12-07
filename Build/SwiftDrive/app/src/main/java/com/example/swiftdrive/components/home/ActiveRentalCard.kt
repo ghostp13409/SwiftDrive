@@ -19,6 +19,7 @@ import com.example.swiftdrive.features.home.HomeViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+// Active Rental Card Component for displaying active rental information in a card view
 @Composable
 fun ActiveRentalCard(viewModel: HomeViewModel) {
     val rental = viewModel.currentUserActiveRental ?: return
@@ -34,6 +35,7 @@ fun ActiveRentalCard(viewModel: HomeViewModel) {
         rental.rentalEnd
     }
 
+    //The Card for displaying the rental information
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
@@ -45,6 +47,7 @@ fun ActiveRentalCard(viewModel: HomeViewModel) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.Top
             ) {
+                // Car information
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = car?.let { "${it.year} ${it.make} ${it.model}" } ?: "Unknown Car",
@@ -68,6 +71,7 @@ fun ActiveRentalCard(viewModel: HomeViewModel) {
                     }
                 }
 
+                // Rental status
                 Surface(
                     color = Color(0xFFD1FAE5),
                     shape = RoundedCornerShape(8.dp)
@@ -101,6 +105,7 @@ fun ActiveRentalCard(viewModel: HomeViewModel) {
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            // Total cost
             Text(
                 text = "$ ${rental.totalCost.toInt()}",
                 fontSize = 16.sp,

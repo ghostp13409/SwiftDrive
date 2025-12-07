@@ -40,8 +40,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.Car
 import com.example.swiftdrive.data.models.Customer
 import java.time.Instant
@@ -67,7 +69,7 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
                 TopAppBar(
                     title = {
                         Text(
-                            text = "Add Rental",
+                            text = stringResource(R.string.add_rental),
                             style = MaterialTheme.typography.titleLarge.copy(
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -108,7 +110,7 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
             OutlinedTextField(
                 value = viewModel.selectedCustomer?.let { "${it.firstName} ${it.lastName}" } ?: "",
                 onValueChange = {},
-                label = { Text("Select Customer") },
+                label = { Text(stringResource(R.string.select_customer)) },
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = customerExpanded) },
                 modifier = Modifier
@@ -142,7 +144,7 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
             OutlinedTextField(
                 value = viewModel.selectedCar?.let { "${it.year} ${it.make} ${it.model}" } ?: "",
                 onValueChange = {},
-                label = { Text("Select Car") },
+                label = { Text(stringResource(R.string.select_car)) },
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = carExpanded) },
                 modifier = Modifier
@@ -172,12 +174,12 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
         OutlinedTextField(
             value = viewModel.rentalStart,
             onValueChange = {},
-            label = { Text("Rental Start Date") },
+            label = { Text(stringResource(R.string.rental_start_date)) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             trailingIcon = {
                 TextButton(onClick = { showStartDatePicker = true }) {
-                    Text("Select")
+                    Text(stringResource(R.string.select))
                 }
             }
         )
@@ -194,12 +196,12 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
                         }
                         showStartDatePicker = false
                     }) {
-                        Text("OK")
+                        Text(stringResource(R.string.ok))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showStartDatePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             ) {
@@ -214,12 +216,12 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
         OutlinedTextField(
             value = viewModel.rentalEnd,
             onValueChange = {},
-            label = { Text("Rental End Date") },
+            label = { Text(stringResource(R.string.rental_end_date)) },
             modifier = Modifier.fillMaxWidth(),
             readOnly = true,
             trailingIcon = {
                 TextButton(onClick = { showEndDatePicker = true }) {
-                    Text("Select")
+                    Text(stringResource(R.string.select))
                 }
             }
         )
@@ -236,12 +238,12 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
                         }
                         showEndDatePicker = false
                     }) {
-                        Text("OK")
+                        Text(stringResource(R.string.ok))
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showEndDatePicker = false }) {
-                        Text("Cancel")
+                        Text(stringResource(R.string.cancel))
                     }
                 }
             ) {
@@ -290,7 +292,7 @@ fun AddRentalScreen(modifier: Modifier, viewModel: RentalViewModel, onSaveClick:
         OutlinedTextField(
             value = viewModel.totalCost,
             onValueChange = {},
-            label = { Text("Total Cost") },
+            label = { Text(stringResource(R.string.total_cost)) },
             readOnly = true,
             modifier = Modifier.fillMaxWidth()
         )

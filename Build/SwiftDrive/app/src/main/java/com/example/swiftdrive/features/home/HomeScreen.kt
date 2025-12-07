@@ -25,13 +25,16 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.swiftdrive.R
 import com.example.swiftdrive.components.home.ActiveRentalCard
 import com.example.swiftdrive.components.home.ManageCard
 import com.example.swiftdrive.components.home.QuickActionButton
 
+// Home Screen for Home Page
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel, navController: NavController) {
     LaunchedEffect(Unit) {
@@ -134,7 +137,7 @@ fun HomeScreen(modifier: Modifier = Modifier, viewModel: HomeViewModel, navContr
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text("Active Rental" , style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.active_rental), style = MaterialTheme.typography.headlineSmall, fontWeight = FontWeight.Bold)
 
         Spacer(modifier = Modifier.height(12.dp))
 

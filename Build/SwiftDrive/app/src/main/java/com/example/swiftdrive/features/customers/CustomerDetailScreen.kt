@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.components.customer.DetailRow
 
+// Customer Detail Screen
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomerDetailScreen(

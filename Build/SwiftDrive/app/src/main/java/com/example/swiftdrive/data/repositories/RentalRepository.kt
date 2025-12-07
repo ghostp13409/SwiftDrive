@@ -6,6 +6,7 @@ import com.example.swiftdrive.data.models.Rental
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
+// Rental Repository for managing rentals in the local database and syncing with Firestore
 class RentalRepository(context: Context) {
     private val db = FirebaseFirestore.getInstance()
     val rentalsRef = db.collection("rentals")

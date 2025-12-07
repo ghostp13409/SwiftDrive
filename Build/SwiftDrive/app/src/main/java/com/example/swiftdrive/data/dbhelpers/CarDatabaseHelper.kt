@@ -11,9 +11,11 @@ import com.example.swiftdrive.data.models.Condition
 import com.example.swiftdrive.data.models.EngineType
 import com.example.swiftdrive.data.models.Tier
 
+// Database Helper class for managing the cars database
 class CarDatabaseHelper(context : Context) :
     SQLiteOpenHelper(context, "cars.db", null, 3){
 
+        // on create method for creating the cars table
     override fun onCreate(db: SQLiteDatabase?) {
         val createTableQuery = """
             CREATE TABLE cars(
@@ -33,11 +35,13 @@ class CarDatabaseHelper(context : Context) :
         db?.execSQL(createTableQuery)
     }
 
+    // on upgrade method for updating the cars table
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS cars")
         onCreate(db)
     }
 
+    // Insert method for inserting a new car into the cars table
     fun insertCar(id: Int = 0, year: Int, make: String, model: String, pricePerDay: Double, isAvailable: Boolean, engineType: EngineType, condition: Condition, category: Category, tier: Tier, imageRes: Int) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -57,6 +61,7 @@ class CarDatabaseHelper(context : Context) :
         db.close()
     }
 
+    // get all cars method for getting all cars from the cars table
     fun getAllCars(): List<Car> {
         val cars = mutableListOf<Car>()
         val db = readableDatabase
@@ -83,6 +88,7 @@ class CarDatabaseHelper(context : Context) :
         return cars
     }
 
+    // delete car method for deleting a car from the cars table
     fun deleteCar(id: Int){
         val db = writableDatabase
         db.delete("cars", "id=?", arrayOf(id.toString()))
@@ -97,6 +103,7 @@ class CarDatabaseHelper(context : Context) :
         db.update("cars", values, "id=?", arrayOf(id.toString()))
         db.close()
     }
+    // Update Car method for updating a car in the cars table
     fun updateCar(car: Car) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -115,6 +122,7 @@ class CarDatabaseHelper(context : Context) :
         db.close()
     }
 
+    // Seed method for seeding the cars table with initial data
     private fun seedInitialCars(db: SQLiteDatabase?) {
         if (db == null) return
 

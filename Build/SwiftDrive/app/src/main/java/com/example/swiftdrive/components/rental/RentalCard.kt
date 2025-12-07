@@ -19,6 +19,7 @@ import com.example.swiftdrive.features.rentals.RentalViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+// Rental Card component for displaying rental information in a card view
 @Composable
 fun RentalCard(
     rental: Rental,

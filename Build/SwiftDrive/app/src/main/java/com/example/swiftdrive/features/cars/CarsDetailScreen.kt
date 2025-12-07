@@ -24,16 +24,19 @@ import com.example.swiftdrive.components.cars.AvailabilityAndPriceSection
 import com.example.swiftdrive.components.cars.DetailRow
 
 
+// Car Detail Screen for displaying and editing car details
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+// function for displaying and editing car details
 fun CarDetailScreen(
     viewModel: CarsViewModel,
     onBackClick: () -> Unit,
     onEditClick: (Car) -> Unit,
-    onBookClicked: (Car) -> Unit    //This is The Book Button Fucntion
+    onBookClicked: (Car) -> Unit
 ) {
     val car = viewModel.selectedCar ?: return
 
+    // Scaffold for the screen
     Scaffold(
         topBar = {
             Surface(

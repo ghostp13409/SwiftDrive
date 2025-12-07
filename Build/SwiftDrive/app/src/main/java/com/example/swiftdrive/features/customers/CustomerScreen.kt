@@ -13,25 +13,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.swiftdrive.R
 import com.example.swiftdrive.components.customer.CustomerList
 import com.example.swiftdrive.data.models.Customer
 
+// Customer Screen For
 @Composable
 fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onEdit: (Customer) -> Unit = {}) {
-    // In a real app, you would get this list from a ViewModel
-//    val customers = remember {
-//        listOf(
-//            Customer(1, UserRoles.USER, "John", "Doe", 30, "(555) 123-4567", "JD123", "john.doe@email.com", "pass"),
-//            Customer(2, UserRoles.USER, "Sarah", "Smith", 28, "(555) 234-5678", "SS123", "sarah.smith@email.com", "pass"),
-//            Customer(3, UserRoles.USER, "Michael", "Johnson", 45, "(555) 345-6789", "MJ123", "m.johnson@email.com", "pass"),
-//            Customer(4, UserRoles.USER, "Emily", "Davis", 35, "(555) 456-7890", "ED123", "emily.d@email.com", "pass")
-//        )
-//    }
 
-    // In a real app, the onEdit lambda would navigate to an edit screen or show a dialog
     val onEditCustomer: (Customer) -> Unit = { customer ->
         viewModel.selectCustomer(customer)
         onEdit(customer)
@@ -54,7 +47,7 @@ fun CustomerScreen(modifier: Modifier, viewModel: CustomerViewModel, onEdit: (Cu
 
         if(customers.isEmpty()){
             Text(
-                text = "No customers found",
+                text = stringResource(R.string.no_customers_found),
                 style = MaterialTheme.typography.bodyMedium,
             )
         }

@@ -13,6 +13,7 @@ import com.example.swiftdrive.data.repositories.RentalRepository
 import com.example.swiftdrive.navigation.SessionManager
 import kotlinx.coroutines.launch
 
+// Profile View Model for Profile Page
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
     private val customerRepository = CustomerRepository(application)
@@ -36,6 +37,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         loadProfileData()
     }
 
+    // function for Loading Profile Data
     private fun loadProfileData() {
         viewModelScope.launch {
             val userId = sessionManager.getUserId()
@@ -55,6 +57,7 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    // function for refreshing data
     fun refreshData() {
         isLoading = true
         loadProfileData()

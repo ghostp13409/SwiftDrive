@@ -12,6 +12,7 @@ import com.example.swiftdrive.data.repositories.CustomerRepository
 import com.example.swiftdrive.navigation.SessionManager
 import kotlinx.coroutines.launch
 
+// LOGIN VIEW MODEL
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
     private val customerDbHelper = CustomerDatabaseHelper(application)
     private val customerRepository = CustomerRepository(application)
@@ -29,6 +30,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     var errorMessage by mutableStateOf<String?>(null)
         private set
 
+    // functions for changing the mail and password
     fun onEmailChange(newEmail: String) {
         email = newEmail
         errorMessage = null
@@ -39,6 +41,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         errorMessage = null
     }
 
+    // function for login
     fun onLoginClick(onLoginSuccess: () -> Unit) {
         if (email.isBlank() || password.isBlank()) {
             errorMessage = "Email and password cannot be empty"
@@ -59,8 +62,5 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun onAdminLoginClick(onLoginSuccess: () -> Unit) {
-        sessionManager.createLoginSession(1,"admin@debug.com", "ADMIN")
-        onLoginSuccess()
-    }
+
 }

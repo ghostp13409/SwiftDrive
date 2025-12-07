@@ -27,7 +27,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+// Quick Action Button Component for displaying quick actions in a card view
 @Composable
+// function for displaying quick actions in a card view
 fun QuickActionButton(
     title: String,
     icon: ImageVector,
@@ -36,6 +38,7 @@ fun QuickActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    // Card for displaying the quick action
     Card(
         modifier = modifier
             .fillMaxWidth()

@@ -6,6 +6,7 @@ import com.example.swiftdrive.data.models.Customer
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 
+// Repository for managing customers in the local database and syncing with Firestore
 class CustomerRepository(context: Context) {
     private val db = FirebaseFirestore.getInstance()
     val customersRef = db.collection("customers")

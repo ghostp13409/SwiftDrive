@@ -11,6 +11,7 @@ import com.example.swiftdrive.data.models.UserRoles
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.mutableStateOf
 
+// Registration ViewModel
 class RegistrationViewModel(application: Application) : AndroidViewModel(application) {
 
     // Customer DbHelper

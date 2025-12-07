@@ -2,13 +2,14 @@ package com.example.swiftdrive.data.models
 
 import com.google.firebase.firestore.IgnoreExtraProperties
 
+// Enum classes for representing different user roles
 enum class UserRoles{
     ADMIN,
     USER,
 }
 
 
-
+// Data class for representing a customer
 @IgnoreExtraProperties
 data class Customer (
 

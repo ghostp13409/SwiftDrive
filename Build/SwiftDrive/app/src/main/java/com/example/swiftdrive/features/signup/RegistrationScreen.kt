@@ -45,6 +45,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.swiftdrive.R
 import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 
+// Registration Screen
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen(

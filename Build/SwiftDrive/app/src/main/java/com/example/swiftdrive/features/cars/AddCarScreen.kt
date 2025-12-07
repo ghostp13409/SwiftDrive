@@ -36,17 +36,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.EngineType
 import com.example.swiftdrive.data.models.Condition
 import com.example.swiftdrive.data.models.Category
 import com.example.swiftdrive.data.models.Tier
 
+// Add Car Screen for adding or editing a car
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+// Add car screen function for adding or editing a car
 fun AddCarScreen(
     onEventClick: () -> Unit,
     onBackClick: () -> Unit,
@@ -55,6 +59,7 @@ fun AddCarScreen(
 ) {
     val isEditing = viewModel.selectedCar != null
 
+    // Scaffold for the screen
     Scaffold(
         topBar = {
             Surface(
@@ -104,7 +109,7 @@ fun AddCarScreen(
         OutlinedTextField(
             value = viewModel.year,
             onValueChange = { viewModel.year = it },
-            label = { Text("Year") },
+            label = { Text(stringResource(R.string.year)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier = Modifier.fillMaxWidth()
         )
@@ -113,7 +118,7 @@ fun AddCarScreen(
         OutlinedTextField(
             value = viewModel.make,
             onValueChange = { viewModel.make = it },
-            label = { Text("Make") },
+            label = { Text(stringResource(R.string.Car_make)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -121,7 +126,7 @@ fun AddCarScreen(
         OutlinedTextField(
             value = viewModel.model,
             onValueChange = { viewModel.model = it },
-            label = { Text("Model") },
+            label = { Text(stringResource(R.string.car_model)) },
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(8.dp))
@@ -129,7 +134,7 @@ fun AddCarScreen(
         OutlinedTextField(
             value = viewModel.pricePerDay,
             onValueChange = { viewModel.pricePerDay = it },
-            label = { Text("Price Per Day") },
+            label = { Text(stringResource(R.string.car_price_per_day)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth()
         )
@@ -146,7 +151,7 @@ fun AddCarScreen(
                 value = viewModel.engineType.toString(),
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Engine Type") },
+                label = { Text(stringResource(R.string.engine_type)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = engineExpanded) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -180,7 +185,7 @@ fun AddCarScreen(
                 value = viewModel.condition.toString(),
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Condition") },
+                label = { Text(stringResource(R.string.condition)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = conditionExpanded) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -214,7 +219,7 @@ fun AddCarScreen(
                 value = viewModel.category.toString(),
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Category") },
+                label = { Text(stringResource(R.string.category)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -248,7 +253,7 @@ fun AddCarScreen(
                 value = viewModel.tier.toString(),
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Tier") },
+                label = { Text(stringResource(R.string.tier)) },
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = tierExpanded) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -293,7 +298,7 @@ fun AddCarScreen(
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(if (isEditing) "Save Changes" else "Add Car")
+            Text(if (isEditing) stringResource(R.string.save_changes) else stringResource(R.string.add_car))
         }
     }
     }

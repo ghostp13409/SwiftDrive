@@ -14,11 +14,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.Car
 
+//Availability and Price Section for the car
 @Composable
 fun AvailabilityAndPriceSection(
     car: Car,
@@ -42,6 +45,7 @@ fun AvailabilityAndPriceSection(
 
         Spacer(modifier = Modifier.height(10.dp))
 
+
         val isAvailable = car.isAvailable
         val availabilityText = if (isAvailable) "Available" else "Not Available"
         val availabilityColor =
@@ -61,7 +65,7 @@ fun AvailabilityAndPriceSection(
 
         Spacer(modifier = Modifier.height(26.dp))
 
-        //-----------BOOK NOW BUTTON-----------
+        // Book button
         Button(
             onClick = { onBookClicked(car) },
             enabled = isAvailable,
@@ -70,7 +74,11 @@ fun AvailabilityAndPriceSection(
                 .height(50.dp),
             shape = RoundedCornerShape(14.dp)
         ) {
-            Text("Book Now", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(
+                text = stringResource(id = R.string.button_book_now),
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

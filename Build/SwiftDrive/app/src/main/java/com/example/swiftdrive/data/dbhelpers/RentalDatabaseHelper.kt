@@ -9,6 +9,7 @@ import com.example.swiftdrive.data.models.Rental
 class RentalDatabaseHelper(context: Context) :
     SQLiteOpenHelper(context, "rentals.db", null, 1) {
 
+        // on create method for creating the rentals table
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE rentals(
@@ -23,11 +24,13 @@ class RentalDatabaseHelper(context: Context) :
         """.trimIndent())
     }
 
+    // on upgrade method for updating the rentals table
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.execSQL("DROP TABLE IF EXISTS rentals")
         onCreate(db)
     }
 
+    // Insert method for inserting a new rental into the rentals table
     fun insertRental(id: Int, userId: Int, carId: Int, rentalStart: String, rentalEnd: String, totalCost: Double, status: String) {
         val db = writableDatabase
         val values = ContentValues().apply {
@@ -43,6 +46,8 @@ class RentalDatabaseHelper(context: Context) :
         db.close()
     }
 
+
+    //
     fun getAllRentals(): List<Rental> {
         val rentals = mutableListOf<Rental>()
         val db = readableDatabase
@@ -65,6 +70,7 @@ class RentalDatabaseHelper(context: Context) :
         return rentals
     }
 
+    // Delete rental method for deleting a rental from the rentals table
     fun deleteRental(id: String) {
         val db = writableDatabase
         db.delete("rentals", "id=?", arrayOf(id))

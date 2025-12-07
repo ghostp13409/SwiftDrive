@@ -13,8 +13,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.example.swiftdrive.R
 import com.example.swiftdrive.data.models.UserRoles
 
+// Role Dropdown Component for selecting user roles
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoleDropdown(
@@ -34,7 +37,7 @@ fun RoleDropdown(
             value = selectedRole.name,
             onValueChange = {}, // readOnly, so no change is handled here.
             readOnly = true,
-            label = { Text("User Role") },
+            label = { Text(stringResource(id = R.string.user_role)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier
                 .menuAnchor() // Anchors the dropdown menu to this text field.
@@ -50,7 +53,7 @@ fun RoleDropdown(
                     text = { Text(role.name) },
                     onClick = {
                         onRoleSelected(role)
-                        expanded = false // Close the menu after selection.
+                        expanded = false
                     }
                 )
             }

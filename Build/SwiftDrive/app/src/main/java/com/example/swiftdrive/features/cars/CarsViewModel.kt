@@ -15,6 +15,7 @@ import com.example.swiftdrive.data.models.Tier
 import com.example.swiftdrive.data.repositories.CarRepository
 import kotlinx.coroutines.launch
 
+// Cars viw model for managing cars
 class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null) : AndroidViewModel(application) {
 
     private val carRepository = CarRepository(application)
@@ -46,6 +47,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
     var selectedTiers by mutableStateOf(setOf<Tier>())
     var selectedAvailabilities by mutableStateOf(setOf<Boolean>())
 
+    //   List for filtered cars
     val filteredCars: List<Car>
         get() = cars.value.filter { car ->
             (selectedEngineTypes.isEmpty() || car.engineType in selectedEngineTypes) &&
@@ -55,6 +57,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
             (selectedAvailabilities.isEmpty() || car.isAvailable in selectedAvailabilities)
         }
 
+    // function for toggling filter states
     fun toggleEngineType(engineType: EngineType) {
         selectedEngineTypes = if (engineType in selectedEngineTypes) {
             selectedEngineTypes - engineType
@@ -63,6 +66,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         }
     }
 
+    // Toggle condition for filtering cars
     fun toggleCondition(condition: Condition) {
         selectedConditions = if (condition in selectedConditions) {
             selectedConditions - condition
@@ -71,6 +75,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         }
     }
 
+    // Toggle Category for filtering cars
     fun toggleCategory(category: Category) {
         selectedCategories = if (category in selectedCategories) {
             selectedCategories - category
@@ -79,6 +84,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         }
     }
 
+    // Toggle Tier for filtering cars
     fun toggleTier(tier: Tier) {
         selectedTiers = if (tier in selectedTiers) {
             selectedTiers - tier
@@ -87,6 +93,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         }
     }
 
+    // Toggle Availability for filtering cars
     fun toggleAvailability(availability: Boolean) {
         selectedAvailabilities = if (availability in selectedAvailabilities) {
             selectedAvailabilities - availability
@@ -95,6 +102,7 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         }
     }
 
+    // Function for clear all filters
     fun clearAllFilters() {
         selectedEngineTypes = emptySet()
         selectedConditions = emptySet()

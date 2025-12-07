@@ -13,4 +13,36 @@
     <string name="button_back_to_login">Back to Login</string>
     <string name="button_login">Login</string>
     <string name="button_sign_up">Sign Up</string>
+
+    <string name="button_book_now">Book Now</string>s
+    <string name="user_role">User Role</string>
+
+    <string name="year">Year</string>
+    <string name="Car_make">Make</string>
+    <string name="car_model">Model</string>
+    <string name="car_price_per_day">Price Per Day</string>
+    <string name="engine_type">Engine Type</string>
+    <string name="condition">Condition</string>
+    <string name="category">Category</string>
+    <string name="tier">Tier</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="add_car">Add Car</string>
+    <string name="no_customers_found">No customers found</string>
+    <string name="active_rental">Active Rental</string>
+    <string name="user_not_found">User not found</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="not_provided">Not provided</string>
+    <string name="edit">Edit</string>
+    <string name="logout">Logout</string>
+    <string name="add_rental">Add Rental</string>
+    <string name="select_customer">Select Customer</string>
+    <string name="select_car">Select Car</string>
+    <string name="rental_start_date">Rental Start Date</string>
+    <string name="select">Select</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="rental_end_date">Rental End Date</string>
+    <string name="total_cost">Total Cost</string>
+
+
 </resources>

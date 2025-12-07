@@ -17,15 +17,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.swiftdrive.R
 import com.example.swiftdrive.components.customer.DetailRow
 import com.example.swiftdrive.components.profile.StatCard
 import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 
+// Profile Screen for Profile Page
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -48,7 +51,7 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("User not found", style = MaterialTheme.typography.headlineMedium)
+            Text(stringResource(R.string.user_not_found), style = MaterialTheme.typography.headlineMedium)
         }
     } else {
         Column(
@@ -148,7 +151,7 @@ fun ProfileScreen(
             ) {
                 Column(modifier = Modifier.padding(20.dp)) {
                     Text(
-                        text = "Personal Information",
+                        text = stringResource(R.string.personal_information),
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -159,7 +162,7 @@ fun ProfileScreen(
                     DetailRow("Role", user.roles.name)
                     DetailRow("Age", user.age.toString())
                     DetailRow("Phone", user.phoneNumber)
-                    DetailRow("Driving Licence", user.drivingLicence ?: "Not provided")
+                    DetailRow("Driving Licence", user.drivingLicence ?: stringResource(R.string.not_provided))
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -181,7 +184,7 @@ fun ProfileScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Edit", color = MaterialTheme.colorScheme.onPrimaryContainer)
+                            Text(stringResource(R.string.edit), color = MaterialTheme.colorScheme.onPrimaryContainer)
                         }
 
                         Button(
@@ -197,7 +200,7 @@ fun ProfileScreen(
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("Logout", color = MaterialTheme.colorScheme.onErrorContainer)
+                            Text(stringResource(R.string.logout), color = MaterialTheme.colorScheme.onErrorContainer)
                         }
                     }
                 }

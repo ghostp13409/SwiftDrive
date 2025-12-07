@@ -2,6 +2,7 @@ package com.example.swiftdrive.data.models
 
 import com.google.firebase.firestore.IgnoreExtraProperties
 
+// Enum classes for representing different car features
 enum class EngineType {
     DIESEL,
     PETROL,
@@ -9,11 +10,13 @@ enum class EngineType {
     ELECTRIC,
 }
 
+// Enum for representing car condition
 enum class Condition {
     NEW,
     USED,
 }
 
+// Enum for representing car category
 enum class Category {
     SEDAN,
     SUV,
@@ -22,13 +25,14 @@ enum class Category {
     MINIVAN
 }
 
+// Enum for representing car tier
 enum class Tier {
     Economy,
     PREMIUM,
     LUXURY
 }
 
-
+// Data class for representing a car
 @IgnoreExtraProperties
 data class Car (
     val id: Int = 0,

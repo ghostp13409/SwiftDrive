@@ -10,6 +10,7 @@ import com.example.swiftdrive.data.models.UserRoles
 class CustomerDatabaseHelper(context: Context) :
 SQLiteOpenHelper(context, "customer", null, 2)
 {
+    // on create method for creating the customer table
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL("""
             CREATE TABLE customer(
@@ -26,6 +27,7 @@ SQLiteOpenHelper(context, "customer", null, 2)
         """.trimIndent())
     }
 
+    // on upgrade method for updating the customer table
     override fun onUpgrade(db: SQLiteDatabase?, p1: Int, p2: Int) {
         db?.execSQL("DROP TABLE IF EXISTS customer")
         onCreate(db)

@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.example.swiftdrive.data.models.Customer
 import com.example.swiftdrive.data.models.UserRoles
 
+// Customer Card Component for displaying customer information in a card view
 @Composable
 fun CustomerCard(customer: Customer, onEdit: () -> Unit) {
     Card(

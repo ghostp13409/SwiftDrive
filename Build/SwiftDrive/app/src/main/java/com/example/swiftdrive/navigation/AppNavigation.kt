@@ -50,7 +50,7 @@ import com.example.swiftdrive.features.profile.ProfileScreen
 import com.example.swiftdrive.features.profile.ProfileViewModel
 import com.example.swiftdrive.features.rentals.RentalViewModel
 import com.example.swiftdrive.features.rentals.RentalsScreen
-
+// The whole app navigation
 @RequiresApi(Build.VERSION_CODES.O)
 @SuppressLint("UnrememberedGetBackStackEntry", "CoroutineCreationDuringComposition")
 @Composable
@@ -122,6 +122,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 startDestination = "splash",
                 modifier = Modifier.fillMaxSize(),
             ) {
+                // Splash Screen
             composable("splash") {
                 SplashScreen(onTimeout = {
                     if (sessionManager.isLoggedIn()) {
@@ -135,6 +136,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     }
                 })
             }
+                // Login Screen
             composable("login") {
                 val loginViewModel: LoginViewModel = viewModel()
                 LoginScreen(
@@ -149,6 +151,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     }
                 )
             }
+                // Registration Screen
             composable("register") {
                 val registrationViewModel: RegistrationViewModel = viewModel()
                 RegistrationScreen(
@@ -165,6 +168,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     }
                 )
             }
+                // Home Screen
             composable("home") {
                 val homeViewModel: HomeViewModel = viewModel()
                 // Change Title and SubText on TopBar
@@ -173,6 +177,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 onSyncClick = { homeViewModel.syncAllToFirestore() }
                 HomeScreen(modifier = Modifier, viewModel = homeViewModel, navController = navController )
             }
+                // Cars Screen
             composable("cars") {
                 currentTitle = "Cars"
                 currentSubtext = "Find your next ride"
@@ -182,6 +187,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     onEventClick = { navController.navigate("cars_detail") }
                 )
             }
+                // Add Car Screen
             composable("add_car") {
                 AddCarScreen(
                     onEventClick = { navController.navigate("cars"){
@@ -195,6 +201,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     viewModel = carsViewModel,
                 )
             }
+                // Customer Screen
             composable("customer") {
                 Log.d("AppNavigation", "Navigated to CustomerScreen")
                 currentTitle = "Customers"
@@ -202,6 +209,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 onSyncClick = { homeViewModel.syncAllToFirestore() }
                 CustomerScreen(modifier = Modifier, viewModel = customerViewModel, onEdit = { navController.navigate("customer_detail") })
             }
+                // Add Customer Screen
             composable("add_customer") {
                 AddCustomerScreen(
                     modifier = Modifier,
@@ -217,6 +225,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     onBackClick = { navController.popBackStack() }
                 )
             }
+                // Car Detail Screen
                 composable("cars_detail"){
                     CarDetailScreen(
                         viewModel = carsViewModel,
@@ -240,6 +249,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                         }
                     )
                 }
+                // Customer Detail Screen
             composable("customer_detail") {
                 CustomerDetailScreen(
                     viewModel = customerViewModel,
@@ -258,16 +268,19 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                     }
                 )
             }
+                // Rentals Screen
             composable("rentals") {
                 currentTitle = "Rentals"
                 currentSubtext = "${rentalViewModel.rentals.value.size} total rentals"
                 onSyncClick = { homeViewModel.syncAllToFirestore() }
                 RentalsScreen(modifier = Modifier, viewModel = rentalViewModel)
             }
+                // Add Rental Screen
             composable("add_rental") {
                 AddRentalScreen(modifier = Modifier, viewModel = rentalViewModel, onSaveClick = {navController.navigate("rentals")}, onBackClick = { navController.popBackStack() })
             }
 
+                // Profile Screen
             composable ("profile") {
                 val profileViewModel: ProfileViewModel = viewModel { ProfileViewModel(context.applicationContext as Application) }
                 currentTitle = "Profile"
@@ -285,6 +298,7 @@ fun AppNavigation (modifier: Modifier = Modifier) {
                 )
             }
 
+                // Edit Profile Screen
             composable("edit_profile") {
                 val profileViewModel: ProfileViewModel = viewModel { ProfileViewModel(context.applicationContext as Application) }
                 val customerViewModel: CustomerViewModel = viewModel { CustomerViewModel(context.applicationContext as Application, { profileViewModel.refreshData() }) }

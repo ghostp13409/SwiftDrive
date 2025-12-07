@@ -19,8 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
 import com.example.swiftdrive.R
 
+// App Navigation View Model
 class AppNavigationViewModel: ViewModel() {
 
+    // Navigation Items
     val items = listOf("home", "cars", "customer", "rentals", "profile")
 
     var selectedItem by mutableStateOf(items[0])
@@ -39,7 +41,9 @@ class AppNavigationViewModel: ViewModel() {
         Icons.Filled.CarRental,
         Icons.Filled.Person
     )
+    // Bottom Navigation Bar
     val labels = listOf("Home", "Cars", "Customers", "Rentals", "Profile")
+
 
     val allowFab = listOf("cars", "customer", "rentals")
 

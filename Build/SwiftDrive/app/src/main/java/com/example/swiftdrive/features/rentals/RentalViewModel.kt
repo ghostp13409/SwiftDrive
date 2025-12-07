@@ -69,18 +69,22 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         selectedRental = rental
     }
 
+    // loading rentals
     fun loadRentals() {
         rentals.value = rentalRepository.getRentals()
     }
 
+    // loading customer
     fun loadCustomers() {
         customers.value = customerRepository.getCustomers()
     }
 
+    // loading cars
     fun loadCars() {
         cars.value = carRepository.getCars()
     }
 
+    // fetching from firestore
     fun fetchFromFirestore() {
         viewModelScope.launch {
             rentalRepository.fetchAndStoreRentals()
@@ -91,7 +95,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
             loadCustomers()
         }
     }
-
+// syncing to firestore
     fun syncToFirestore() {
         viewModelScope.launch {
             rentalRepository.syncToFirestore()
@@ -100,11 +104,14 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         }
     }
 
+    // updating selected customer
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateSelectedCustomer(customer: Customer?) {
         selectedCustomer = customer
         calculateTotalCost()
     }
+// Basic setters and calculations
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateSelectedCar(car: Car?) {
@@ -124,10 +131,11 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         calculateTotalCost()
     }
 
+
     fun updateStatus(newStatus: String) {
         status = newStatus
     }
-
+// calculating total cost
     @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateTotalCost() {
         if (selectedCar != null && rentalStart.isNotEmpty() && rentalEnd.isNotEmpty()) {
@@ -196,6 +204,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         onChange?.invoke()
         return true
     }
+    // deleting rental
 
     fun deleteRental(id: Int) {
         val rentalToDelete = rentals.value.find { it.id == id } ?: return
@@ -203,7 +212,7 @@ class RentalViewModel(application: Application, val onChange: (() -> Unit)? = nu
         loadRentals()
         onChange?.invoke()
     }
-
+// returning car
     fun returnCar(rentalId: Int) {
         val rental = rentals.value.find { it.id == rentalId } ?: return
         val updatedRental = rental.copy(status = "Completed")

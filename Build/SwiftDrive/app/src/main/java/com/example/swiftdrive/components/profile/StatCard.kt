@@ -16,12 +16,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
+// Static Card Component for displaying statistics in a card view
 @Composable
+// function for displaying statistics in a card view
 fun StatCard(
     title: String,
     value: String,
     modifier: Modifier = Modifier
 ) {
+    // Card for displaying the statistics
     Card(
         modifier = modifier.shadow(6.dp, RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),

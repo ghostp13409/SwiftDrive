@@ -26,6 +26,7 @@ import com.example.swiftdrive.R
 import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 import kotlinx.coroutines.delay
 
+// Splash screen
 @Composable
 fun SplashScreen (onTimeout: () -> Unit) {
     LaunchedEffect(true) {

@@ -13,8 +13,10 @@ import com.example.swiftdrive.data.models.UserRoles
 import com.example.swiftdrive.data.repositories.CustomerRepository
 import kotlinx.coroutines.launch
 
+// Customer View Model for Customer Screen and Customer Detail Screen and Add Customer Screen
 class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = null): AndroidViewModel(application) {
 
+    // Customer Repository
     private val customerRepository = CustomerRepository(application)
     var customers by mutableStateOf<List<Customer>>(emptyList())
         private set
@@ -100,16 +102,20 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
             loadCustomers()
         }
     }
+    // Load from local
     fun loadCustomers() {
         customers = customerRepository.getCustomers()
         Log.d("CustomerViewModel", "Loaded ${customers.size} customers.")
     }
+    // Sync to Firestore
 
     fun syncToFirestore() {
         viewModelScope.launch {
             customerRepository.syncToFirestore()
         }
     }
+
+    // Seed Customer function for testing
 
     fun seedCustomers() {
         if (customerRepository.getCustomers().isEmpty()) {
@@ -155,6 +161,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
         }
     }
 
+    // Select Customer for editing
     fun selectCustomer(customer: Customer) {
         selectedCustomer = customer
 
@@ -169,6 +176,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
         password = customer.password
     }
 
+    // Delete Customer
     fun deleteCustomer(id: Int) {
         val customerToDelete = customers.find { it.id == id } ?: return
         customerRepository.deleteCustomer(customerToDelete)
@@ -176,6 +184,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
         onChange?.invoke()
     }
 
+    // delete Customer
     fun saveCustomer() {
         errorMessage = ""
         if (validateInput()) {
@@ -246,6 +255,7 @@ class CustomerViewModel(application: Application, val onChange: (() -> Unit)? = 
         }
         return true
     }
+    // Celaring Input
     fun clearInput() {
         selectedCustomer = null
         editingId = null

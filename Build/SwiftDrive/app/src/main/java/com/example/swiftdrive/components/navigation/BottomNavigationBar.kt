@@ -10,9 +10,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.swiftdrive.navigation.AppNavigationViewModel
 
+// Bottom Navigation Bar Component for displaying navigation options in a bottom bar
 @Composable
 fun BottomNavigationBar(navController: NavController, viewModel: AppNavigationViewModel) {
-
+    // Navigation Bar for displaying navigation options
     NavigationBar(containerColor = MaterialTheme.colorScheme.background) {
         val navBackStackEntry = navController.currentBackStackEntryAsState().value
         val currentRoute = navBackStackEntry?.destination?.route
@@ -20,6 +21,7 @@ fun BottomNavigationBar(navController: NavController, viewModel: AppNavigationVi
             val icon = (currentRoute == item).let {
                 if (it) viewModel.iconsSelected[index] else viewModel.icons[index]
             }
+            // Navigation Item for each option
             NavigationBarItem(
                 selected = currentRoute == item,
                 onClick = {
