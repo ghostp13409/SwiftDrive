@@ -121,10 +121,8 @@ fun CarDetailScreen(
                         )
                     }
                 }
-                // ───────────────────────────────────────
                 Divider(modifier = Modifier.padding(vertical = 18.dp))
 
-                // ────────────────────ON BOOK BUTTON CLICKED───────────────────
                 AvailabilityAndPriceSection(car, onBookClicked = onBookClicked)
             }
 

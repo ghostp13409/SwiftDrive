@@ -22,6 +22,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,6 +45,10 @@ import com.example.swiftdrive.ui.theme.SwiftDriveTheme
 // Login Screen for Login Page
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = viewModel(), onLoginSuccess: () -> Unit, onNavigateToRegister: () -> Unit = {}, modifier: Modifier = Modifier) {
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchCustomers()
+    }
 
     Column(
         modifier = Modifier

@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 
 // LOGIN VIEW MODEL
 class LoginViewModel(application: Application) : AndroidViewModel(application) {
-    private val customerDbHelper = CustomerDatabaseHelper(application)
     private val customerRepository = CustomerRepository(application)
     private val sessionManager = SessionManager(application)
 
@@ -47,10 +46,10 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             errorMessage = "Email and password cannot be empty"
             return
         }
-
         isLoading = true
         viewModelScope.launch {
-            val customers = customerDbHelper.getAllCustomers()
+
+            val customers = customerRepository.getCustomers()
             val customer = customers.find { it.email == email && it.password == password && it.roles == UserRoles.ADMIN }
             isLoading = false
             if (customer != null) {
@@ -59,6 +58,12 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
             } else {
                 errorMessage = "Invalid email or password, or not an admin"
             }
+        }
+    }
+
+    fun fetchCustomers() {
+        viewModelScope.launch {
+            customerRepository.fetchAndStoreCustomers()
         }
     }
 

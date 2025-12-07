@@ -21,8 +21,6 @@ fun CarScreen(
     onEventClick: () -> Unit,
     viewModel: CarsViewModel
 ) {
-
-
     Column(
         modifier = modifier
             .fillMaxSize()
