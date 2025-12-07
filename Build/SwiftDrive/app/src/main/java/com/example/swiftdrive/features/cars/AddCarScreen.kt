@@ -21,6 +21,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -51,128 +52,129 @@ import com.example.swiftdrive.data.models.Tier
 @Composable
 // Add car screen function for adding or editing a car
 fun AddCarScreen(
-        onEventClick: () -> Unit,
-        onBackClick: () -> Unit,
-        modifier: Modifier = Modifier,
-        viewModel: CarsViewModel
+    onEventClick: () -> Unit,
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: CarsViewModel
 ) {
+    val message = viewModel.errorMessage
+
     val isEditing = viewModel.selectedCar != null
 
     // Scaffold for the screen
     Scaffold(
-            topBar = {
-                Surface(
-                        shadowElevation = 6.dp,
-                        tonalElevation = 2.dp,
-                        color = androidx.compose.material3.MaterialTheme.colorScheme.surface,
-                        shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
-                ) {
-                    TopAppBar(
-                            title = {
-                                Text(
-                                        text = if (isEditing) "Edit Car" else "Add Car",
-                                        style =
-                                                androidx.compose.material3.MaterialTheme.typography
-                                                        .titleLarge.copy(
-                                                        fontWeight = FontWeight.Bold,
-                                                        color =
-                                                                androidx.compose.material3
-                                                                        .MaterialTheme.colorScheme
-                                                                        .onSurface
-                                                )
-                                )
-                            },
-                            navigationIcon = {
-                                IconButton(onClick = onBackClick) {
-                                    Icon(
-                                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                                            contentDescription = "Back",
-                                            tint =
-                                                    androidx.compose.material3.MaterialTheme
-                                                            .colorScheme
-                                                            .primary
+        topBar = {
+            Surface(
+                shadowElevation = 6.dp,
+                tonalElevation = 2.dp,
+                color = androidx.compose.material3.MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = if (isEditing) "Edit Car" else "Add Car",
+                            style =
+                                androidx.compose.material3.MaterialTheme.typography
+                                    .titleLarge.copy(
+                                        fontWeight = FontWeight.Bold,
+                                        color =
+                                            androidx.compose.material3
+                                                .MaterialTheme.colorScheme
+                                                .onSurface
                                     )
-                                }
-                            },
-                            colors =
-                                    TopAppBarDefaults.topAppBarColors(
-                                            containerColor = Color.Transparent
-                                    )
-                    )
-                }
+                        )
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onBackClick) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                                contentDescription = "Back",
+                                tint =
+                                    androidx.compose.material3.MaterialTheme
+                                        .colorScheme
+                                        .primary
+                            )
+                        }
+                    },
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent
+                        )
+                )
             }
+        }
     ) { padding ->
-        // Column for the content
         Column(
-                modifier =
-                        modifier.fillMaxSize()
-                                .padding(padding)
-                                .padding(16.dp)
-                                .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
+            modifier =
+                modifier.fillMaxSize()
+                    .padding(padding)
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
-                    value = viewModel.year,
-                    onValueChange = { viewModel.year = it },
-                    label = { Text(stringResource(R.string.year)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
+                value = viewModel.year,
+                onValueChange = { viewModel.year = it },
+                label = { Text(stringResource(R.string.year)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                    value = viewModel.make,
-                    onValueChange = { viewModel.make = it },
-                    label = { Text(stringResource(R.string.Car_make)) },
-                    modifier = Modifier.fillMaxWidth()
+                value = viewModel.make,
+                onValueChange = { viewModel.make = it },
+                label = { Text(stringResource(R.string.Car_make)) },
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                    value = viewModel.model,
-                    onValueChange = { viewModel.model = it },
-                    label = { Text(stringResource(R.string.car_model)) },
-                    modifier = Modifier.fillMaxWidth()
+                value = viewModel.model,
+                onValueChange = { viewModel.model = it },
+                label = { Text(stringResource(R.string.car_model)) },
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                    value = viewModel.pricePerDay,
-                    onValueChange = { viewModel.pricePerDay = it },
-                    label = { Text(stringResource(R.string.car_price_per_day)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    modifier = Modifier.fillMaxWidth()
+                value = viewModel.pricePerDay,
+                onValueChange = { viewModel.pricePerDay = it },
+                label = { Text(stringResource(R.string.car_price_per_day)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                modifier = Modifier.fillMaxWidth()
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             @OptIn(ExperimentalMaterial3Api::class)
             var engineExpanded by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(
-                    expanded = engineExpanded,
-                    onExpandedChange = { engineExpanded = it },
-                    modifier = Modifier.fillMaxWidth()
+                expanded = engineExpanded,
+                onExpandedChange = { engineExpanded = it },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                        value = viewModel.engineType.toString(),
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text(stringResource(R.string.engine_type)) },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = engineExpanded)
-                        },
-                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                    value = viewModel.engineType.toString(),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(stringResource(R.string.engine_type)) },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = engineExpanded)
+                    },
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
                 ExposedDropdownMenu(
-                        expanded = engineExpanded,
-                        onDismissRequest = { engineExpanded = false }
+                    expanded = engineExpanded,
+                    onDismissRequest = { engineExpanded = false }
                 ) {
                     EngineType.values().forEach { engine ->
                         DropdownMenuItem(
-                                text = { Text(engine.toString()) },
-                                onClick = {
-                                    viewModel.engineType = engine
-                                    engineExpanded = false
-                                }
+                            text = { Text(engine.toString()) },
+                            onClick = {
+                                viewModel.engineType = engine
+                                engineExpanded = false
+                            }
                         )
                     }
                 }
@@ -182,32 +184,31 @@ fun AddCarScreen(
             @OptIn(ExperimentalMaterial3Api::class)
             var conditionExpanded by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(
-                    expanded = conditionExpanded,
-                    onExpandedChange = { conditionExpanded = it },
-                    modifier = Modifier.fillMaxWidth()
+                expanded = conditionExpanded,
+                onExpandedChange = { conditionExpanded = it },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                        value = viewModel.condition.toString(),
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text(stringResource(R.string.condition)) },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = conditionExpanded)
-                        },
-                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                    value = viewModel.condition.toString(),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(stringResource(R.string.condition)) },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = conditionExpanded)
+                    },
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
-                // Dropdown menu for selecting condition
                 ExposedDropdownMenu(
-                        expanded = conditionExpanded,
-                        onDismissRequest = { conditionExpanded = false }
+                    expanded = conditionExpanded,
+                    onDismissRequest = { conditionExpanded = false }
                 ) {
                     Condition.values().forEach { condition ->
                         DropdownMenuItem(
-                                text = { Text(condition.toString()) },
-                                onClick = {
-                                    viewModel.condition = condition
-                                    conditionExpanded = false
-                                }
+                            text = { Text(condition.toString()) },
+                            onClick = {
+                                viewModel.condition = condition
+                                conditionExpanded = false
+                            }
                         )
                     }
                 }
@@ -216,34 +217,32 @@ fun AddCarScreen(
 
             @OptIn(ExperimentalMaterial3Api::class)
             var categoryExpanded by remember { mutableStateOf(false) }
-            // Dropdown menu for selecting category
             ExposedDropdownMenuBox(
-                    expanded = categoryExpanded,
-                    onExpandedChange = { categoryExpanded = it },
-                    modifier = Modifier.fillMaxWidth()
+                expanded = categoryExpanded,
+                onExpandedChange = { categoryExpanded = it },
+                modifier = Modifier.fillMaxWidth()
             ) {
-
                 OutlinedTextField(
-                        value = viewModel.category.toString(),
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text(stringResource(R.string.category)) },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded)
-                        },
-                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                    value = viewModel.category.toString(),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(stringResource(R.string.category)) },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded)
+                    },
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
                 ExposedDropdownMenu(
-                        expanded = categoryExpanded,
-                        onDismissRequest = { categoryExpanded = false }
+                    expanded = categoryExpanded,
+                    onDismissRequest = { categoryExpanded = false }
                 ) {
                     Category.values().forEach { category ->
                         DropdownMenuItem(
-                                text = { Text(category.toString()) },
-                                onClick = {
-                                    viewModel.category = category
-                                    categoryExpanded = false
-                                }
+                            text = { Text(category.toString()) },
+                            onClick = {
+                                viewModel.category = category
+                                categoryExpanded = false
+                            }
                         )
                     }
                 }
@@ -252,67 +251,76 @@ fun AddCarScreen(
 
             @OptIn(ExperimentalMaterial3Api::class)
             var tierExpanded by remember { mutableStateOf(false) }
-            // Dropdown menu for selecting tier
             ExposedDropdownMenuBox(
-                    expanded = tierExpanded,
-                    onExpandedChange = { tierExpanded = it },
-                    modifier = Modifier.fillMaxWidth()
+                expanded = tierExpanded,
+                onExpandedChange = { tierExpanded = it },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 OutlinedTextField(
-                        value = viewModel.tier.toString(),
-                        onValueChange = {},
-                        readOnly = true,
-                        label = { Text(stringResource(R.string.tier)) },
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = tierExpanded)
-                        },
-                        modifier = Modifier.fillMaxWidth().menuAnchor()
+                    value = viewModel.tier.toString(),
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text(stringResource(R.string.tier)) },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = tierExpanded)
+                    },
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
-                // Dropdown menu for selecting tier
                 ExposedDropdownMenu(
-                        expanded = tierExpanded,
-                        onDismissRequest = { tierExpanded = false }
+                    expanded = tierExpanded,
+                    onDismissRequest = { tierExpanded = false }
                 ) {
                     Tier.values().forEach { tier ->
                         DropdownMenuItem(
-                                text = { Text(tier.toString()) },
-                                onClick = {
-                                    viewModel.tier = tier
-                                    tierExpanded = false
-                                }
+                            text = { Text(tier.toString()) },
+                            onClick = {
+                                viewModel.tier = tier
+                                tierExpanded = false
+                            }
                         )
                     }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            // Checkbox for availability
+
             Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Checkbox(
-                        checked = viewModel.isAvailable,
-                        onCheckedChange = { viewModel.isAvailable = it }
+                    checked = viewModel.isAvailable,
+                    onCheckedChange = { viewModel.isAvailable = it }
                 )
                 Text("Available")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Button to add or update car
-            Button(
-                    onClick = {
-                        if (isEditing) viewModel.updateCar() else viewModel.addCar()
+            // Error Message
+            if (message != null) {
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
 
-                        onEventClick()
-                    },
-                    modifier = Modifier.fillMaxWidth()
+            Button(
+                onClick = {
+                    val isValid = viewModel.onAddCarClick()
+                    if (!isValid) return@Button
+
+                    if (isEditing) viewModel.updateCar() else viewModel.addCar()
+
+                    onEventClick()
+                },
+                modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                        if (isEditing) stringResource(R.string.save_changes)
-                        else stringResource(R.string.add_car)
+                    if (isEditing) stringResource(R.string.save_changes)
+                    else stringResource(R.string.add_car)
                 )
             }
         }
     }
 }
+

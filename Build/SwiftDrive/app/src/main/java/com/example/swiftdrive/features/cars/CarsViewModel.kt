@@ -13,13 +13,16 @@ import com.example.swiftdrive.data.models.Condition
 import com.example.swiftdrive.data.models.EngineType
 import com.example.swiftdrive.data.models.Tier
 import com.example.swiftdrive.data.repositories.CarRepository
+import com.example.swiftdrive.features.signup.ValidationResult
 import kotlinx.coroutines.launch
 
 // Cars viw model for managing cars
 class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null) :
-        AndroidViewModel(application) {
-
+    AndroidViewModel(application) {
     private val carRepository = CarRepository(application)
+
+    var errorMessage by mutableStateOf<String?>(null)
+        private set
 
     var year by mutableStateOf("")
 
@@ -49,63 +52,63 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
     //   List for filtered cars
     val filteredCars: List<Car>
         get() =
-                cars.value.filter { car ->
-                    (selectedEngineTypes.isEmpty() || car.engineType in selectedEngineTypes) &&
-                            (selectedConditions.isEmpty() || car.condition in selectedConditions) &&
-                            (selectedCategories.isEmpty() || car.category in selectedCategories) &&
-                            (selectedTiers.isEmpty() || car.tier in selectedTiers) &&
-                            (selectedAvailabilities.isEmpty() ||
-                                    car.isAvailable in selectedAvailabilities)
-                }
+            cars.value.filter { car ->
+                (selectedEngineTypes.isEmpty() || car.engineType in selectedEngineTypes) &&
+                        (selectedConditions.isEmpty() || car.condition in selectedConditions) &&
+                        (selectedCategories.isEmpty() || car.category in selectedCategories) &&
+                        (selectedTiers.isEmpty() || car.tier in selectedTiers) &&
+                        (selectedAvailabilities.isEmpty() ||
+                                car.isAvailable in selectedAvailabilities)
+            }
 
     // function for toggling filter states
     fun toggleEngineType(engineType: EngineType) {
         selectedEngineTypes =
-                if (engineType in selectedEngineTypes) {
-                    selectedEngineTypes - engineType
-                } else {
-                    selectedEngineTypes + engineType
-                }
+            if (engineType in selectedEngineTypes) {
+                selectedEngineTypes - engineType
+            } else {
+                selectedEngineTypes + engineType
+            }
     }
 
     // Toggle condition for filtering cars
     fun toggleCondition(condition: Condition) {
         selectedConditions =
-                if (condition in selectedConditions) {
-                    selectedConditions - condition
-                } else {
-                    selectedConditions + condition
-                }
+            if (condition in selectedConditions) {
+                selectedConditions - condition
+            } else {
+                selectedConditions + condition
+            }
     }
 
     // Toggle Category for filtering cars
     fun toggleCategory(category: Category) {
         selectedCategories =
-                if (category in selectedCategories) {
-                    selectedCategories - category
-                } else {
-                    selectedCategories + category
-                }
+            if (category in selectedCategories) {
+                selectedCategories - category
+            } else {
+                selectedCategories + category
+            }
     }
 
     // Toggle Tier for filtering cars
     fun toggleTier(tier: Tier) {
         selectedTiers =
-                if (tier in selectedTiers) {
-                    selectedTiers - tier
-                } else {
-                    selectedTiers + tier
-                }
+            if (tier in selectedTiers) {
+                selectedTiers - tier
+            } else {
+                selectedTiers + tier
+            }
     }
 
     // Toggle Availability for filtering cars
     fun toggleAvailability(availability: Boolean) {
         selectedAvailabilities =
-                if (availability in selectedAvailabilities) {
-                    selectedAvailabilities - availability
-                } else {
-                    selectedAvailabilities + availability
-                }
+            if (availability in selectedAvailabilities) {
+                selectedAvailabilities - availability
+            } else {
+                selectedAvailabilities + availability
+            }
     }
 
     // Function for clear all filters
@@ -172,25 +175,24 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         val id = System.currentTimeMillis().toInt()
 
         val newCar =
-                Car(
-                        id = id,
-                        year = year.toInt(),
-                        make = make,
-                        model = model,
-                        pricePerDay = pricePerDay.toDouble(),
-                        isAvailable = isAvailable,
-                        engineType = engineType,
-                        condition = condition,
-                        category = category,
-                        tier = tier,
-                        imageRes = imageRes
-                )
+            Car(
+                id = id,
+                year = year.toInt(),
+                make = make,
+                model = model,
+                pricePerDay = pricePerDay.toDouble(),
+                isAvailable = isAvailable,
+                engineType = engineType,
+                condition = condition,
+                category = category,
+                tier = tier,
+                imageRes = imageRes
+            )
         carRepository.addCar(newCar)
         loadCars()
         notifyChange()
     }
 
-    //Deletes Car from database using the id
     fun deleteCar(id: Int) {
         val carToDelete = cars.value.find { it.id == id } ?: return
         carRepository.deleteCar(carToDelete)
@@ -198,7 +200,6 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         notifyChange()
     }
 
-    //Resets input fields on click
     fun resetInputFields() {
         year = ""
         make = ""
@@ -213,26 +214,87 @@ class CarsViewModel(application: Application, val onChange: (() -> Unit)? = null
         selectedCar = null
     }
 
-    //Updates Car
     fun updateCar() {
         val car = selectedCar ?: return
 
         val updatedCar =
-                car.copy(
-                        year = year.toIntOrNull() ?: car.year,
-                        make = make,
-                        model = model,
-                        pricePerDay = pricePerDay.toDoubleOrNull() ?: car.pricePerDay,
-                        isAvailable = isAvailable,
-                        engineType = engineType,
-                        condition = condition,
-                        category = category,
-                        tier = tier,
-                        imageRes = imageRes
-                )
+            car.copy(
+                year = year.toIntOrNull() ?: car.year,
+                make = make,
+                model = model,
+                pricePerDay = pricePerDay.toDoubleOrNull() ?: car.pricePerDay,
+                isAvailable = isAvailable,
+                engineType = engineType,
+                condition = condition,
+                category = category,
+                tier = tier,
+                imageRes = imageRes
+            )
 
         carRepository.updateCar(updatedCar)
         loadCars()
         notifyChange()
     }
+
+
+    // For input validation
+    fun onAddCarClick(): Boolean {
+        val validations = listOf(
+            validateYear(year),
+            validateMake(make),
+            validateModel(model),
+            validatePricePerDay(pricePerDay)
+        )
+        val firstError = validations.firstOrNull { it is CarsValidationResult.Error }
+
+        return if(firstError is CarsValidationResult.Error){
+            errorMessage = firstError.message
+            false
+        }
+        else{
+            errorMessage = null
+            true
+        }
+
+    }
+
+    // All validations
+    private fun validateYear(year: String): CarsValidationResult {
+        if (year.isBlank()) {
+            return CarsValidationResult.Error("Year cannot be empty")
+        }
+        val yearValue = year.toIntOrNull()
+        if (yearValue == null) {
+            return CarsValidationResult.Error("Year must be a number")
+        }
+        if (yearValue < 1900 || yearValue > 2026) {
+            return CarsValidationResult.Error("Year must be between 1900 and 2026")
+
+        }
+        return CarsValidationResult.Success
+    }
+
+    private fun validateMake(make: String) =
+        if (make.isBlank()) CarsValidationResult.Error("Make cannot be empty")
+        else CarsValidationResult.Success
+
+    private fun validateModel(model: String) =
+        if (model.isBlank()) CarsValidationResult.Error("Model cannot be empty")
+        else CarsValidationResult.Success
+
+    private fun validatePricePerDay(pricePerDay: String): CarsValidationResult {
+        if (pricePerDay.isBlank()) {
+            return CarsValidationResult.Error("Price per day cannot be empty")
+        }
+        val pricePerDayValue = pricePerDay.toDoubleOrNull()
+        if (pricePerDayValue == null) {
+            return CarsValidationResult.Error("Price per day must be a number")
+        }
+        if (pricePerDayValue < 0) {
+            return CarsValidationResult.Error("Price per day cannot be negative")
+        }
+        return CarsValidationResult.Success
+    }
+
+
 }
